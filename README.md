@@ -1,5 +1,5 @@
 # Projet jeu vidéo Python
 
 ### A savoir
-#### ADD: quand on ajouter un nouveau fichier
-#### IMP: comme on modifie un fichier existant
+#### ADD: quand on ajoute un nouveau fichier
+#### IMP: quand on modifie un fichier existant
