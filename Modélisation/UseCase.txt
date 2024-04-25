@@ -1,0 +1,61 @@
+1. Le joueur lance l'application
+2. Le joueur arrive sur Menu
+    2.1 Le joueur choisit de commencer la partie
+    2.2 Le joueur choisit de charger une partie
+        2.2.1. Le système affiche une liste des sauvegardes disponibles.
+        2.2.2. Le joueur sélectionne une sauvegarde à charger.
+        2.2.3. Le système charge l'état du jeu à partir de la sauvegarde, y compris l'emplacement du joueur dans le monde, l'état de l'inventaire, l'état des quêtes, etc.
+        2.2.4. Le joueur continue à jouer à partir de l'état chargé.
+3. Le joueur arrive dans le jeu avec son personnage et recoit la mission principale
+    3.1. La mission principale sera affiché en haut à droite tout au long de la partie(interface)
+        3.1.1. Si mission accomplie, jeu se termine avec un interface victoire pour quitter le jeu
+    3.2. Le joueur rencontre une entité le PNJ 
+    3.3. Le joueur interagit avec le PNJ 
+    3.4. Le système génére un dialogue suite auquel le joueur entre les quêtes et magasin
+        3.4.1. le PNJ qui a une quête à offrir
+           3.4.1.1. Le joueur accepte la quête.
+           3.4.1.2. Le joueur interagit avec l'le PNJ pour recevoir les détails de la quête.
+           3.4.1.3. Le système ajoute la quête à la liste des quêtes actives du joueur.
+           3.4.1.4. Le joueur accomplit les objectifs de la quête dans le monde du jeu.
+           3.4.1.5. Une fois tous les objectifs accomplis, le joueur retourne voir l'le PNJ pour compléter la quête.
+           3.4.1.6. Le système vérifie si tous les objectifs de la quête ont été accomplis.
+           3.4.1.7. Si oui, la quête est marquée comme terminée et le joueur reçoit une récompense
+        3.4.2. le PNJ pour ouvrir le menu de la boutique
+            3.4.2.1. Le joueur parcourt les objets disponibles à l'achat.
+            3.4.2.2. Le joueur sélectionne un objet "Equipable" ou "Consommable" à acheter.
+            3.4.2.3. Le système vérifie si le joueur a suffisamment de ressources pour acheter l'objet.
+            3.4.2.4. Si oui, l'objet est ajouté à l'inventaire du joueur.
+            3.4.2.5. Le joueur peut alors choisir d'équiper ou de consommer l'objet à partir de son inventaire.
+    3.5 Le joueur ouvre son inventaire.
+        3.5.1. Le joueur sélectionne un objet consommable de l'inventaire.
+            3.5.1.1. Le joueur choisit l'option "Utiliser" pour l'objet consommable.
+            3.5.1.2. Le système vérifie si l'objet peut être utilisé à ce moment.
+            3.5.1.3. Si oui, l'effet de l'objet consommable est appliqué au joueur (par exemple, restauration de la santé, augmentation de la force, etc.).
+            3.5.1.4. L'objet consommable est retiré de l'inventaire du joueur.
+        3.5.2. Le joueur sélectionne un objet équipable de l'inventaire.
+            3.5.2.1. Le joueur choisit l'option "Équiper" pour l'objet équipable.
+            3.5.2.2. Le système vérifie si l'objet peut être équipé à ce moment.
+            3.5.2.3. Si oui, l'objet est équipé par le joueur, augmentant ses statistiques ou lui donnant de nouvelles capacités.
+            3.5.2.4. L'objet équipable reste dans l'inventaire du joueur, mais est maintenant marqué comme équipé.
+    3.6. Le joueur rencontre un ennemi (BOSS compris)
+        3.6.1.Le joueur engage le combat avec l'ennemi.
+        3.6.2.Le système calcule les résultats de l'action (par exemple, dégâts infligés, effets de l'objet utilisé).
+        3.6.3.L'ennemi réagit en fonction de son script d'IA (par exemple, attaque, utilise une capacité spéciale).
+        3.6.4.Le combat continue jusqu'à ce que le joueur ou l'ennemi soit vaincu, ou que le joueur réussisse à fuir.  
+            3.6.4.1. L'ennemi vaincu va lacher un ou des objets alèatoires
+            3.6.4.2. Si le joueur succombe il recommence tout (Revient au menu)
+    3.7. Le joueur rencontre un coffre
+        3.7.1. Le joueur intéragit avec le coffre
+            3.7.1.1. Le coffre donne un item
+    3.8. Le joueur ouvre le menu (interface)
+        3.8.1. choisit l'option de sauvegarde dans le menu du jeu.
+            3.8.1.1. Le système enregistre l'état actuel du jeu, y compris l'emplacement du joueur dans le monde, l'état de l'inventaire, l'état des quêtes, etc.
+            3.8.1.2. Le système confirme que la sauvegarde a été effectuée avec succès
+        3.8.2. chosiit l'option charger une partie (voir point1)
+        3.8.3. choisit de quitter le jeu
+    
+
+
+
+
+
