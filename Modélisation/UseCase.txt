@@ -26,33 +26,33 @@
             3.4.2.3. Le système vérifie si le joueur a suffisamment de ressources pour acheter l'objet.
             3.4.2.4. Si oui, l'objet est ajouté à l'inventaire du joueur.
             3.4.2.5. Le joueur peut alors choisir d'équiper ou de consommer l'objet à partir de son inventaire.
-    3.5 Le joueur ouvre son inventaire.
-        3.5.1. Le joueur sélectionne un objet consommable de l'inventaire.
-            3.5.1.1. Le joueur choisit l'option "Utiliser" pour l'objet consommable.
-            3.5.1.2. Le système vérifie si l'objet peut être utilisé à ce moment.
-            3.5.1.3. Si oui, l'effet de l'objet consommable est appliqué au joueur (par exemple, restauration de la santé, augmentation de la force, etc.).
-            3.5.1.4. L'objet consommable est retiré de l'inventaire du joueur.
-        3.5.2. Le joueur sélectionne un objet équipable de l'inventaire.
-            3.5.2.1. Le joueur choisit l'option "Équiper" pour l'objet équipable.
-            3.5.2.2. Le système vérifie si l'objet peut être équipé à ce moment.
+    3.5 Le joueur ouvre son inventaire.  (Touche prédéfinie sur 'I' pour ouvrir l'inventaire)
+        3.5.1. Le joueur sélectionne un objet consommable de l'inventaire. (Liste d'objets visible dans son inventaire (Interface))
+            3.5.1.1. Le joueur choisit l'option "Utiliser" pour l'objet consommable. (Touche prédéfinie sur '4' pour utiliser un item soin dans l'inventaire. Si il n'y a pas d'item dispo : Rien ne se passe)
+            3.5.1.2. Le système vérifie si l'objet peut être utilisé à ce moment. (Touche prédéfinie sur '4' pour utiliser un item soin dans l'inventaire. Si il n'y a pas d'item dispo : Rien ne se passe)
+            3.5.1.3. Si oui, l'effet de l'objet consommable est appliqué au joueur (par exemple : restauration de la santé, augmentation de la force, etc.).
+            3.5.1.4. L'objet consommable est retiré de l'inventaire du joueur. 
+        3.5.2. Le joueur sélectionne un objet équipable de l'inventaire. (Touche prédéfinie sur 'I' pour ouvrir l'inventaire)
+            3.5.2.1. Le joueur choisit l'option "Équiper" pour l'objet équipable. (Création d'une icone 'équiper' quand on 'clic droit' sur un item qui peut etre équipé)
+            3.5.2.2. Le système vérifie si l'objet peut être équipé à ce moment. (Généralement tout le temps faisable)
             3.5.2.3. Si oui, l'objet est équipé par le joueur, augmentant ses statistiques ou lui donnant de nouvelles capacités.
-            3.5.2.4. L'objet équipable reste dans l'inventaire du joueur, mais est maintenant marqué comme équipé.
-    3.6. Le joueur rencontre un ennemi (BOSS compris)
-        3.6.1.Le joueur engage le combat avec l'ennemi.
-        3.6.2.Le système calcule les résultats de l'action (par exemple, dégâts infligés, effets de l'objet utilisé).
-        3.6.3.L'ennemi réagit en fonction de son script d'IA (par exemple, attaque, utilise une capacité spéciale).
-        3.6.4.Le combat continue jusqu'à ce que le joueur ou l'ennemi soit vaincu, ou que le joueur réussisse à fuir.  
-            3.6.4.1. L'ennemi vaincu va lacher un ou des objets alèatoires
+            3.5.2.4. L'objet équipable reste dans l'inventaire du joueur, mais est maintenant marqué comme équipé. (Ajout d'une modification de l'interface qui montre que l'objet est équipé)
+    3.6. Le joueur rencontre un ennemi (BOSS compris) (L'ennemi va attaquer le joueur automatiquement si le joueur rentre dans une zone d'aggro)
+        3.6.1.Le joueur engage le combat avec l'ennemi. ('Clic gauch' pour tirer avec son arme a feu équipé)
+        3.6.2.Le système calcule les résultats de l'action (par exemple : dégâts infligés, effets de l'objet utilisé).
+        3.6.3.L'ennemi réagit en fonction de son script d'IA (par exemple : attaque, utilise une capacité spéciale, ...).
+        3.6.4.Le combat continue jusqu'à ce que le joueur ou l'ennemi soit vaincu, ou que le joueur réussisse à fuir. (Déterminer un moment ou l'ennemi n'a plus l'aggro) 
+            3.6.4.1. L'ennemi vaincu va lacher un ou des objets alèatoires (Item ramassable lorsque le player marchera dessus ou avec une touche à définir)
             3.6.4.2. Si le joueur succombe il recommence tout (Revient au menu)
-    3.7. Le joueur rencontre un coffre
-        3.7.1. Le joueur intéragit avec le coffre
-            3.7.1.1. Le coffre donne un item
-    3.8. Le joueur ouvre le menu (interface)
-        3.8.1. choisit l'option de sauvegarde dans le menu du jeu.
+    3.7. Le joueur rencontre un coffre 
+        3.7.1. Le joueur intéragit avec le coffre (Une fois assez proche et dans l'area du coffre, touche 'e' pour ouvrir le coffre et faire drop l'item qui se trouve dedans)
+            3.7.1.1. Le coffre donne un item (Ramassable en passant dessus ou avec une touche à définir)
+    3.8. Le joueur ouvre le menu (Ouverture du menu avec la touche 'esc', le jeu sera en pause ou pas?)
+        3.8.1. choisit l'option de sauvegarde dans le menu du jeu. ('Clic gauche' pour choisir une des options du menu et ajout d'une fleche arrière pour revenir en arrière)
             3.8.1.1. Le système enregistre l'état actuel du jeu, y compris l'emplacement du joueur dans le monde, l'état de l'inventaire, l'état des quêtes, etc.
-            3.8.1.2. Le système confirme que la sauvegarde a été effectuée avec succès
+            3.8.1.2. Le système confirme que la sauvegarde a été effectuée avec succès (Ajout d'un txt interface qui dit que la save est ok)
         3.8.2. chosiit l'option charger une partie (voir point1)
-        3.8.3. choisit de quitter le jeu
+        3.8.3. choisit de quitter le jeu (en 'clic gauche' sur la bonne option ou sur la croix rouge de la fenetre du jeu)
     
 
 
