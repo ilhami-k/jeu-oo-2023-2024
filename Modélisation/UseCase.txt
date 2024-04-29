@@ -1,7 +1,7 @@
 1. Le joueur lance l'application
 2. Le joueur arrive sur Menu (3 choix: Commencer la partie, continuer une partie precedente ou quitter le jeu)
     2.1 Le joueur choisit de commencer la partie (un image prédefinie pour en attendant le chargement. La "prologue" commence)
-    2.2 Le joueur choisit de charger une partie ()
+    2.2 Le joueur choisit de charger une partie
         2.2.1. Le système affiche une liste des sauvegardes disponibles. (Dates à coté des sauvegardes)
         2.2.2. Le joueur sélectionne une sauvegarde à charger.
         2.2.3. Le système charge l'état du jeu à partir de la sauvegarde, y compris l'emplacement du joueur dans le monde, l'état de l'inventaire, l'état des quêtes, etc.(le jeu se lance dans le camp)
