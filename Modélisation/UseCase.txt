@@ -10,22 +10,28 @@
     3.1. La mission principale sera affiché en haut à droite tout au long de la partie(interface) 
         3.1.1. Si mission accomplie, jeu se termine avec un interface victoire pour quitter le jeu (2 choix: Quitter le jeu ou recommencer une partie de zéro)
     3.2. Le joueur rencontre une entité le PNJ 
-    3.3. Le joueur interagit avec le PNJ 
-    3.4. Le système génére un dialogue suite auquel le joueur entre les quêtes et magasin
-        3.4.1. le PNJ qui a une quête à offrir
-           3.4.1.1. Le joueur accepte la quête.
-           3.4.1.2. Le joueur interagit avec l'le PNJ pour recevoir les détails de la quête.
+    3.3. Le joueur interagit avec le PNJ
+	3.3.1 le joueur se trouve dans la zone de dialogue du PNJ
+	3.3.2 Le joueur appuie sur le bouton permettant l'interaction (à définir) 
+    3.4. Le système génére un dialogue suite auquel le joueur choisit entre les quêtes et magasin
+        3.4.1. si le joueur choisit "quetes"
+	   3.4.1.1 déclenchement du dialogue permettant au joueur de chosir d'accepeter ou de refuser la quete 	
+           3.4.1.1. Le joueur accepte la quête. (si refus, reponse du pnj et fin du dialogue)
+
+           3.4.1.2. Le joueur interagit avec le PNJ pour recevoir les détails de la quête.
            3.4.1.3. Le système ajoute la quête à la liste des quêtes actives du joueur.
            3.4.1.4. Le joueur accomplit les objectifs de la quête dans le monde du jeu.
-           3.4.1.5. Une fois tous les objectifs accomplis, le joueur retourne voir l'le PNJ pour compléter la quête.
-           3.4.1.6. Le système vérifie si tous les objectifs de la quête ont été accomplis.
-           3.4.1.7. Si oui, la quête est marquée comme terminée et le joueur reçoit une récompense
+           3.4.1.5. Une fois tous les objectifs accomplis, le joueur retourne voir le PNJ pour compléter la quête.   
+           3.4.1.6. Le système vérifie si tous les objectifs de la quête ont été accomplis. 
+           3.4.1.7. Si oui, la quête est marquée comme terminée et le joueur reçoit une récompense. (si quete non accomplie, dialogue du pnj pour prevenir le joueur si interaction dans ce contexte)
+	   3.4.1.8. Ajout de l'objet (recompense de la quete) dans l'inventaire.
+
         3.4.2. le PNJ pour ouvrir le menu de la boutique
+
             3.4.2.1. Le joueur parcourt les objets disponibles à l'achat.
-            3.4.2.2. Le joueur sélectionne un objet "Equipable" ou "Consommable" à acheter.
+            3.4.2.2. Le joueur sélectionne un objet à acheter.
             3.4.2.3. Le système vérifie si le joueur a suffisamment de ressources pour acheter l'objet.
-            3.4.2.4. Si oui, l'objet est ajouté à l'inventaire du joueur.
-            3.4.2.5. Le joueur peut alors choisir d'équiper ou de consommer l'objet à partir de son inventaire.
+            3.4.2.4. Si oui, l'objet est ajouté à l'inventaire du joueur. (si non, message d'erreur et pas d'objet ajouter à l'inventaire)
     3.5 Le joueur ouvre son inventaire.  (Touche prédéfinie sur 'I' pour ouvrir l'inventaire)
         3.5.1. Le joueur sélectionne un objet consommable de l'inventaire. (Liste d'objets visible dans son inventaire (Interface))
             3.5.1.1. Le joueur choisit l'option "Utiliser" pour l'objet consommable. (Touche prédéfinie sur '4' pour utiliser un item soin dans l'inventaire. Si il n'y a pas d'item dispo : Rien ne se passe)
