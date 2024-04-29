@@ -1,35 +1,29 @@
-1. Le joueur lance l'application
-
+1. Le joueur lance l'application (.exe?)
 2. Le joueur arrive sur Menu (3 choix: Commencer la partie, continuer une partie precedente ou quitter le jeu)
     2.1 Le joueur choisit de commencer la partie (un image prédefinie pour en attendant le chargement. La "prologue" commence)
-    2.2 Le joueur choisit de charger une partie
+    2.2 Le joueur choisit de charger une partie précedante
         2.2.1. Le système affiche une liste des sauvegardes disponibles. (Dates à coté des sauvegardes)
         2.2.2. Le joueur sélectionne une sauvegarde à charger.
-        2.2.3. Le système charge l'état du jeu à partir de la sauvegarde, y compris l'emplacement du joueur dans le monde, l'état de l'inventaire, l'état des quêtes, etc.(le jeu se lance dans le camp)
-
+        2.2.3. Le système charge l'état du jeu à partir de la sauvegarde, y compris l'emplacement du joueur dans le monde, l'état de l'inventaire, l'état des quêtes, etc.(le jeu se lance ou le joueur était)
         2.2.4. Le joueur continue à jouer à partir de l'état chargé.
-
 3. Le joueur arrive dans le jeu avec son personnage et recoit la mission principale (Quelques dialogues pour entamer la prologue et pouvoir lui donner sa mission principale)
     3.1. La mission principale sera affiché en haut à droite tout au long de la partie(interface) 
         3.1.1. Si mission accomplie, jeu se termine avec un interface victoire pour quitter le jeu (2 choix: Quitter le jeu ou recommencer une partie de zéro)
-
-    3.2. Le joueur rencontre une entité le PNJ 
+    3.2. Le joueur rencontre une entité le PNJ (2 choix: soit intéragir soit il n'intéragit pas)
     3.3. Le joueur interagit avec le PNJ
-	3.3.1 le joueur se trouve dans la zone de dialogue du PNJ
-	3.3.2 Le joueur appuie sur le bouton permettant l'interaction (à définir) 
+	    3.3.1 le joueur se trouve dans la zone de dialogue du PNJ
+	    3.3.2 Le joueur appuie sur le bouton permettant l'interaction (à définir)
     3.4. Le système génére un dialogue suite auquel le joueur choisit entre les quêtes et magasin ou partir (dans le cas de partir, le dialogue se ferme et le joueur poursuit l'aventure)
-
         3.4.1. si le joueur choisit "quetes"
-	   3.4.1.1 déclenchement du dialogue permettant au joueur de chosir d'accepeter ou de refuser la quete 	
-           3.4.1.1. Le joueur accepte la quête. (si refus, reponse du pnj et fin du dialogue)
-           3.4.1.2. Le joueur interagit avec le PNJ pour recevoir les détails de la quête.
-           3.4.1.3. Le système ajoute la quête à la liste des quêtes actives du joueur.
-           3.4.1.4. Le joueur accomplit les objectifs de la quête dans le monde du jeu.
-           3.4.1.5. Une fois tous les objectifs accomplis, le joueur retourne voir le PNJ pour compléter la quête.   
-           3.4.1.6. Le système vérifie si tous les objectifs de la quête ont été accomplis. 
-           3.4.1.7. Si oui, la quête est marquée comme terminée et le joueur reçoit une récompense. (si quete non accomplie, dialogue du pnj pour prevenir le joueur si interaction dans ce contexte)  
-	   3.4.1.8. Ajout de l'objet (recompense de la quete) dans l'inventaire.
-
+	        3.4.1.1 déclenchement du dialogue permettant au joueur de chosir d'accepeter ou de refuser la quete 	
+                3.4.1.1. Le joueur accepte la quête. (si refus, reponse du pnj et fin du dialogue)
+                3.4.1.2. Le joueur interagit avec le PNJ pour recevoir les détails de la quête.
+                3.4.1.3. Le système ajoute la quête à la liste des quêtes actives du joueur. (appuyer sur la touche "j" pour voir toutes les quêtes)
+                3.4.1.4. Le joueur accomplit les objectifs de la quête dans le monde du jeu.
+                3.4.1.5. Une fois tous les objectifs accomplis, le joueur retourne voir le PNJ pour compléter la quête.   
+                3.4.1.6. Le système vérifie si tous les objectifs de la quête ont été accomplis. 
+                3.4.1.7. Si oui, la quête est marquée comme terminée et le joueur reçoit une récompense. (si quete non accomplie, dialogue du pnj pour prevenir le joueur si interaction dans ce contexte)  
+	            3.4.1.8. Ajout de l'objet (recompense de la quete) dans l'inventaire. (un message pour ajout d'un item dans l'inventaire)
         3.4.2. si le joueur choisit "magasin"(menu de magasin s'ouvre)
             3.4.2.1. Le joueur parcourt les objets disponibles à l'achat.
             3.4.2.2. Le joueur sélectionne un objet à acheter.
@@ -37,9 +31,9 @@
             3.4.2.4. Si oui, l'objet est ajouté à l'inventaire du joueur. (si non, message d'erreur et pas d'objet ajouter à l'inventaire)
     3.5 Le joueur ouvre son inventaire.  (Touche prédéfinie sur 'I' pour ouvrir l'inventaire)
         3.5.1. Le joueur sélectionne un objet consommable de l'inventaire. (Liste d'objets visible dans son inventaire (Interface))
-            3.5.1.1. Le joueur choisit l'option "Utiliser" pour l'objet consommable. (Touche prédéfinie sur '4' pour utiliser un item soin dans l'inventaire. Si il n'y a pas d'item dispo : Rien ne se passe)
+            3.5.1.1. Le joueur choisit l'option "Utiliser" pour l'objet consommable. (Touche prédéfinie sur '4' pour utiliser un item soin dans l'inventaire. Si il n'y a pas d'item dispo : Rien ne se passe "avec un message")
             3.5.1.2. Le système vérifie si l'objet peut être utilisé à ce moment. (Touche prédéfinie sur '4' pour utiliser un item soin dans l'inventaire. Si il n'y a pas d'item dispo : Rien ne se passe)
-            3.5.1.3. Si oui, l'effet de l'objet consommable est appliqué au joueur (par exemple : restauration de la santé, augmentation de la force, etc.).
+            3.5.1.3. Si oui, l'effet de l'objet consommable est appliqué au joueur (par exemple : restauration de la santé).
             3.5.1.4. L'objet consommable est retiré de l'inventaire du joueur. 
         3.5.2. Le joueur sélectionne un objet équipable de l'inventaire. (Touche prédéfinie sur 'I' pour ouvrir l'inventaire)
             3.5.2.1. Le joueur choisit l'option "Équiper" pour l'objet équipable. (Création d'une icone 'équiper' quand on 'clic droit' sur un item qui peut etre équipé)
@@ -47,7 +41,7 @@
             3.5.2.3. Si oui, l'objet est équipé par le joueur, augmentant ses statistiques ou lui donnant de nouvelles capacités.
             3.5.2.4. L'objet équipable reste dans l'inventaire du joueur, mais est maintenant marqué comme équipé. (Ajout d'une modification de l'interface qui montre que l'objet est équipé)
     3.6. Le joueur rencontre un ennemi (BOSS compris) (L'ennemi va attaquer le joueur automatiquement si le joueur rentre dans une zone d'aggro)
-        3.6.1.Le joueur engage le combat avec l'ennemi. ('Clic gauch' pour tirer avec son arme a feu équipé)
+        3.6.1.Le joueur engage le combat avec l'ennemi. ('Clic gauche' pour tirer avec son arme a feu équipé)
         3.6.2.Le système calcule les résultats de l'action (par exemple : dégâts infligés, effets de l'objet utilisé).
         3.6.3.L'ennemi réagit en fonction de son script d'IA (par exemple : attaque, utilise une capacité spéciale, ...).
         3.6.4.Le combat continue jusqu'à ce que le joueur ou l'ennemi soit vaincu, ou que le joueur réussisse à fuir. (Déterminer un moment ou l'ennemi n'a plus l'aggro) 
