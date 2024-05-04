@@ -4,6 +4,7 @@ import pytmx
 import pyscroll
 from player import Player
 from settings import *
+from sprites import *
 
 class Game:
     def __init__(self):
@@ -32,6 +33,10 @@ class Game:
         for obj in tmx_data.objects:
             if obj.type == "colliDeco":
                 self.collision.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+        #Font pour le texte: 
+        self.font = pygame.font.Font('freesansbold.ttf', 36)
+        self.intro_background = pygame.image.load("Application/background.png")
+        self.running = True # Variable GLOBALE pour contrôler l'exécution du jeu
 
     def update(self):
         # Mise à jour du groupe de calques
@@ -63,11 +68,39 @@ class Game:
                 # Si le tir est réussi, réinitialiser le délai de tir
                 self.player.shoot_cooldown = SHOOT_COOLDOWN
 
+    def intro_screen(self):
+    
+        intro = True
+        title = self.font.render("Projet OO", True, 'Black')
+        title_rect = title.get_rect(center=(WIDTH/2, HEIGHT/2))
+        play_button = Button(WIDTH/2 - 50, HEIGHT/2 - 250, 100, 50, (255, 255, 255), (0, 0, 0), "Play", 36)
+        exit_button = Button(WIDTH/2 - 50, HEIGHT/2 - 50, 100, 50, (255, 255, 255), (0, 0, 0), "Exit", 36)
+        while intro:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    intro = False
+                    self.running = False
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+            if play_button.is_pressed(mouse_pos, mouse_pressed):
+                intro = False
+            if exit_button.is_pressed(mouse_pos, mouse_pressed):
+                intro = False
+                self.running = False
+            self.screen.blit(self.intro_background, (0, 0))
+            self.screen.blit(title, title_rect)
+            self.screen.blit(play_button.image, play_button.rect)
+            self.screen.blit(exit_button.image, exit_button.rect)
+            
+            
+            pygame.display.update()
     def run(self):
         clock = pygame.time.Clock()
-        running = True
+        
+        # Affichage de l'écran d'introduction
+        self.intro_screen()
 
-        while running:
+        while self.running:
             # Enregistrement de la position précédente du joueur
             self.player.save_location()
             
@@ -92,7 +125,7 @@ class Game:
             # Gestion des événements du jeu
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    self.running = False
 
             clock.tick(FPS)
 
