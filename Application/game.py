@@ -36,7 +36,7 @@ class Game:
         #Font pour le texte: 
         self.font = pygame.font.Font('freesansbold.ttf', 36)
         self.intro_background = pygame.image.load("Application/background.png")
-        self.running = True
+        self.running = True # Variable GLOBALE pour contrôler l'exécution du jeu
 
     def update(self):
         # Mise à jour du groupe de calques
@@ -69,7 +69,7 @@ class Game:
                 self.player.shoot_cooldown = SHOOT_COOLDOWN
 
     def intro_screen(self):
-        clock = pygame.time.Clock()
+    
         intro = True
         title = self.font.render("Projet OO", True, 'Black')
         title_rect = title.get_rect(center=(WIDTH/2, HEIGHT/2))
@@ -92,7 +92,7 @@ class Game:
             self.screen.blit(play_button.image, play_button.rect)
             self.screen.blit(exit_button.image, exit_button.rect)
             
-            clock.tick(FPS)
+            
             pygame.display.update()
     def run(self):
         clock = pygame.time.Clock()
