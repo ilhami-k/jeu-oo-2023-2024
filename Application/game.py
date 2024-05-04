@@ -12,7 +12,7 @@ class Game:
         pygame.display.set_caption("Projet OO")  # Définir le titre de la fenêtre
 
         # Chargement des données de la carte à partir d'un fichier TMX
-        tmx_data = pytmx.util_pygame.load_pygame("map.tmx")
+        tmx_data = pytmx.util_pygame.load_pygame("Application/map.tmx")
         map_data = pyscroll.data.TiledMapData(tmx_data)
 
         # Création d'un rendu de carte avec mise en mémoire tampon pour des performances optimales
