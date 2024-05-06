@@ -28,6 +28,8 @@ class Game:
         self.player = Player(player_spawn.x, player_spawn.y, self.group)  # Passer la référence au groupe ici
         self.group.add(self.player)
 
+        self.all_bullets = pygame.sprite.Group() # Groupe pour les balles tirées par le joueur
+
         # Détection des collisions avec les objets de type "colliDeco" sur la carte
         self.collision = []
         for obj in tmx_data.objects:
@@ -50,7 +52,6 @@ class Game:
     def handle_input(self):
         # Gestion des entrées du joueur (mouvement et tir)
         pressed = pygame.key.get_pressed()
-        mouse_pressed = pygame.mouse.get_pressed()
 
         # Gestion du mouvement du joueur
         if pressed[pygame.K_z]:
@@ -63,9 +64,11 @@ class Game:
             self.player.move(PLAYER_SPEED, 0)
                 
         # Gestion du tir du joueur (avec le bouton gauche de la souris)
-        if mouse_pressed[0]:  # Bouton gauche de la souris
-            if self.player.shoot(pygame.mouse.get_pos()):
-                # Si le tir est réussi, réinitialiser le délai de tir
+        mouse_pressed = pygame.mouse.get_pressed()
+        if mouse_pressed[0]:  # Si le bouton gauche de la souris est enfoncé
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            if self.player.shoot_cooldown == 0:
+                self.player.shoot(mouse_x, mouse_y, self.all_bullets)
                 self.player.shoot_cooldown = SHOOT_COOLDOWN
 
     def intro_screen(self):
@@ -112,6 +115,9 @@ class Game:
             
             # Affichage des sprites et de la carte
             self.group.draw(self.screen)
+
+            # Affichage des balles tirées par le joueur
+            self.all_bullets.draw(self.screen)
             
             # Mise à jour des sprites et de la carte
             self.update()
@@ -121,6 +127,13 @@ class Game:
             
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
+
+            for bullet in self.all_bullets:
+                bullet.update()
+                if bullet.lifetime <= 0:
+                    self.all_bullets.remove(bullet)
+                else:
+                    bullet.lifetime -= 1
 
             # Gestion des événements du jeu
             for event in pygame.event.get():

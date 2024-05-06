@@ -11,7 +11,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.Surface((16, 16))
         self.image.fill((255, 0, 0))
         self.image.set_colorkey((0, 0, 0))  # Rendre le fond transparent
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect(center=(x, y))  # Crée le rectangle de collision centré sur les coordonnées du joueur
         
         # Position initiale du joueur
         self.position = [x, y]
@@ -20,9 +20,6 @@ class Player(pygame.sprite.Sprite):
         
         # Délai de rechargement entre chaque tir
         self.shoot_cooldown = 0
-        
-        # Groupe de tous les sprites, nécessaire pour ajouter des balles
-        self.all_sprites = all_sprites
 
     def save_location(self):
         """Sauvegarde la position actuelle du joueur."""
@@ -43,22 +40,22 @@ class Player(pygame.sprite.Sprite):
         self.position[0] += x
         self.position[1] += y
 
+        # Mettre à jour les coordonnées du carré rouge
+        self.rect.x = int(self.position[0])
+        self.rect.y = int(self.position[1]) 
+
     def update(self):
         """Mettre à jour la position du joueur."""
         self.rect.topleft = self.position
 
-    def shoot(self, target_pos):
+    def shoot(self, target_x, target_y, bullet_group):
         """Tirer une balle vers la position cible."""
-        if self.shoot_cooldown <= 0:
-            # Création d'une balle et ajout au groupe de tous les sprites
-            bullet = Bullet(self.rect.center, target_pos)
-            self.all_sprites.add(bullet)
-            # Réinitialisation du délai de rechargement
-            self.shoot_cooldown = SHOOT_COOLDOWN
-            return True  # Indiquer que le tir a été effectué avec succès
-        return False  # Indiquer que le tir n'a pas été effectué
+        angle = math.atan2(target_y - self.position[1], target_x - self.position[0])
+        # Utilise les coordonnées du centre du joueur comme position initiale pour les balles
+        bullet_group.add(Bullet(self.rect.centerx, self.rect.centery, angle))
 
     def cooldown_tick(self):
         """Réduire le délai de rechargement."""
         if self.shoot_cooldown > 0:
             self.shoot_cooldown -= 1
+ 
