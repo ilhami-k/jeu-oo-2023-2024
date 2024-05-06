@@ -116,6 +116,9 @@ class Game:
             # Affichage des sprites et de la carte
             self.group.draw(self.screen)
 
+            # Affichage du rectangle de collision du joueur
+            self.player.draw_collision_rect(self.screen)
+
             # Affichage des balles tirées par le joueur
             self.all_bullets.draw(self.screen)
             

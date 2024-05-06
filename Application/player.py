@@ -21,6 +21,9 @@ class Player(pygame.sprite.Sprite):
         # Délai de rechargement entre chaque tir
         self.shoot_cooldown = 0
 
+        # Couleur du rectangle de collision
+        self.rect_color = (0, 255, 0)  # Vert par exemple
+
     def save_location(self):
         """Sauvegarde la position actuelle du joueur."""
         self.old_position = self.position.copy()
@@ -58,4 +61,8 @@ class Player(pygame.sprite.Sprite):
         """Réduire le délai de rechargement."""
         if self.shoot_cooldown > 0:
             self.shoot_cooldown -= 1
+
+    def draw_collision_rect(self, surface):
+        """Dessine le rectangle de collision sur la surface donnée."""
+        pygame.draw.rect(surface, self.rect_color, self.rect, 2)  # Dessine le rectangle avec une couleur et une épaisseur de ligne de 2 pixels
  
