@@ -35,6 +35,7 @@ class Game:
         for obj in tmx_data.objects:
             if obj.type == "colliDeco":
                 self.collision.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+
         #Font pour le texte: 
         self.font = pygame.font.Font('freesansbold.ttf', 36)
         self.intro_background = pygame.image.load("Application/background.png")
@@ -113,6 +114,9 @@ class Game:
             # Réduction du délai de tir du joueur
             self.player.cooldown_tick()
             
+            # Mise à jour des sprites et de la carte
+            self.update()
+            
             # Affichage des sprites et de la carte
             self.group.draw(self.screen)
 
@@ -122,14 +126,12 @@ class Game:
             # Affichage des balles tirées par le joueur
             self.all_bullets.draw(self.screen)
             
-            # Mise à jour des sprites et de la carte
-            self.update()
-            
             # Centrage de la caméra sur le joueur
             self.group.center(self.player.rect.center)
-            
+    
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
+
 
             for bullet in self.all_bullets:
                 bullet.update()

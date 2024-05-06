@@ -5,7 +5,6 @@ from settings import *
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, angle):  # Modifier la signature de la méthode __init__
         super().__init__()
-        
         self.position = [x, y]  # Convertir en liste
         self.angle = angle
         self.speed = BULLET_SPEED
@@ -20,7 +19,7 @@ class Bullet(pygame.sprite.Sprite):
         self.position[1] += math.sin(self.angle) * self.speed
         self.rect.center = self.position  # Mettre à jour la position du rect
 
-
+    #  Ajouter une méthode pour vérifier les collisions avec monstres ou autres (A TERMINER)
     def check_collision(self, x, y):
         distance = math.sqrt((self.x - x) ** 2 + (self.y - y) ** 2)
         return distance < 10

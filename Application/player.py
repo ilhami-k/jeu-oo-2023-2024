@@ -8,11 +8,11 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         
         # Création de l'image du joueur (un carré rouge)
-        self.image = pygame.Surface((16, 16))
-        self.image.fill((255, 0, 0))
-        self.image.set_colorkey((0, 0, 0))  # Rendre le fond transparent
-        self.rect = self.image.get_rect(center=(x, y))  # Crée le rectangle de collision centré sur les coordonnées du joueur
-        
+        self.sprite_sheet = pygame.image.load("Application/Player.png")
+        self.image = self.get_image(48, 0)
+        self.image.set_colorkey((0, 0, 0))  # Définir la couleur de transparence
+        self.rect = self.image.get_rect()
+
         # Position initiale du joueur
         self.position = [x, y]
         self.old_position = self.position.copy()  # Pour sauvegarder la position précédente
@@ -23,6 +23,12 @@ class Player(pygame.sprite.Sprite):
 
         # Couleur du rectangle de collision
         self.rect_color = (0, 255, 0)  # Vert par exemple
+
+    # Création de la méthode get_image pour obtenir une image à partir de la feuille de sprites
+    def get_image(self, x, y):
+        image = pygame.Surface((16, 32))
+        image.blit(self.sprite_sheet, (0, 0), (x, y, 16, 32))
+        return image
 
     def save_location(self):
         """Sauvegarde la position actuelle du joueur."""
@@ -46,7 +52,7 @@ class Player(pygame.sprite.Sprite):
         # Mettre à jour les coordonnées du carré rouge
         self.rect.x = int(self.position[0])
         self.rect.y = int(self.position[1]) 
-
+    
     def update(self):
         """Mettre à jour la position du joueur."""
         self.rect.topleft = self.position
@@ -65,4 +71,3 @@ class Player(pygame.sprite.Sprite):
     def draw_collision_rect(self, surface):
         """Dessine le rectangle de collision sur la surface donnée."""
         pygame.draw.rect(surface, self.rect_color, self.rect, 2)  # Dessine le rectangle avec une couleur et une épaisseur de ligne de 2 pixels
- 
