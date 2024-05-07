@@ -2,9 +2,13 @@
 WIDTH = 1080
 HEIGHT = 720
 FPS = 120
+TITRE = 'Projet OO'
 
 # Player settings
 PLAYER_SPEED = 1
+
+# Enemy settings
+ENEMY_SPEED = 1
 
 # Bullet settings
 BULLET_SPEED = 10

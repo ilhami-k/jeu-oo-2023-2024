@@ -3,6 +3,7 @@ import pygame.transform
 import pytmx
 import pyscroll
 from player import Player
+from player import Enemy
 from settings import *
 from sprites import *
 
@@ -10,7 +11,7 @@ class Game:
     def __init__(self):
         # Initialisation de la fenêtre de jeu
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        pygame.display.set_caption("Projet OO")  # Définir le titre de la fenêtre
+        pygame.display.set_caption(TITRE)  # Définir le titre de la fenêtre
 
         # Chargement des données de la carte à partir d'un fichier TMX
         tmx_data = pytmx.util_pygame.load_pygame("Application/map.tmx")
@@ -27,6 +28,11 @@ class Game:
         player_spawn = tmx_data.get_object_by_name("spawn_player")
         self.player = Player(player_spawn.x, player_spawn.y, self.group)  # Passer la référence au groupe ici
         self.group.add(self.player)
+
+        # Création de l'ennemi1 et ajout au groupe de calques
+        enemy1_spawn = tmx_data.get_object_by_name("spawn_enemy1")
+        self.enemy1 = Enemy(enemy1_spawn.x, enemy1_spawn.y, self.group)  # Passer la référence au groupe ici
+        self.group.add(self.enemy1)
 
         self.all_bullets = pygame.sprite.Group() # Groupe pour les balles tirées par le joueur
 
@@ -49,6 +55,26 @@ class Game:
         for collision_rect in self.collision:
             if self.player.rect.colliderect(collision_rect):
                 self.player.move_back()
+
+            # Vérification des collisions entre l'ennemi et les objets de collision
+            if self.enemy1.rect.colliderect(collision_rect):
+                self.enemy1.move_back()
+
+        # Vérification des collisions entre les balles et l'ennemi
+        for bullet in self.all_bullets:
+            if bullet.rect.colliderect(self.enemy1.rect):
+                self.all_bullets.remove(bullet)
+                # Ajoutez ici le code pour gérer ce qui se passe lorsque l'ennemi est touché par une balle
+
+        # Mise à jour des balles tirées par le joueur
+        for bullet in self.all_bullets:
+            bullet.update()
+            if bullet.lifetime <= 0:
+                self.all_bullets.remove(bullet)
+            else:
+                bullet.lifetime -= 1
+
+        #  AJOUTER LA GESTION DES COLLISIONS DES BULLETS AVEC LES MONSTRES OU AUTRES ICI
 
     def handle_input(self): 
         pressed = pygame.key.get_pressed() # Gestion des entrées du joueur (mouvement et tir) 
@@ -126,14 +152,6 @@ class Game:
     
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
-
-            # Mise à jour des balles tirées par le joueur
-            for bullet in self.all_bullets:
-                bullet.update()
-                if bullet.lifetime <= 0:
-                    self.all_bullets.remove(bullet)
-                else:
-                    bullet.lifetime -= 1
 
             # Gestion des événements du jeu
             for event in pygame.event.get():
