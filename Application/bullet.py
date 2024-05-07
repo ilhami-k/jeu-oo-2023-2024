@@ -13,7 +13,6 @@ class Bullet(pygame.sprite.Sprite):
         self.image.fill((255, 255, 255))  # Couleur de la balle (blanc)
         self.rect = self.image.get_rect(center=self.position)  # Créer un rect à partir de l'image
 
-
     def update(self):
         self.position[0] += math.cos(self.angle) * self.speed
         self.position[1] += math.sin(self.angle) * self.speed

@@ -15,13 +15,11 @@ class Player(pygame.sprite.Sprite):
         self.image = self.get_image(48, 0)
         self.image.set_colorkey((0, 0, 0))  # Définir la couleur de transparence
         self.rect = self.image.get_rect()
-
         self.old_position = self.position.copy()  # Pour sauvegarder la position précédente
         self.speed = PLAYER_SPEED  # Vitesse de déplacement du joueur
+        self.shoot_cooldown = 0 # Délai de rechargement entre chaque tir
+        self.all_sprites = all_sprites  # Référence au groupe de tous les sprites
         
-        # Délai de rechargement entre chaque tir
-        self.shoot_cooldown = 0
-
     # Création de la méthode get_image pour obtenir une image à partir de la feuille de sprites
     def get_image(self, x, y):
         image = pygame.Surface((16, 32))
@@ -32,7 +30,7 @@ class Player(pygame.sprite.Sprite):
         """Sauvegarde la position actuelle du joueur."""
         self.old_position = self.position.copy()
 
-    def move_back(self):
+    def move_back(self): 
         """Revenir à la position précédente en cas de collision."""
         self.position = self.old_position.copy()
         self.rect.topleft = self.position
@@ -46,10 +44,6 @@ class Player(pygame.sprite.Sprite):
 
         self.position[0] += x
         self.position[1] += y
-
-        # Mettre à jour les coordonnées du carré rouge
-        self.rect.x = int(self.position[0])
-        self.rect.y = int(self.position[1]) 
     
     def update(self):
         """Mettre à jour la position du joueur."""
@@ -68,6 +62,3 @@ class Player(pygame.sprite.Sprite):
         """Réduire le délai de rechargement."""
         if self.shoot_cooldown > 0:
             self.shoot_cooldown -= 1
-
-    def get_center(self):
-        return self.x + self.width / 2, self.y + self.height / 2

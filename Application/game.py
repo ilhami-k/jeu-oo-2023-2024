@@ -50,9 +50,9 @@ class Game:
             if self.player.rect.colliderect(collision_rect):
                 self.player.move_back()
 
-    def handle_input(self):
-        # Gestion des entrées du joueur (mouvement et tir)
-        pressed = pygame.key.get_pressed()
+    def handle_input(self): 
+        pressed = pygame.key.get_pressed() # Gestion des entrées du joueur (mouvement et tir) 
+        mouse_pressed = pygame.mouse.get_pressed() # Gestion du tir du joueur (avec le bouton gauche de la souris)
 
         # Gestion du mouvement du joueur
         if pressed[pygame.K_z]:
@@ -63,9 +63,8 @@ class Game:
             self.player.move(-PLAYER_SPEED, 0)
         if pressed[pygame.K_d]:
             self.player.move(PLAYER_SPEED, 0)
-                
-        # Gestion du tir du joueur (avec le bouton gauche de la souris)
-        mouse_pressed = pygame.mouse.get_pressed()
+
+        # Gestion du tir du joueur
         if mouse_pressed[0]:  # Si le bouton gauche de la souris est enfoncé
             mouse_x, mouse_y = pygame.mouse.get_pos()
             if self.player.shoot_cooldown == 0:
@@ -73,7 +72,6 @@ class Game:
                 self.player.shoot_cooldown = SHOOT_COOLDOWN
 
     def intro_screen(self):
-    
         intro = True
         title = self.font.render("Projet OO", True, 'Black')
         title_rect = title.get_rect(center=(WIDTH/2, HEIGHT/2))
@@ -129,7 +127,7 @@ class Game:
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
 
-
+            # Mise à jour des balles tirées par le joueur
             for bullet in self.all_bullets:
                 bullet.update()
                 if bullet.lifetime <= 0:
