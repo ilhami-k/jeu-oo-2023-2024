@@ -148,8 +148,9 @@ class Game:
         clock = pygame.time.Clock()
         # Affichage de l'écran d'introduction
         self.intro_screen()
+        
         while self.running:
-            
+            self.player.save_location()
             # Gestion des entrées du joueur et des événements de jeu
             self.handle_input()
             

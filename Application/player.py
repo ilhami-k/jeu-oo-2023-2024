@@ -33,7 +33,6 @@ class Player(pygame.sprite.Sprite):
         """Revenir à la position précédente en cas de collision."""
         self.position = self.old_position.copy()
         self.rect.topleft = self.position
-
     def move(self, x, y):
         """Déplacer le joueur."""
         # Si le joueur se déplace en diagonale, ajuster la vitesse
