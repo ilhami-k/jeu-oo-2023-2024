@@ -2,6 +2,7 @@ import pygame
 import math
 from settings import *
 from bullet import Bullet
+from game import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y, all_sprites):
@@ -32,7 +33,6 @@ class Player(pygame.sprite.Sprite):
         """Revenir à la position précédente en cas de collision."""
         self.position = self.old_position.copy()
         self.rect.topleft = self.position
-
     def move(self, x, y):
         """Déplacer le joueur."""
         # Si le joueur se déplace en diagonale, ajuster la vitesse
