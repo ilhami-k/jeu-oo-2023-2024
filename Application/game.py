@@ -19,7 +19,7 @@ class Game:
 
         # Création d'un rendu de carte avec mise en mémoire tampon pour des performances optimales
         self.map_layer = pyscroll.orthographic.BufferedRenderer(map_data, self.screen.get_size())
-        self.map_layer.zoom = 2  # Zoom sur la carte
+        self.map_layer.zoom = ZOOM  # Zoom sur la carte
 
         # Création d'un groupe de calques pour les sprites
         self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer, default_layer=1)
@@ -29,7 +29,7 @@ class Game:
         self.player = Player(player_spawn.x, player_spawn.y, self.group)  # Passer la référence au groupe ici
         self.group.add(self.player)
 
-        # Création de l'ennemi1 et ajout au groupe de calques
+        # # Création de l'ennemi1 et ajout au groupe de calques
         enemy1_spawn = tmx_data.get_object_by_name("spawn_enemy1")
         self.enemy1 = Enemy(enemy1_spawn.x, enemy1_spawn.y, self.group)  # Passer la référence au groupe ici
         self.group.add(self.enemy1)
@@ -72,8 +72,6 @@ class Game:
                 self.all_bullets.remove(bullet)
             else:
                 bullet.lifetime -= 1
-
-        #  AJOUTER LA GESTION DES COLLISIONS DES BULLETS AVEC LES MONSTRES OU AUTRES ICI
 
     def handle_input(self): 
         pressed = pygame.key.get_pressed() # Gestion des entrées du joueur (mouvement et tir) 

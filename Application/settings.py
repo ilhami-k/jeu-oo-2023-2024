@@ -1,8 +1,9 @@
 # Game setup
-WIDTH = 1080
-HEIGHT = 720
+WIDTH = 1600
+HEIGHT = 1600
 FPS = 120
 TITRE = 'Projet OO'
+ZOOM = 1
 
 # Player settings
 PLAYER_SPEED = 1
@@ -13,7 +14,7 @@ ENEMY_SPEED = 1
 ENEMY_HEALTH = 3
 
 # Bullet settings
-BULLET_SPEED = 20
-SHOOT_COOLDOWN = 2 # Temps en millisecondes entre chaque tir
-BULLET_LIFETIME = 25 # Durée de vie d'une balle en millisecondes
+BULLET_SPEED = 2
+SHOOT_COOLDOWN = 100 # Temps entre chaque tir 
+BULLET_LIFETIME = 200 # Durée de vie d'une balle
 BULLET_SCALE = 8

@@ -14,6 +14,7 @@ class Entite(pygame.sprite.Sprite):
         self.image = self.get_image(48, 0)
         self.image.set_colorkey((0, 0, 0))  
         self.rect = self.image.get_rect()
+
         self.health = PLAYER_HEALTH
 
     def get_image(self, x, y):
@@ -27,6 +28,7 @@ class Entite(pygame.sprite.Sprite):
     def move_back(self): 
         self.position = self.old_position.copy()
         self.rect.topleft = self.position
+        
     def move(self, x, y):
         if x != 0 and y != 0:
             x *= math.sqrt(2) / 2
@@ -40,6 +42,9 @@ class Entite(pygame.sprite.Sprite):
             self.kill()  # Supprimer l'ennemi du groupe
 
     def update(self):
+        print(self.rect)
+        print("------------")
+        print(self.position)
         self.rect.topleft = self.position
 
 class Player(Entite):
