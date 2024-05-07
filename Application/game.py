@@ -195,6 +195,9 @@ class Game:
             
             # Centrage de la caméra sur le joueur
             self.group.center(self.player.rect.center)
+
+            pygame.draw.rect(self.screen, (255, 0, 0), self.player.rect, 2)
+            pygame.draw.rect(self.screen, (0, 255, 0), self.enemy1.rect, 2)
     
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
