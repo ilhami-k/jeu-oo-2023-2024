@@ -3,29 +3,22 @@ import math
 from settings import *
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, start_pos, target_pos):
+    def __init__(self, x, y, angle):  # Modifier la signature de la méthode __init__
         super().__init__()
-        
-        # Création de la surface de la balle
-        self.image = pygame.Surface((4, 4))
-        self.image.fill((255, 255, 255))  # Couleur blanche
-        self.rect = self.image.get_rect()
-        self.rect.center = start_pos  # Position de départ de la balle
-
-        # Calcul du vecteur de direction du projectile
-        dx = target_pos[0] - start_pos[0]
-        dy = target_pos[1] - start_pos[1]
-        distance = math.sqrt(dx ** 2 + dy ** 2)
-        
-        # Éviter la division par zéro et normaliser le vecteur de direction
-        if distance != 0:
-            self.dx = dx / distance * BULLET_SPEED
-            self.dy = dy / distance * BULLET_SPEED
-        else:
-            self.dx = 0
-            self.dy = 0
+        self.position = [x, y]  # Convertir en liste
+        self.angle = angle
+        self.speed = BULLET_SPEED
+        self.lifetime = BULLET_LIFETIME
+        self.image = pygame.Surface((BULLET_SCALE, BULLET_SCALE))
+        self.image.fill((255, 255, 255))  # Couleur de la balle (blanc)
+        self.rect = self.image.get_rect(center=self.position)  # Créer un rect à partir de l'image
 
     def update(self):
-        # Déplacement de la balle en fonction du vecteur de direction
-        self.rect.x += self.dx
-        self.rect.y += self.dy
+        self.position[0] += math.cos(self.angle) * self.speed
+        self.position[1] += math.sin(self.angle) * self.speed
+        self.rect.center = self.position  # Mettre à jour la position du rect
+
+    #  Ajouter une méthode pour vérifier les collisions avec monstres ou autres (A TERMINER)
+    def check_collision(self, x, y):
+        distance = math.sqrt((self.x - x) ** 2 + (self.y - y) ** 2)
+        return distance < 10
