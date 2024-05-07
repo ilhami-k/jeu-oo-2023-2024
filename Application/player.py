@@ -2,6 +2,7 @@ import pygame
 import math
 from settings import *
 from bullet import Bullet
+from game import *
 
 class Entite(pygame.sprite.Sprite):
     def __init__(self, x, y, all_sprites, image_path):
@@ -26,7 +27,6 @@ class Entite(pygame.sprite.Sprite):
     def move_back(self): 
         self.position = self.old_position.copy()
         self.rect.topleft = self.position
-
     def move(self, x, y):
         if x != 0 and y != 0:
             x *= math.sqrt(2) / 2
