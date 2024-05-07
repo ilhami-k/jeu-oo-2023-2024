@@ -49,10 +49,8 @@ class Player(Entite):
         self.shoot_cooldown = 0 
 
     def shoot(self, target_x, target_y, bullet_group):
-        window_center_x = WIDTH // 2
-        window_center_y = HEIGHT // 2
-        angle = math.atan2(target_y - window_center_y, target_x - window_center_x)
-        bullet_group.add(Bullet(window_center_x, window_center_y, angle))
+        angle = math.atan2(target_y - self.position[1], target_x - self.position[0])
+        bullet_group.add(Bullet(self.position[0], self.position[1], angle))
 
     def cooldown_tick(self):
         if self.shoot_cooldown > 0:
