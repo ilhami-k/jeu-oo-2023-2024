@@ -2,6 +2,7 @@ import pygame
 import math
 from settings import *
 from bullet import Bullet
+from game import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y, all_sprites):
