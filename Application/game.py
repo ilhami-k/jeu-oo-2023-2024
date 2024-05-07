@@ -119,7 +119,6 @@ class Game:
                     self.player.position = player_position
                     self.player.rect.x, self.player.rect.y = player_position
 
-
             if play_button.is_pressed(mouse_pos, mouse_pressed):
                 intro = False
             if exit_button.is_pressed(mouse_pos, mouse_pressed):
@@ -133,6 +132,7 @@ class Game:
             self.screen.blit(exit_button.image, exit_button.rect)
             
             pygame.display.update()
+
     def menu_screen(self):
         menu = True
         title = self.font.render("Menu", True, 'Black')
@@ -196,6 +196,7 @@ class Game:
             # Centrage de la caméra sur le joueur
             self.group.center(self.player.rect.center)
 
+            # Affichage des rectangles de collision des sprites
             pygame.draw.rect(self.screen, (255, 0, 0), self.player.rect, 2)
             pygame.draw.rect(self.screen, (0, 255, 0), self.enemy1.rect, 2)
     
@@ -212,9 +213,9 @@ class Game:
 
             clock.tick(FPS)
         
-
         # Fermeture de la fenêtre pygame
         pygame.quit()
+
 class SaveSystem:
     def __init__(self, file_extension, save_folder):
         self.file_extension = file_extension
