@@ -7,22 +7,20 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, x, y, all_sprites):
         super().__init__()
         
-        # Création de l'image du joueur (un carré rouge)
+        # Position initiale du joueur
+        self.position = [x, y]
+        # Création de la feuille de sprites du joueur
         self.sprite_sheet = pygame.image.load("Application/Player.png")
+        # Création des images pour les différentes directions du joueur
         self.image = self.get_image(48, 0)
         self.image.set_colorkey((0, 0, 0))  # Définir la couleur de transparence
         self.rect = self.image.get_rect()
 
-        # Position initiale du joueur
-        self.position = [x, y]
         self.old_position = self.position.copy()  # Pour sauvegarder la position précédente
         self.speed = PLAYER_SPEED  # Vitesse de déplacement du joueur
         
         # Délai de rechargement entre chaque tir
         self.shoot_cooldown = 0
-
-        # Couleur du rectangle de collision
-        self.rect_color = (0, 255, 0)  # Vert par exemple
 
     # Création de la méthode get_image pour obtenir une image à partir de la feuille de sprites
     def get_image(self, x, y):
@@ -59,15 +57,17 @@ class Player(pygame.sprite.Sprite):
 
     def shoot(self, target_x, target_y, bullet_group):
         """Tirer une balle vers la position cible."""
-        angle = math.atan2(target_y - self.position[1], target_x - self.position[0])
-        # Utilise les coordonnées du centre du joueur comme position initiale pour les balles
-        bullet_group.add(Bullet(self.rect.centerx, self.rect.centery, angle))
+        # ATTENTION LES TIRS PARTENT DU CENTRE DE LA FENETRE ET PAS DU JOUEUR (Debogage sur le centre du player à faire si possible par la suite)
+        window_center_x = WIDTH // 2
+        window_center_y = HEIGHT // 2
+        angle = math.atan2(target_y - window_center_y, target_x - window_center_x)
+        # Utilise les coordonnées du centre de la fenêtre de jeu comme position initiale pour les balles
+        bullet_group.add(Bullet(window_center_x, window_center_y, angle))
 
     def cooldown_tick(self):
         """Réduire le délai de rechargement."""
         if self.shoot_cooldown > 0:
             self.shoot_cooldown -= 1
 
-    def draw_collision_rect(self, surface):
-        """Dessine le rectangle de collision sur la surface donnée."""
-        pygame.draw.rect(surface, self.rect_color, self.rect, 2)  # Dessine le rectangle avec une couleur et une épaisseur de ligne de 2 pixels
+    def get_center(self):
+        return self.x + self.width / 2, self.y + self.height / 2
