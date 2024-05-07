@@ -47,7 +47,7 @@ class Game:
         self.intro_background = pygame.image.load("Application/background.png")
         self.running = True # Variable GLOBALE pour contrôler l'exécution du jeu
 
-    def update(self):
+    def update(self): 
         # Mise à jour du groupe de calques
         self.group.update()
 
@@ -55,7 +55,6 @@ class Game:
         for collision_rect in self.collision:
             if self.player.rect.colliderect(collision_rect):
                 self.player.move_back()
-
             # Vérification des collisions entre l'ennemi et les objets de collision
             if self.enemy1.rect.colliderect(collision_rect):
                 self.enemy1.move_back()
@@ -64,8 +63,8 @@ class Game:
         for bullet in self.all_bullets:
             if bullet.rect.colliderect(self.enemy1.rect):
                 self.all_bullets.remove(bullet)
-                # Ajoutez ici le code pour gérer ce qui se passe lorsque l'ennemi est touché par une balle
-
+                self.enemy1.take_damage()
+    
         # Mise à jour des balles tirées par le joueur
         for bullet in self.all_bullets:
             bullet.update()

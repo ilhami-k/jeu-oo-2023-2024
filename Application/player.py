@@ -13,6 +13,7 @@ class Entite(pygame.sprite.Sprite):
         self.image = self.get_image(48, 0)
         self.image.set_colorkey((0, 0, 0))  
         self.rect = self.image.get_rect()
+        self.health = PLAYER_HEALTH
 
     def get_image(self, x, y):
         image = pygame.Surface((16, 32))
@@ -32,6 +33,11 @@ class Entite(pygame.sprite.Sprite):
             y *= math.sqrt(2) / 2
         self.position[0] += x
         self.position[1] += y
+
+    def take_damage(self):
+        self.health -= 1
+        if self.health <= 0:
+            self.kill()  # Supprimer l'ennemi du groupe
 
     def update(self):
         self.rect.topleft = self.position
@@ -57,6 +63,7 @@ class Enemy(Entite):
         super().__init__(x, y, all_sprites, "Application/Enemy1.png")
         # self.image = self.get_image(0, 0)  # Ajustez les paramètres ici si nécessaire
         self.speed = ENEMY_SPEED
+        self.health = ENEMY_HEALTH
 
     # Ajoutez ici les autres méthodes spécifiques à la classe Enemy
 
