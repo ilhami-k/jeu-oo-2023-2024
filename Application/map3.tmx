@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="34">
  <tileset firstgid="1" source="Modern_Exteriors_Complete_Tileset.tsx"/>
  <layer id="1" name="Calque de Tuiles 1" width="50" height="50">
   <data encoding="csv">
@@ -217,4 +217,43 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,48097,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="5" name="objects">
+  <object id="1" type="collision" x="0.666667" y="388" width="254" height="10"/>
+  <object id="2" type="collision" x="289.333" y="388.667" width="249.333" height="10"/>
+  <object id="3" type="collision" x="528.667" y="400" width="10.6667" height="401.333"/>
+  <object id="4" type="collision" x="112.5" y="477.5" width="78.5" height="81.5"/>
+  <object id="5" type="collision" x="179.5" y="564.5" width="8" height="9"/>
+  <object id="6" type="collision" x="63" y="496" width="17" height="58"/>
+  <object id="7" type="collision" x="16" y="518" width="15.5" height="37"/>
+  <object id="8" type="collision" x="32" y="599" width="16" height="39"/>
+  <object id="9" type="collision" x="63.5" y="599.5" width="16" height="39"/>
+  <object id="10" type="collision" x="208" y="599.5" width="16" height="39"/>
+  <object id="11" type="collision" x="239.5" y="599" width="16" height="39"/>
+  <object id="12" type="collision" x="272" y="600" width="16" height="39"/>
+  <object id="13" type="collision" x="367.5" y="601.5" width="16" height="39"/>
+  <object id="14" type="collision" x="399.5" y="601" width="16" height="39"/>
+  <object id="15" type="collision" x="432" y="602" width="16" height="39"/>
+  <object id="16" type="collision" x="431.5" y="697.5" width="16" height="39"/>
+  <object id="17" type="collision" x="400.5" y="697" width="16" height="39"/>
+  <object id="18" type="collision" x="367" y="697" width="16" height="39"/>
+  <object id="19" type="collision" x="271.5" y="695.5" width="16" height="39"/>
+  <object id="20" type="collision" x="239" y="695" width="16" height="39"/>
+  <object id="21" type="collision" x="207.5" y="695.5" width="16" height="39"/>
+  <object id="22" type="collision" x="207.5" y="518.5" width="16" height="39"/>
+  <object id="23" type="collision" x="240" y="519" width="16" height="39"/>
+  <object id="24" type="collision" x="272" y="518" width="16" height="39"/>
+  <object id="25" type="collision" x="368" y="519" width="16" height="39"/>
+  <object id="26" type="collision" x="399" y="519.5" width="16" height="39"/>
+  <object id="27" type="collision" x="431.5" y="519" width="16" height="39"/>
+  <object id="28" type="collision" x="0" y="0" width="4" height="799.5"/>
+  <object id="29" type="collision" x="4" y="796.375" width="796" height="3.625"/>
+  <object id="30" name="spawn_map3_1" x="417.333" y="31.3333">
+   <point/>
+  </object>
+  <object id="31" name="enter_other_map1" x="4" y="0" width="796" height="2.66667"/>
+  <object id="32" name="enter_other_map2" x="796.909" y="2.54545" width="3.27273" height="793.636"/>
+  <object id="33" name="spawn_map3_2" x="790" y="264">
+   <point/>
+  </object>
+ </objectgroup>
 </map>

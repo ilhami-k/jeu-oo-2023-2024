@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="38">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="43">
  <tileset firstgid="1" source="Modern_Exteriors_Complete_Tileset.tsx"/>
  <layer id="1" name="Calque de Tuiles 1" width="50" height="50">
   <data encoding="csv">
@@ -311,5 +311,13 @@
   <object id="34" type="collision" x="705" y="81.5" width="30" height="10.5"/>
   <object id="35" type="collision" x="-0.5" y="0.5" width="801" height="4.5"/>
   <object id="37" type="collision" x="0" y="4.90909" width="5.5" height="795.591"/>
+  <object id="38" name="enter_other_map1" x="795.25" y="5.25" width="4.75" height="789.75"/>
+  <object id="39" name="spawn_map1_1" x="782.667" y="366">
+   <point/>
+  </object>
+  <object id="40" name="enter_other_map2" x="5.5" y="795.75" width="791.25" height="4.5"/>
+  <object id="42" name="spawn_map1_2" x="310" y="768">
+   <point/>
+  </object>
  </objectgroup>
 </map>

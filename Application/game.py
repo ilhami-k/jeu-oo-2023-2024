@@ -16,6 +16,7 @@ class Game:
         # Chargement des données de la carte à partir d'un fichier TMX
         tmx_data = pytmx.util_pygame.load_pygame("Application/map1.tmx")
         map_data = pyscroll.data.TiledMapData(tmx_data)
+        self.map = 'map1.tmx'
 
         # Création d'un rendu de carte avec mise en mémoire tampon pour des performances optimales
         self.map_layer = pyscroll.orthographic.BufferedRenderer(map_data, self.screen.get_size())
@@ -47,6 +48,42 @@ class Game:
         self.intro_background = pygame.image.load("Application/background.png")
         self.running = True # Variable GLOBALE pour contrôler l'exécution du jeu
 
+        # Définir le rectangle de collision pour entrer sur map2
+        enter_other_map1 = tmx_data.get_object_by_name("enter_other_map1")
+        self.enter_other_map1_rect = pygame.Rect(enter_other_map1.x, enter_other_map1.y, enter_other_map1.width, enter_other_map1.height)
+        enter_other_map2 = tmx_data.get_object_by_name("enter_other_map2")
+        self.enter_other_map2_rect = pygame.Rect(enter_other_map2.x, enter_other_map2.y, enter_other_map2.width, enter_other_map2.height)
+
+    def switch_map(self, map_name, spawn_name):
+        # Chargement des données de la carte à partir d'un fichier TMX
+        tmx_data = pytmx.util_pygame.load_pygame(f"Application/{map_name}")
+        map_data = pyscroll.data.TiledMapData(tmx_data)
+        self.map = map_name
+        # Création d'un rendu de carte avec mise en mémoire tampon pour des performances optimales
+        self.map_layer = pyscroll.orthographic.BufferedRenderer(map_data, self.screen.get_size())
+        self.map_layer.zoom = ZOOM  # Zoom sur la carte
+        # Recréer le groupe de calques avec le nouveau rendu de carte
+        self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer, default_layer=2)
+        self.group.add(self.player)
+
+        # Recherche de l'objet spawn_map2 dans les données de la carte
+        spawn_map = tmx_data.get_object_by_name(spawn_name)
+        # Positionnement du joueur aux coordonnées de l'objet spawn_map2
+        self.player.position = [spawn_map.x, spawn_map.y]
+        self.player.rect.topleft = self.player.position
+
+        # Détection des collisions avec les objets de type "colliDeco" sur la carte
+        self.collision = []
+        for obj in tmx_data.objects:
+            if obj.type == "collision":
+                self.collision.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+                
+        # Définir le rectangle de collision pour entrer sur map2
+        enter_other_map1 = tmx_data.get_object_by_name("enter_other_map1")
+        self.enter_other_map1_rect = pygame.Rect(enter_other_map1.x, enter_other_map1.y, enter_other_map1.width, enter_other_map1.height)
+        enter_other_map2 = tmx_data.get_object_by_name("enter_other_map2")
+        self.enter_other_map2_rect = pygame.Rect(enter_other_map2.x, enter_other_map2.y, enter_other_map2.width, enter_other_map2.height)
+
     def update(self): 
         # Mise à jour du groupe de calques
         self.group.update()
@@ -72,6 +109,28 @@ class Game:
                 self.all_bullets.remove(bullet)
             else:
                 bullet.lifetime -= 1
+
+        # Vérification des transitions entre les cartes
+        if self.map == 'map1.tmx':
+            if self.player.rect.colliderect(self.enter_other_map1_rect):
+                self.switch_map("map2.tmx", "spawn_map2_1")
+            elif self.player.rect.colliderect(self.enter_other_map2_rect):
+                self.switch_map("map3.tmx", "spawn_map3_1")
+        elif self.map == 'map2.tmx':
+            if self.player.rect.colliderect(self.enter_other_map1_rect):
+                self.switch_map("map1.tmx", "spawn_map1_1")
+            elif self.player.rect.colliderect(self.enter_other_map2_rect):
+                self.switch_map("map4.tmx", "spawn_map4_1")
+        elif self.map == 'map3.tmx':
+            if self.player.rect.colliderect(self.enter_other_map1_rect):
+                self.switch_map("map1.tmx", "spawn_map1_2")
+            elif self.player.rect.colliderect(self.enter_other_map2_rect):
+                self.switch_map("map4.tmx", "spawn_map4_2")
+        elif self.map == 'map4.tmx':
+            if self.player.rect.colliderect(self.enter_other_map1_rect):
+                self.switch_map("map2.tmx", "spawn_map2_2")
+            elif self.player.rect.colliderect(self.enter_other_map2_rect):
+                self.switch_map("map3.tmx", "spawn_map3_2")
 
     def handle_input(self): 
         pressed = pygame.key.get_pressed() # Gestion des entrées du joueur (mouvement et tir) 
