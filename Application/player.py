@@ -5,11 +5,10 @@ from bullet import Bullet
 from game import *
 
 class Entite(pygame.sprite.Sprite):
-    def __init__(self, x, y, all_sprites, image_path):
+    def __init__(self, x, y, image_path):
         super().__init__() 
         self.position = [x, y]
-        self.old_position = self.position.copy()  
-        self.all_sprites = all_sprites  
+        self.old_position = self.position.copy()   
         self.sprite_sheet = pygame.image.load(image_path)
         self.image = self.get_image(48, 0)
         self.image.set_colorkey((0, 0, 0))  
@@ -39,17 +38,14 @@ class Entite(pygame.sprite.Sprite):
     def take_damage(self):
         self.health -= 1
         if self.health <= 0:
-            self.kill()  # Supprimer l'ennemi du groupe
+            self.kill()  # Supprimer la spirte de l'ennemi du groupe
 
     def update(self):
-        print(self.rect)
-        print("------------")
-        print(self.position)
         self.rect.topleft = self.position
 
 class Player(Entite):
-    def __init__(self, x, y, all_sprites):
-        super().__init__(x, y, all_sprites, "Application/Player.png")
+    def __init__(self, x, y):
+        super().__init__(x, y, "Application/Player.png")
         self.speed = PLAYER_SPEED  
         self.shoot_cooldown = 0 
 
@@ -62,8 +58,8 @@ class Player(Entite):
             self.shoot_cooldown -= 1
 
 class Enemy(Entite):
-    def __init__(self, x, y, all_sprites):
-        super().__init__(x, y, all_sprites, "Application/Enemy1.png")
+    def __init__(self, x, y):
+        super().__init__(x, y, "Application/Enemy1.png")
         # self.image = self.get_image(0, 0)  # Ajustez les paramètres ici si nécessaire
         self.speed = ENEMY_SPEED
         self.health = ENEMY_HEALTH

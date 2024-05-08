@@ -247,12 +247,12 @@
   <object id="27" type="collision" x="431.5" y="519" width="16" height="39"/>
   <object id="28" type="collision" x="0" y="0" width="4" height="799.5"/>
   <object id="29" type="collision" x="4" y="796.375" width="796" height="3.625"/>
-  <object id="30" name="spawn_map3_1" x="417.333" y="31.3333">
+  <object id="30" name="spawn_map3_1" x="417.333" y="45.3333">
    <point/>
   </object>
   <object id="31" name="enter_other_map1" x="4" y="0" width="796" height="2.66667"/>
   <object id="32" name="enter_other_map2" x="796.909" y="2.54545" width="3.27273" height="793.636"/>
-  <object id="33" name="spawn_map3_2" x="790" y="264">
+  <object id="33" name="spawn_map3_2" x="747" y="283">
    <point/>
   </object>
  </objectgroup>

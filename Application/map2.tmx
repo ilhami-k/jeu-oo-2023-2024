@@ -294,7 +294,7 @@
   <object id="21" type="collision" x="108" y="593" width="41" height="14.5"/>
   <object id="22" type="collision" x="0.5" y="592.5" width="30" height="14"/>
   <object id="23" type="collision" x="444.667" y="6" width="32" height="45"/>
-  <object id="24" type="collision" x="477.333" y="52.3333" width="78.6667" height="18"/>
+  <object id="24" type="collision" x="477.333" y="39.3333" width="78.6667" height="18"/>
   <object id="25" type="collision" x="544" y="70.6667" width="12.3333" height="39.3333"/>
   <object id="26" type="collision" x="478" y="99" width="65.6667" height="28"/>
   <object id="27" type="collision" x="461.667" y="128.333" width="17.3333" height="47.3333"/>
@@ -330,7 +330,7 @@
   </object>
   <object id="56" name="enter_other_map1" x="0" y="6" width="5.41667" height="794"/>
   <object id="58" name="enter_other_map2" x="2.90909" y="796.727" width="790.364" height="3.27273"/>
-  <object id="59" name="spawn_map2_2" x="447.333" y="776.667">
+  <object id="59" name="spawn_map2_2" x="447.833" y="760.667">
    <point/>
   </object>
  </objectgroup>
