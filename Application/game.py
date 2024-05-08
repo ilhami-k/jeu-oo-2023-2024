@@ -14,7 +14,7 @@ class Game:
         pygame.display.set_caption(TITRE)  # Définir le titre de la fenêtre
 
         # Chargement des données de la carte à partir d'un fichier TMX
-        tmx_data = pytmx.util_pygame.load_pygame("Application/map.tmx")
+        tmx_data = pytmx.util_pygame.load_pygame("Application/map1.tmx")
         map_data = pyscroll.data.TiledMapData(tmx_data)
 
         # Création d'un rendu de carte avec mise en mémoire tampon pour des performances optimales
@@ -22,7 +22,7 @@ class Game:
         self.map_layer.zoom = ZOOM  # Zoom sur la carte
 
         # Création d'un groupe de calques pour les sprites
-        self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer, default_layer=1)
+        self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer, default_layer=2)
 
         # Création du joueur et ajout au groupe de calques
         player_spawn = tmx_data.get_object_by_name("spawn_player")
@@ -39,7 +39,7 @@ class Game:
         # Détection des collisions avec les objets de type "colliDeco" sur la carte
         self.collision = []
         for obj in tmx_data.objects:
-            if obj.type == "colliDeco":
+            if obj.type == "collision":
                 self.collision.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
 
         #Font pour le texte: 

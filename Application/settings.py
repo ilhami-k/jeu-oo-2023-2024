@@ -1,6 +1,6 @@
 # Game setup
 WIDTH = 800
-HEIGHT = 640
+HEIGHT = 800
 FPS = 120
 TITRE = 'Projet OO'
 ZOOM = 1
