@@ -1,5 +1,4 @@
 import pygame
-import pygame.transform
 import pytmx
 import pyscroll
 import json
