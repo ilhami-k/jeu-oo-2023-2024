@@ -63,7 +63,7 @@ class Game:
             if obj.type == "collision":
                 self.collision.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
                 
-        # Définir le rectangle de collision pour entrer sur map2
+        # Définir le rectangle de collision pour entrer sur les differentes map
         enter_other_map1 = tmx_data.get_object_by_name("enter_other_map1")
         self.enter_other_map1_rect = pygame.Rect(enter_other_map1.x, enter_other_map1.y, enter_other_map1.width, enter_other_map1.height)
         enter_other_map2 = tmx_data.get_object_by_name("enter_other_map2")
