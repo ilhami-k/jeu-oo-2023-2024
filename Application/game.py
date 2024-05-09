@@ -1,5 +1,4 @@
 import pygame
-import pygame.transform
 import pytmx
 import pyscroll
 import json
@@ -13,39 +12,62 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption(TITRE)  # Définir le titre de la fenêtre
 
-        # Chargement des données de la carte à partir d'un fichier TMX
-        tmx_data = pytmx.util_pygame.load_pygame("Application/map.tmx")
-        map_data = pyscroll.data.TiledMapData(tmx_data)
-
-        # Création d'un rendu de carte avec mise en mémoire tampon pour des performances optimales
-        self.map_layer = pyscroll.orthographic.BufferedRenderer(map_data, self.screen.get_size())
-        self.map_layer.zoom = 2  # Zoom sur la carte
-
-        # Création d'un groupe de calques pour les sprites
-        self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer, default_layer=1)
-
         # Création du joueur et ajout au groupe de calques
-        player_spawn = tmx_data.get_object_by_name("spawn_player")
-        self.player = Player(player_spawn.x, player_spawn.y, self.group)  # Passer la référence au groupe ici
-        self.group.add(self.player)
+        self.player = Player(0, 0)
 
-        # Création de l'ennemi1 et ajout au groupe de calques
-        enemy1_spawn = tmx_data.get_object_by_name("spawn_enemy1")
-        self.enemy1 = Enemy(enemy1_spawn.x, enemy1_spawn.y, self.group)  # Passer la référence au groupe ici
-        self.group.add(self.enemy1)
+        self.all_enemies = []  # Liste pour les ennemis
+
+        # Appel de la méthode switch_map pour charger la première carte
+        self.switch_map("map1.tmx", "spawn_player")
 
         self.all_bullets = pygame.sprite.Group() # Groupe pour les balles tirées par le joueur
-
-        # Détection des collisions avec les objets de type "colliDeco" sur la carte
-        self.collision = []
-        for obj in tmx_data.objects:
-            if obj.type == "colliDeco":
-                self.collision.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
 
         #Font pour le texte: 
         self.font = pygame.font.Font('freesansbold.ttf', 36)
         self.intro_background = pygame.image.load("Application/background.png")
         self.running = True # Variable GLOBALE pour contrôler l'exécution du jeu
+
+    def switch_map(self, map_name, spawn_name):
+        self.all_enemies = []  # Réinitialiser la liste des ennemis
+        try:
+            self.group.empty()  # Supprimer tous les sprites du groupe
+        except:
+            pass
+        # Chargement des données de la carte à partir d'un fichier TMX
+        tmx_data = pytmx.util_pygame.load_pygame(f"Application/{map_name}")
+        map_data = pyscroll.data.TiledMapData(tmx_data)
+        self.map = map_name
+        # Création d'un rendu de carte avec mise en mémoire tampon pour des performances optimales
+        self.map_layer = pyscroll.orthographic.BufferedRenderer(map_data, self.screen.get_size())
+        self.map_layer.zoom = ZOOM  # Zoom sur la carte
+        # Recréer le groupe de calques avec le nouveau rendu de carte
+        self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer, default_layer=2)
+
+        # Recherche de l'objet spawn_map2 dans les données de la carte
+        spawn_map = tmx_data.get_object_by_name(spawn_name)
+        self.group.add(self.player)
+
+        # Positionnement du joueur aux coordonnées de l'objet spawn_map2
+        self.player.position = [spawn_map.x, spawn_map.y]
+        self.player.rect.topleft = self.player.position
+
+        # Création des ennemis à partir des objets spawn_enemy sur la carte
+        for obj in tmx_data.objects:
+            if obj.type == "spawn_enemy":
+                self.all_enemies.append(Enemy(obj.x, obj.y))  # Passer la référence au groupe ici
+                self.group.add(self.all_enemies)
+
+        # Détection des collisions avec les objets de type "colliDeco" sur la carte
+        self.collision = []
+        for obj in tmx_data.objects:
+            if obj.type == "collision":
+                self.collision.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+                
+        # Définir le rectangle de collision pour entrer sur map2
+        enter_other_map1 = tmx_data.get_object_by_name("enter_other_map1")
+        self.enter_other_map1_rect = pygame.Rect(enter_other_map1.x, enter_other_map1.y, enter_other_map1.width, enter_other_map1.height)
+        enter_other_map2 = tmx_data.get_object_by_name("enter_other_map2")
+        self.enter_other_map2_rect = pygame.Rect(enter_other_map2.x, enter_other_map2.y, enter_other_map2.width, enter_other_map2.height)
 
     def update(self): 
         # Mise à jour du groupe de calques
@@ -56,15 +78,19 @@ class Game:
             if self.player.rect.colliderect(collision_rect):
                 self.player.move_back()
             # Vérification des collisions entre l'ennemi et les objets de collision
-            if self.enemy1.rect.colliderect(collision_rect):
-                self.enemy1.move_back()
+            for enemy in self.all_enemies:
+                if enemy.rect.colliderect(collision_rect):
+                    enemy.move_back()
 
         # Vérification des collisions entre les balles et l'ennemi
         for bullet in self.all_bullets:
-            if bullet.rect.colliderect(self.enemy1.rect):
-                self.all_bullets.remove(bullet)
-                self.enemy1.take_damage()
-    
+            for enemy in self.all_enemies:
+                if bullet.rect.colliderect(enemy.rect):
+                    self.all_bullets.remove(bullet)
+                    enemy.take_damage()
+                    if enemy.health <= 0:
+                        self.all_enemies.remove(enemy) # Supprimer l'ennemi du groupe (rect)
+
         # Mise à jour des balles tirées par le joueur
         for bullet in self.all_bullets:
             bullet.update()
@@ -73,7 +99,27 @@ class Game:
             else:
                 bullet.lifetime -= 1
 
-        #  AJOUTER LA GESTION DES COLLISIONS DES BULLETS AVEC LES MONSTRES OU AUTRES ICI
+        # Vérification des transitions entre les cartes
+        if self.map == 'map1.tmx':
+            if self.player.rect.colliderect(self.enter_other_map1_rect):
+                self.switch_map("map2.tmx", "spawn_map2_1")
+            elif self.player.rect.colliderect(self.enter_other_map2_rect):
+                self.switch_map("map3.tmx", "spawn_map3_1")
+        elif self.map == 'map2.tmx':
+            if self.player.rect.colliderect(self.enter_other_map1_rect):
+                self.switch_map("map1.tmx", "spawn_map1_1")
+            elif self.player.rect.colliderect(self.enter_other_map2_rect):
+                self.switch_map("map4.tmx", "spawn_map4_1")
+        elif self.map == 'map3.tmx':
+            if self.player.rect.colliderect(self.enter_other_map1_rect):
+                self.switch_map("map1.tmx", "spawn_map1_2")
+            elif self.player.rect.colliderect(self.enter_other_map2_rect):
+                self.switch_map("map4.tmx", "spawn_map4_2")
+        elif self.map == 'map4.tmx':
+            if self.player.rect.colliderect(self.enter_other_map1_rect):
+                self.switch_map("map2.tmx", "spawn_map2_2")
+            elif self.player.rect.colliderect(self.enter_other_map2_rect):
+                self.switch_map("map3.tmx", "spawn_map3_2")
 
     def handle_input(self): 
         pressed = pygame.key.get_pressed() # Gestion des entrées du joueur (mouvement et tir) 
@@ -119,7 +165,6 @@ class Game:
                     self.player.position = player_position
                     self.player.rect.x, self.player.rect.y = player_position
 
-
             if play_button.is_pressed(mouse_pos, mouse_pressed):
                 intro = False
             if exit_button.is_pressed(mouse_pos, mouse_pressed):
@@ -133,6 +178,7 @@ class Game:
             self.screen.blit(exit_button.image, exit_button.rect)
             
             pygame.display.update()
+
     def menu_screen(self):
         menu = True
         title = self.font.render("Menu", True, 'Black')
@@ -196,9 +242,11 @@ class Game:
             # Centrage de la caméra sur le joueur
             self.group.center(self.player.rect.center)
 
+            # Affichage des rectangles de collision des sprites
             pygame.draw.rect(self.screen, (255, 0, 0), self.player.rect, 2)
-            pygame.draw.rect(self.screen, (0, 255, 0), self.enemy1.rect, 2)
-    
+            for enemy in self.all_enemies:
+                pygame.draw.rect(self.screen, (0, 255, 0), enemy.rect, 2)
+  
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
             
@@ -212,9 +260,9 @@ class Game:
 
             clock.tick(FPS)
         
-
         # Fermeture de la fenêtre pygame
         pygame.quit()
+
 class SaveSystem:
     def __init__(self, file_extension, save_folder):
         self.file_extension = file_extension

@@ -418,7 +418,7 @@
 </data>
  </layer>
  <objectgroup id="3" name="objects">
-  <object id="1" name="spawn_player" x="248" y="273.167">
+  <object id="1" name="spawn_player" x="129" y="244.167">
    <point/>
   </object>
   <object id="10" type="colliDeco" x="18" y="422" width="28" height="55"/>
