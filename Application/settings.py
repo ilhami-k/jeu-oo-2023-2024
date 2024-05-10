@@ -12,6 +12,7 @@ PLAYER_HEALTH = 10
 # Enemy settings
 ENEMY_SPEED = 1
 ENEMY_HEALTH = 3
+ATTACK_COOLDOWN = 25
 
 # Bullet settings
 BULLET_SPEED = 2

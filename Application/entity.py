@@ -4,7 +4,7 @@ from settings import *
 from bullet import Bullet
 from game import *
 
-class Entite(pygame.sprite.Sprite):
+class Entity(pygame.sprite.Sprite):
     def __init__(self, x, y, image_path):
         super().__init__() 
         self.position = [x, y]
@@ -40,10 +40,10 @@ class Entite(pygame.sprite.Sprite):
         if self.health <= 0:
             self.kill()  # Supprimer la spirte de l'ennemi du groupe
 
-    def update(self):
+    def update(self, player):
         self.rect.topleft = self.position
 
-class Player(Entite):
+class Player(Entity):
     def __init__(self, x, y):
         super().__init__(x, y, "Application/Player.png")
         self.speed = PLAYER_SPEED  
@@ -57,14 +57,45 @@ class Player(Entite):
         if self.shoot_cooldown > 0:
             self.shoot_cooldown -= 1
 
-class Enemy(Entite):
+class Enemy(Entity):
     def __init__(self, x, y):
         super().__init__(x, y, "Application/Enemy1.png")
         # self.image = self.get_image(0, 0)  # Ajustez les paramètres ici si nécessaire
         self.speed = ENEMY_SPEED
         self.health = ENEMY_HEALTH
+        self.attack_cooldown = 0
 
-    # Ajoutez ici les autres méthodes spécifiques à la classe Enemy
+    def update(self, player):
+        # Calculer la direction vers le joueur
+        direction_x = player.position[0] - self.position[0]
+        direction_y = player.position[1] - self.position[1]
+        distance = math.sqrt(direction_x ** 2 + direction_y ** 2)
 
-class PNJ(Entite):
+        if distance != 0:
+            direction_x /= distance
+            direction_y /= distance
+
+        # Déplacer l'ennemi dans la direction du joueur
+        self.move(direction_x * self.speed, direction_y * self.speed)
+
+        # Vérifier les collisions avec le joueur
+        if self.rect.colliderect(player.rect):
+            self.attack(player)
+
+        # Gérer le temps entre les attaques
+        if self.attack_cooldown > 0:
+            self.attack_cooldown -= 1
+            
+        # Mettre à jour la position du rectangle de collision
+        self.rect.topleft = self.position
+
+    def attack(self, player):
+        # Vérifier si l'ennemi peut attaquer
+        if self.attack_cooldown == 0:
+            # Infliger des dégâts au joueur
+            player.take_damage()
+            # Réinitialiser le cooldown d'attaque
+            self.attack_cooldown = ATTACK_COOLDOWN
+
+class PNJ(Entity):
     pass  # Ajoutez ici les méthodes et attributs spécifiques à la classe PNJ

@@ -2,7 +2,7 @@ import pygame
 import pytmx
 import pyscroll
 import json
-from player import *
+from entity import *
 from settings import *
 from sprites import *
 
@@ -71,16 +71,16 @@ class Game:
 
     def update(self): 
         # Mise à jour du groupe de calques
-        self.group.update()
+        self.group.update(self.player)
 
         # Vérification des collisions entre le joueur et les objets de collision
         for collision_rect in self.collision:
             if self.player.rect.colliderect(collision_rect):
                 self.player.move_back()
-            # Vérification des collisions entre l'ennemi et les objets de collision
-            for enemy in self.all_enemies:
-                if enemy.rect.colliderect(collision_rect):
-                    enemy.move_back()
+        # Vérification des collisions entre l'ennemi et les objets de collision
+        for enemy in self.all_enemies:
+            if enemy.rect.colliderect(collision_rect):
+                enemy.move_back()
 
         # Vérification des collisions entre les balles et l'ennemi
         for bullet in self.all_bullets:
