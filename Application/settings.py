@@ -9,13 +9,18 @@ ZOOM = 1
 PLAYER_SPEED = 1
 PLAYER_HEALTH = 10
 
-# Enemy settings
-ENEMY_SPEED = 1
-ENEMY_HEALTH = 3
-ATTACK_COOLDOWN = 25
+# Zombie settings
+ZOMBIE_SPEED = 1
+ZOMBIE_HEALTH = 3
+ZOMBIE_ATTACK_COOLDOWN = 25
+
+# Skeleton settings
+SKELETON_SPEED = 3
+SKELETON_HEALTH = 1
+SKELETON_ATTACK_COOLDOWN = 25
 
 # Bullet settings
 BULLET_SPEED = 2
-SHOOT_COOLDOWN = 150 # Temps entre chaque tir 
+ATTACK_COOLDOWN = 150 # Temps entre chaque tir 
 BULLET_LIFETIME = 200 # Durée de vie d'une balle
 BULLET_SCALE = 8

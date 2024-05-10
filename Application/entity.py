@@ -5,16 +5,18 @@ from bullet import Bullet
 from game import *
 
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, x, y, image_path):
-        super().__init__() 
+    def __init__(self, x, y, image_path, name, speed, health, attack_cooldown=0):
+        super().__init__()
+        self.name = name 
         self.position = [x, y]
         self.old_position = self.position.copy()   
         self.sprite_sheet = pygame.image.load(image_path)
         self.image = self.get_image(48, 0)
         self.image.set_colorkey((0, 0, 0))  
         self.rect = self.image.get_rect()
-
-        self.health = PLAYER_HEALTH
+        self.speed = speed
+        self.health = health
+        self.attack_cooldown = attack_cooldown
 
     def get_image(self, x, y):
         image = pygame.Surface((16, 24))  # Réduire la hauteur de 8 pixels de l'image
@@ -45,26 +47,17 @@ class Entity(pygame.sprite.Sprite):
 
 class Player(Entity):
     def __init__(self, x, y):
-        super().__init__(x, y, "Application/Player.png")
-        self.speed = PLAYER_SPEED  
-        self.shoot_cooldown = 0
+        super().__init__(x, y, "Application/Player.png", 'Player', PLAYER_SPEED, PLAYER_HEALTH, ATTACK_COOLDOWN)
 
     def shoot(self, target_x, target_y, bullet_group):
         angle = math.atan2(target_y - self.position[1], target_x - self.position[0])
         bullet_group.add(Bullet(self.position[0], self.position[1], angle))
 
     def cooldown_tick(self):
-        if self.shoot_cooldown > 0:
-            self.shoot_cooldown -= 1
+        if self.attack_cooldown > 0:
+            self.attack_cooldown -= 1
 
 class Enemy(Entity):
-    def __init__(self, x, y):
-        super().__init__(x, y, "Application/Enemy1.png")
-        # self.image = self.get_image(0, 0)  # Ajustez les paramètres ici si nécessaire
-        self.speed = ENEMY_SPEED
-        self.health = ENEMY_HEALTH
-        self.attack_cooldown = 0
-
     def update(self, player):
         # Calculer la direction vers le joueur
         direction_x = player.position[0] - self.position[0]
@@ -95,7 +88,17 @@ class Enemy(Entity):
             # Infliger des dégâts au joueur
             player.take_damage()
             # Réinitialiser le cooldown d'attaque
-            self.attack_cooldown = ATTACK_COOLDOWN
+            self.attack_cooldown = self.initial_attack_cooldown
+
+class Zombie(Enemy):
+    def __init__(self, x, y):
+        super().__init__(x, y, "Application/Zombie.png", 'Zombie', ZOMBIE_SPEED, ZOMBIE_HEALTH, ZOMBIE_ATTACK_COOLDOWN)
+        self.initial_attack_cooldown = ZOMBIE_ATTACK_COOLDOWN
+
+class Skeleton(Enemy):
+    def __init__(self, x, y):
+        super().__init__(x, y, "Application/Skeleton.png", 'Skeleton', SKELETON_SPEED, SKELETON_HEALTH, SKELETON_ATTACK_COOLDOWN)
+        self.initial_attack_cooldown = SKELETON_ATTACK_COOLDOWN
 
 class PNJ(Entity):
     pass  # Ajoutez ici les méthodes et attributs spécifiques à la classe PNJ

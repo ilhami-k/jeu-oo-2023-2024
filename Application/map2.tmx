@@ -333,19 +333,19 @@
   <object id="59" name="spawn_map2_2" x="447.833" y="760.667">
    <point/>
   </object>
-  <object id="60" type="spawn_enemy" x="270.5" y="129.5">
+  <object id="60" name="Zombie" type="spawn_zombie" x="270.5" y="129.5">
    <point/>
   </object>
-  <object id="61" type="spawn_enemy" x="395.5" y="320.5">
+  <object id="61" name="Zombie" type="spawn_zombie" x="395.5" y="320.5">
    <point/>
   </object>
-  <object id="62" type="spawn_enemy" x="206.5" y="502">
+  <object id="62" name="Zombie" type="spawn_zombie" x="206.5" y="502">
    <point/>
   </object>
-  <object id="63" type="spawn_enemy" x="580.5" y="621.5">
+  <object id="63" name="Zombie" type="spawn_zombie" x="580.5" y="621.5">
    <point/>
   </object>
-  <object id="64" type="spawn_enemy" x="573.5" y="545">
+  <object id="64" name="Zombie" type="spawn_zombie" x="573.5" y="545">
    <point/>
   </object>
  </objectgroup>

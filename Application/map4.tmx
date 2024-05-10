@@ -244,22 +244,22 @@
   </object>
   <object id="21" name="enter_other_map1" x="0" y="0.333333" width="795.667" height="3.33333"/>
   <object id="22" name="enter_other_map2" x="0.125" y="3.625" width="3" height="792.75"/>
-  <object id="23" type="spawn_enemy" x="584" y="566">
+  <object id="23" name="Zombie" type="spawn_zombie" x="584" y="566">
    <point/>
   </object>
-  <object id="24" type="spawn_enemy" x="579" y="625">
+  <object id="24" name="Zombie" type="spawn_zombie" x="579" y="625">
    <point/>
   </object>
-  <object id="25" type="spawn_enemy" x="537" y="637">
+  <object id="25" name="Zombie" type="spawn_zombie" x="537" y="637">
    <point/>
   </object>
-  <object id="26" type="spawn_enemy" x="472" y="566">
+  <object id="26" name="Zombie" type="spawn_zombie" x="472" y="566">
    <point/>
   </object>
-  <object id="27" type="spawn_enemy" x="448" y="626">
+  <object id="27" name="Zombie" type="spawn_zombie" x="448" y="626">
    <point/>
   </object>
-  <object id="28" type="spawn_enemy" x="533" y="514">
+  <object id="28" name="Zombie" type="spawn_zombie" x="533" y="514">
    <point/>
   </object>
  </objectgroup>

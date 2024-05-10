@@ -51,10 +51,15 @@ class Game:
         self.player.position = [spawn_map.x, spawn_map.y]
         self.player.rect.topleft = self.player.position
 
-        # Création des ennemis à partir des objets spawn_enemy sur la carte
+        # Création des ennemis
         for obj in tmx_data.objects:
-            if obj.type == "spawn_enemy":
-                self.all_enemies.append(Enemy(obj.x, obj.y))  # Passer la référence au groupe ici
+            # Création des Zombies à partir des objets spawn_zombie sur la carte
+            if obj.type == "spawn_zombie":
+                self.all_enemies.append(Zombie(obj.x, obj.y))  # Passer la référence au groupe ici
+                self.group.add(self.all_enemies)
+            # Création des Skeletons à partir des objets spawn_skeleton sur la carte
+            if obj.type == "spawn_skeleton":
+                self.all_enemies.append(Skeleton(obj.x, obj.y))  # Passer la référence au groupe ici
                 self.group.add(self.all_enemies)
 
         # Détection des collisions avec les objets de type "colliDeco" sur la carte
@@ -138,9 +143,9 @@ class Game:
         # Gestion du tir du joueur
         if mouse_pressed[0]:  # Si le bouton gauche de la souris est enfoncé
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            if self.player.shoot_cooldown == 0:
+            if self.player.attack_cooldown == 0:
                 self.player.shoot(mouse_x, mouse_y, self.all_bullets)
-                self.player.shoot_cooldown = SHOOT_COOLDOWN
+                self.player.attack_cooldown = ATTACK_COOLDOWN
 
     def intro_screen(self):
         intro = True

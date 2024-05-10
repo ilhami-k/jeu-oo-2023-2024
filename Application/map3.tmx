@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="38">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="41">
  <tileset firstgid="1" source="Modern_Exteriors_Complete_Tileset.tsx"/>
  <layer id="1" name="Calque de Tuiles 1" width="50" height="50">
   <data encoding="csv">
@@ -255,16 +255,25 @@
   <object id="33" name="spawn_map3_2" x="747" y="283">
    <point/>
   </object>
-  <object id="34" type="spawn_enemy" x="342" y="469">
+  <object id="34" name="Zombie" type="spawn_zombie" x="342" y="469">
    <point/>
   </object>
-  <object id="35" type="spawn_enemy" x="688" y="499">
+  <object id="35" name="Zombie" type="spawn_zombie" x="688" y="499">
    <point/>
   </object>
-  <object id="36" type="spawn_enemy" x="563" y="208">
+  <object id="36" name="Zombie" type="spawn_zombie" x="563" y="208">
    <point/>
   </object>
-  <object id="37" type="spawn_enemy" x="128" y="227">
+  <object id="37" name="Zombie" type="spawn_zombie" x="128" y="227">
+   <point/>
+  </object>
+  <object id="38" name="Skeleton" type="spawn_skeleton" x="419" y="297">
+   <point/>
+  </object>
+  <object id="39" name="Skeleton" type="spawn_skeleton" x="632" y="661">
+   <point/>
+  </object>
+  <object id="40" name="Skeleton" type="spawn_skeleton" x="140" y="664">
    <point/>
   </object>
  </objectgroup>
