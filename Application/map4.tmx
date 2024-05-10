@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="23">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="29">
  <tileset firstgid="1" source="Modern_Exteriors_Complete_Tileset.tsx"/>
  <layer id="1" name="Calque de Tuiles 1" width="50" height="50">
   <data encoding="csv">
@@ -244,5 +244,23 @@
   </object>
   <object id="21" name="enter_other_map1" x="0" y="0.333333" width="795.667" height="3.33333"/>
   <object id="22" name="enter_other_map2" x="0.125" y="3.625" width="3" height="792.75"/>
+  <object id="23" type="spawn_enemy" x="584" y="566">
+   <point/>
+  </object>
+  <object id="24" type="spawn_enemy" x="579" y="625">
+   <point/>
+  </object>
+  <object id="25" type="spawn_enemy" x="537" y="637">
+   <point/>
+  </object>
+  <object id="26" type="spawn_enemy" x="472" y="566">
+   <point/>
+  </object>
+  <object id="27" type="spawn_enemy" x="448" y="626">
+   <point/>
+  </object>
+  <object id="28" type="spawn_enemy" x="533" y="514">
+   <point/>
+  </object>
  </objectgroup>
 </map>

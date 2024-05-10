@@ -275,9 +275,6 @@
   <object id="1" name="spawn_player" x="137" y="251">
    <point/>
   </object>
-  <object id="2" name="spawn_enemy1" type="spawn_enemy" x="477" y="560">
-   <point/>
-  </object>
   <object id="3" type="collision" x="1" y="56" width="93" height="133"/>
   <object id="4" type="collision" x="94" y="107.333" width="81.6667" height="81.6667"/>
   <object id="5" type="collision" x="176.333" y="75.3333" width="271" height="113.667"/>
@@ -317,12 +314,6 @@
   </object>
   <object id="40" name="enter_other_map2" x="5.5" y="795.75" width="791.25" height="4.5"/>
   <object id="42" name="spawn_map1_2" x="310" y="732.667">
-   <point/>
-  </object>
-  <object id="43" name="spawn_enemy2" type="spawn_enemy" x="165.333" y="615.333">
-   <point/>
-  </object>
-  <object id="44" name="spawn_enemy3" type="spawn_enemy" x="339.333" y="628.667">
    <point/>
   </object>
  </objectgroup>

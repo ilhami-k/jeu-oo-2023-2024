@@ -16,6 +16,6 @@ ATTACK_COOLDOWN = 25
 
 # Bullet settings
 BULLET_SPEED = 2
-SHOOT_COOLDOWN = 100 # Temps entre chaque tir 
+SHOOT_COOLDOWN = 150 # Temps entre chaque tir 
 BULLET_LIFETIME = 200 # Durée de vie d'une balle
 BULLET_SCALE = 8
