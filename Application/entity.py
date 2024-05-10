@@ -17,8 +17,8 @@ class Entity(pygame.sprite.Sprite):
         self.health = PLAYER_HEALTH
 
     def get_image(self, x, y):
-        image = pygame.Surface((16, 32))
-        image.blit(self.sprite_sheet, (0, 0), (x, y, 16, 32))
+        image = pygame.Surface((16, 24))  # Réduire la hauteur de 8 pixels de l'image
+        image.blit(self.sprite_sheet, (0, -8), (x, y, 16, 32))  # Déplacer le contenu de l'image de 8 pixels vers le bas pour ne pas perdre la réduction réaluisée juste avant
         return image
 
     def save_location(self):
@@ -47,7 +47,7 @@ class Player(Entity):
     def __init__(self, x, y):
         super().__init__(x, y, "Application/Player.png")
         self.speed = PLAYER_SPEED  
-        self.shoot_cooldown = 0 
+        self.shoot_cooldown = 0
 
     def shoot(self, target_x, target_y, bullet_group):
         angle = math.atan2(target_y - self.position[1], target_x - self.position[0])
