@@ -1,10 +1,9 @@
 from inventory import Inventory
 
 class Item:
-    def __init__ (self, nom, info, weight):
+    def __init__ (self, nom, info):
         self.nom = nom
-        self.info = info
-        self.weight = weight   
+        self.info = info  
       
 #toutes les classes suivantes héritent de la classe item#
 class Healer (Item):
@@ -28,9 +27,9 @@ class Armor (Item):
 inventory = Inventory()
 
 # Création des objets
-bandage = Healer ("bandage", "bout de tissus", 0.5)
-paladin = Armor ("paladin", "vielle armure antique", 3.6)
-baies = Healer ("baies", "fruit qui apporte la vie", 0.2)
+bandage = Healer ("bandage", "bout de tissus")
+paladin = Armor ("paladin", "vielle armure antique")
+baies = Healer ("baies", "fruit qui apporte la vie")
 
 # Ajout des objets à l'inventaire
 inventory.add(bandage)
