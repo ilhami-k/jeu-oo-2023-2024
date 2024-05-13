@@ -2,7 +2,7 @@ import pygame
 import pytmx
 import pyscroll
 import json
-from player import *
+from entity import *
 from settings import *
 from sprites import *
 
@@ -51,10 +51,15 @@ class Game:
         self.player.position = [spawn_map.x, spawn_map.y]
         self.player.rect.topleft = self.player.position
 
-        # Création des ennemis à partir des objets spawn_enemy sur la carte
+        # Création des ennemis
         for obj in tmx_data.objects:
-            if obj.type == "spawn_enemy":
-                self.all_enemies.append(Enemy(obj.x, obj.y))  # Passer la référence au groupe ici
+            # Création des Zombies à partir des objets spawn_zombie sur la carte
+            if obj.type == "spawn_zombie":
+                self.all_enemies.append(Zombie(obj.x, obj.y))  # Passer la référence au groupe ici
+                self.group.add(self.all_enemies)
+            # Création des Skeletons à partir des objets spawn_skeleton sur la carte
+            if obj.type == "spawn_skeleton":
+                self.all_enemies.append(Skeleton(obj.x, obj.y))  # Passer la référence au groupe ici
                 self.group.add(self.all_enemies)
 
         # Détection des collisions avec les objets de type "colliDeco" sur la carte
@@ -63,7 +68,7 @@ class Game:
             if obj.type == "collision":
                 self.collision.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
                 
-        # Définir le rectangle de collision pour entrer sur map2
+        # Définir le rectangle de collision pour entrer sur les differentes map
         enter_other_map1 = tmx_data.get_object_by_name("enter_other_map1")
         self.enter_other_map1_rect = pygame.Rect(enter_other_map1.x, enter_other_map1.y, enter_other_map1.width, enter_other_map1.height)
         enter_other_map2 = tmx_data.get_object_by_name("enter_other_map2")
@@ -71,16 +76,16 @@ class Game:
 
     def update(self): 
         # Mise à jour du groupe de calques
-        self.group.update()
+        self.group.update(self.player)
 
         # Vérification des collisions entre le joueur et les objets de collision
         for collision_rect in self.collision:
             if self.player.rect.colliderect(collision_rect):
                 self.player.move_back()
-            # Vérification des collisions entre l'ennemi et les objets de collision
-            for enemy in self.all_enemies:
-                if enemy.rect.colliderect(collision_rect):
-                    enemy.move_back()
+        # Vérification des collisions entre l'ennemi et les objets de collision
+        for enemy in self.all_enemies:
+            if enemy.rect.colliderect(collision_rect):
+                enemy.move_back()
 
         # Vérification des collisions entre les balles et l'ennemi
         for bullet in self.all_bullets:
@@ -138,9 +143,9 @@ class Game:
         # Gestion du tir du joueur
         if mouse_pressed[0]:  # Si le bouton gauche de la souris est enfoncé
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            if self.player.shoot_cooldown == 0:
+            if self.player.attack_cooldown == 0:
                 self.player.shoot(mouse_x, mouse_y, self.all_bullets)
-                self.player.shoot_cooldown = SHOOT_COOLDOWN
+                self.player.attack_cooldown = ATTACK_COOLDOWN
 
     def intro_screen(self):
         intro = True
