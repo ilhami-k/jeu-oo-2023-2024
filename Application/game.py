@@ -8,6 +8,7 @@ from sprites import *
 from inventory import *
 from item import *
 
+
 class Game:
     def __init__(self):
         # Initialisation de la fenêtre de jeu
@@ -31,9 +32,9 @@ class Game:
 
         #création de l'inventaire 
         self.inventory = Inventory()
+
+        #initialise l'inventaire sur fermé
         self.show_inventory = False
-        #vérifiction de l'état de la touche "i"
-        self.key_pressed = False
 
     def switch_map(self, map_name, spawn_name):
         self.all_enemies = []  # Réinitialiser la liste des ennemis
@@ -238,12 +239,11 @@ class Game:
             
             pygame.display.update()
 
+
     def draw_inventory(self):
         if self.show_inventory:
             self.inventory.show_inventory(self.screen, self.font, 800)
-
-
-        
+    
         pygame.display.update()
 
     def run(self):
