@@ -31,10 +31,8 @@ bandage = Healer ("bandage", "bout de tissus")
 paladin = Armor ("paladin", "vielle armure antique")
 baies = Healer ("baies", "fruit qui apporte la vie")
 
-# Ajout des objets à l'inventaire
 inventory.add(bandage)
-inventory.add(paladin)
 
-# Affichage de l'inventaire
-inventory.afficher()
+# Affichage de l'inventaire (terminal)
+#inventory.afficher()
 
