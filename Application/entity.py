@@ -31,6 +31,7 @@ class Entity(pygame.sprite.Sprite):
         self.rect.topleft = self.position
         
     def move(self, x, y):
+        # Réduire la vitesse de déplacement en diagonale (A vérifier si ca fonctionne bien)
         if x != 0 and y != 0:
             x *= math.sqrt(2) / 2
             y *= math.sqrt(2) / 2
