@@ -167,6 +167,7 @@ class Game:
 
             if play_button.is_pressed(mouse_pos, mouse_pressed):
                 intro = False
+                self.epilogue = True
             if exit_button.is_pressed(mouse_pos, mouse_pressed):
                 intro = False
                 self.running = False
@@ -217,6 +218,22 @@ class Game:
             self.screen.blit(save_game.image, save_game.rect)
             self.screen.blit(exit_button.image, exit_button.rect)
             
+            pygame.display.update()
+
+    def epilogue(self):
+        self.epilogue = True
+        while epilogue:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_KP_ENTER:
+                        epilogue = False
+                if event.type == pygame.QUIT:
+                    epilogue = False
+                    self.running = False
+            self.screen.fill((0, 0, 0))
+            text = self.font.render("Story", True, 'White')
+            text_rect = text.get_rect(center=(WIDTH/2, HEIGHT/2))
+            self.screen.blit(text, text_rect)
             pygame.display.update()
 
     def run(self):
