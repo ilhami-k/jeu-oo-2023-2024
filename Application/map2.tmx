@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="62">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="65">
  <tileset firstgid="1" source="Modern_Exteriors_Complete_Tileset.tsx"/>
  <layer id="1" name="Calque de Tuiles 1" width="50" height="50">
   <data encoding="csv">
@@ -308,10 +308,11 @@
   <object id="35" type="collision" x="461" y="324" width="5.33333" height="15"/>
   <object id="36" type="collision" x="531.667" y="324.333" width="24" height="10.6667"/>
   <object id="37" type="collision" x="630.333" y="385.667" width="58" height="13"/>
-  <object id="38" type="collision" x="690.662" y="368.004" width="54.6667" height="29.6667"/>
+  <object id="38" type="collision" x="692.667" y="366.667" width="54.6667" height="29.6667"/>
   <object id="39" type="collision" x="756" y="387.333" width="23.6667" height="8.33333"/>
   <object id="40" type="collision" x="742.667" y="407" width="47.6667" height="37.6667"/>
   <object id="41" type="collision" x="736.667" y="443" width="13.3333" height="15.6667"/>
+  <object id="42" type="collision" x="703" y="422.333" width="16.3333" height="8.33333"/>
   <object id="43" type="collision" x="707" y="487.333" width="77.6667" height="18.6667"/>
   <object id="44" type="collision" x="711.333" y="577" width="64.3333" height="13"/>
   <object id="45" type="collision" x="626" y="643.333" width="11.6667" height="9.33333"/>
@@ -332,7 +333,19 @@
   <object id="59" name="spawn_map2_2" x="447.833" y="760.667">
    <point/>
   </object>
-  <object id="60" name="spawn_npc" type="spawn_npc" x="712.448" y="459.148">
+  <object id="60" name="Zombie" type="spawn_zombie" x="270.5" y="129.5">
+   <point/>
+  </object>
+  <object id="61" name="Zombie" type="spawn_zombie" x="395.5" y="320.5">
+   <point/>
+  </object>
+  <object id="62" name="Zombie" type="spawn_zombie" x="206.5" y="502">
+   <point/>
+  </object>
+  <object id="63" name="Zombie" type="spawn_zombie" x="580.5" y="621.5">
+   <point/>
+  </object>
+  <object id="64" name="Zombie" type="spawn_zombie" x="573.5" y="545">
    <point/>
   </object>
  </objectgroup>
