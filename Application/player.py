@@ -4,7 +4,7 @@ from settings import *
 from bullet import Bullet
 from game import *
 
-class Entite(pygame.sprite.Sprite):
+class Entity(pygame.sprite.Sprite):
     def __init__(self, x, y, image_path):
         super().__init__() 
         self.position = [x, y]
@@ -43,7 +43,7 @@ class Entite(pygame.sprite.Sprite):
     def update(self):
         self.rect.topleft = self.position
 
-class Player(Entite):
+class Player(Entity):
     def __init__(self, x, y):
         super().__init__(x, y, "Application/Player.png")
         self.speed = PLAYER_SPEED  
@@ -57,7 +57,7 @@ class Player(Entite):
         if self.shoot_cooldown > 0:
             self.shoot_cooldown -= 1
 
-class Enemy(Entite):
+class Enemy(Entity):
     def __init__(self, x, y):
         super().__init__(x, y, "Application/Enemy1.png")
         # self.image = self.get_image(0, 0)  # Ajustez les paramètres ici si nécessaire
@@ -66,5 +66,12 @@ class Enemy(Entite):
 
     # Ajoutez ici les autres méthodes spécifiques à la classe Enemy
 
-class PNJ(Entite):
-    pass  # Ajoutez ici les méthodes et attributs spécifiques à la classe PNJ
+class NPC(Entity):
+    def __init__ (self,x,y):
+        super().__init__(x,y,'Application/NPC.png')
+        
+    def talk(self):
+        pass
+    def sell (self):
+        pass
+
