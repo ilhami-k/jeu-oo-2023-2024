@@ -39,7 +39,7 @@ class Entity(pygame.sprite.Sprite):
         self.position[1] += y
 
     def take_damage(self):
-        self.health -= 1
+        self.health -= BULLET_DAMAGE
         if self.health <= 0:
             self.kill()  # Supprimer la spirte de l'ennemi du groupe
 
