@@ -9,6 +9,7 @@ class Bullet(pygame.sprite.Sprite):
         self.angle = angle
         self.speed = BULLET_SPEED
         self.lifetime = BULLET_LIFETIME
+        self.damage = BULLET_DAMAGE
         self.image = pygame.Surface((BULLET_SCALE, BULLET_SCALE))
         self.image.fill((255, 255, 255))  # Couleur de la balle (blanc)
         self.rect = self.image.get_rect(center=self.position)  # Créer un rect à partir de l'image

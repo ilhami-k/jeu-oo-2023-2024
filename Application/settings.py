@@ -24,8 +24,7 @@ BULLET_SPEED = 2
 ATTACK_COOLDOWN = 150 # Temps entre chaque tir 
 BULLET_LIFETIME = 200 # Durée de vie d'une balle
 BULLET_SCALE = 8
-
-            #items settings
+BULLET_DAMAGE = 3
 
 #Appel setting
 APPLE_INFO = 'le fruit préferé de Newton' 
