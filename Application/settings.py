@@ -24,3 +24,18 @@ BULLET_SPEED = 2
 ATTACK_COOLDOWN = 150 # Temps entre chaque tir 
 BULLET_LIFETIME = 200 # Durée de vie d'une balle
 BULLET_SCALE = 8
+
+            #items settings
+#Appel setting
+APPLE_INFO = 'le fruit préferé de Newton' 
+APPLE_SIZE = (20,20)
+APPEL_COLOR = (0,0,0)
+APPLE_HEAL = 5
+
+#Berry setting
+BERRY_INFO = "souvent récolté pres des arbustes"
+BERRY_SIZE = 1
+BERRY_COLOR = (255,0,1)
+BERRY_HEAL = 1
+
+#setting des objets d'amélioration 

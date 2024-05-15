@@ -278,7 +278,8 @@ class Game:
             
             #affichage de l'inventaire (i)
             self.draw_inventory()
-              
+
+                         
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
             

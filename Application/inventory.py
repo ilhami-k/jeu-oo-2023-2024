@@ -1,7 +1,11 @@
 import pygame
+from item import *
+
 class Inventory:
     def __init__(self):
         self.items = []
+        self.items.append(appel)
+        self.items.append(berry)
 
     def add(self, item):
         self.items.append(item)
