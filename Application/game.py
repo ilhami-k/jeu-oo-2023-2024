@@ -4,7 +4,7 @@ import pyscroll
 import json
 from entity import *
 from settings import *
-from sprites import *
+from interface import *
 
 class Game:
     def __init__(self):
@@ -26,6 +26,7 @@ class Game:
         self.font = pygame.font.Font('freesansbold.ttf', 36)
         self.intro_background = pygame.image.load("Application/background.png")
         self.running = True # Variable GLOBALE pour contrôler l'exécution du jeu
+        self.new_game = False #Variable globale pour savoir si c'est un nouveau jeu 
 
     def switch_map(self, map_name, spawn_name):
         self.all_enemies = []  # Réinitialiser la liste des ennemis
@@ -172,7 +173,9 @@ class Game:
 
             if play_button.is_pressed(mouse_pos, mouse_pressed):
                 intro = False
-                self.epilogue = True
+                self.new_game = True
+                self.epilogue_on = True
+
             if exit_button.is_pressed(mouse_pos, mouse_pressed):
                 intro = False
                 self.running = False
@@ -203,11 +206,6 @@ class Game:
             mouse_pressed = pygame.mouse.get_pressed()
             if continue_button.is_pressed(mouse_pos, mouse_pressed):
                 menu = False
-                save_load = SaveSystem(".json",'Application/save_data/')
-                player_position = save_load.load_data("player_position")
-                if player_position:
-                    self.player.position = player_position
-                    self.player.rect.x, self.player.rect.y = player_position
             if save_game.is_pressed(mouse_pos, mouse_pressed):
                 save_load = SaveSystem(".json",'Application/save_data/')
                 save_load.save_data((self.player.rect.x,self.player.rect.y), "player_position")
@@ -225,26 +223,35 @@ class Game:
             
             pygame.display.update()
 
-    def epilogue(self):
-        self.epilogue = True
-        while epilogue:
+    def prologue(self):
+        self.prologue_on = True
+        pygame.display.update()
+
+        while self.epilogue_on:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_KP_ENTER:
-                        epilogue = False
+                    if event.key == pygame.K_RETURN:
+                        self.epilogue_on = False
                 if event.type == pygame.QUIT:
-                    epilogue = False
+                    self.epilogue_on = False
                     self.running = False
-            self.screen.fill((0, 0, 0))
-            text = self.font.render("Story", True, 'White')
-            text_rect = text.get_rect(center=(WIDTH/2, HEIGHT/2))
-            self.screen.blit(text, text_rect)
+            
+            
+            self.screen.fill((0,0,0))
+            prologue_box = DialogueBox("Il était une fois, dans un monde lointain, un jeune aventurier qui partit à la recherche de trésors cachés. Il se nommait Arthur et était connu pour sa bravoure et sa témérité. Un jour, alors qu'il explorait une grotte mystérieuse, il découvrit une carte ancienne indiquant l'emplacement d'un trésor légendaire. Arthur décida de partir à la recherche de ce trésor, mais il ne savait pas encore qu'il allait devoir affronter de nombreux dangers et énigmes pour parvenir à ses fins.", 22, 700, 150, 50, HEIGHT - 250, (255, 255, 128,128), (0, 0, 0))
+            prologue_box.draw(self.screen)
+            #  def __init__(self, text, font_size=24, width=600, height=200, x=100, y=100, bg_color=(255, 255, 255), text_color=(0, 0, 0)):
+            press_enter_box = DialogueBox("Appuyez sur Entrée pour continuer...", 22, 300, 50, WIDTH/2 - 150, HEIGHT - 50, (255, 255, 255), (0, 0, 0))
+            press_enter_box.draw(self.screen)
             pygame.display.update()
+        
 
     def run(self):
         clock = pygame.time.Clock()
         # Affichage de l'écran d'introduction
         self.intro_screen()
+        if self.new_game: 
+            self.prologue() 
         
         while self.running:
             self.player.save_location()
