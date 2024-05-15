@@ -5,6 +5,9 @@ import json
 from entity import *
 from settings import *
 from interface import *
+from inventory import *
+from item import *
+
 
 class Game:
     def __init__(self):
@@ -27,6 +30,12 @@ class Game:
         self.intro_background = pygame.image.load("Application/background.png")
         self.running = True # Variable GLOBALE pour contrôler l'exécution du jeu
         self.new_game = False #Variable globale pour savoir si c'est un nouveau jeu 
+
+        #création de l'inventaire 
+        self.inventory = Inventory()
+
+        #initialise l'inventaire sur fermé
+        self.show_inventory = False
 
     def switch_map(self, map_name, spawn_name):
         self.all_enemies = []  # Réinitialiser la liste des ennemis
@@ -147,6 +156,14 @@ class Game:
             if self.player.attack_cooldown == 0:
                 self.player.shoot(mouse_x, mouse_y, self.all_bullets)
                 self.player.attack_cooldown = ATTACK_COOLDOWN
+        
+        #gestion affichage de l'inventaire 
+        if pressed[pygame.K_a]:
+                self.show_inventory = True
+        elif pressed [pygame.K_e]:
+                self.show_inventory = False
+            
+
 
     def intro_screen(self):
         intro = True
@@ -187,7 +204,7 @@ class Game:
             self.screen.blit(play_button.image, play_button.rect)
             self.screen.blit(exit_button.image, exit_button.rect)
             
-            pygame.display.update()
+            pygame.display.update()  
 
     def menu_screen(self):
         menu = True
@@ -223,6 +240,7 @@ class Game:
             
             pygame.display.update()
 
+
     def prologue(self):
         self.prologue_on = True
         pygame.display.update()
@@ -245,6 +263,13 @@ class Game:
             press_enter_box.draw(self.screen)
             pygame.display.update()
         
+
+    def draw_inventory(self):
+        if self.show_inventory:
+            self.inventory.show_inventory(self.screen, self.font, 800)
+    
+        pygame.display.update()
+
 
     def run(self):
         clock = pygame.time.Clock()
@@ -277,7 +302,11 @@ class Game:
             pygame.draw.rect(self.screen, (255, 0, 0), self.player.rect, 2)
             for enemy in self.all_enemies:
                 pygame.draw.rect(self.screen, (0, 255, 0), enemy.rect, 2)
-  
+            
+            #affichage de l'inventaire (i)
+            self.draw_inventory()
+
+                         
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
             
