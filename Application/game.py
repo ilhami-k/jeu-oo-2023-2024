@@ -193,7 +193,8 @@ class Game:
                 intro = False
                 self.running = False
             
-            self.screen.blit(self.intro_background, (0, 0))
+            stretched_image = pygame.transform.scale(self.intro_background,(800,1000))
+            self.screen.blit(stretched_image, (0, 0))
             self.screen.blit(title, title_rect)
             self.screen.blit(continue_button.image, continue_button.rect)
             self.screen.blit(play_button.image, play_button.rect)
@@ -231,7 +232,8 @@ class Game:
                 menu = False
                 self.running = False
             
-            self.screen.blit(self.intro_background, (0, 0))
+            stretched_image = pygame.transform.scale(self.intro_background,(800,1000))
+            self.screen.blit(stretched_image, (0, 0))
             self.screen.blit(title, title_rect)
             self.screen.blit(continue_button.image, continue_button.rect)
             self.screen.blit(save_game.image, save_game.rect)
