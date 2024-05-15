@@ -31,6 +31,7 @@ class Entity(pygame.sprite.Sprite):
         self.rect.topleft = self.position
         
     def move(self, x, y):
+        # Réduire la vitesse de déplacement en diagonale (A vérifier si ca fonctionne bien)
         if x != 0 and y != 0:
             x *= math.sqrt(2) / 2
             y *= math.sqrt(2) / 2
@@ -38,7 +39,7 @@ class Entity(pygame.sprite.Sprite):
         self.position[1] += y
 
     def take_damage(self):
-        self.health -= 1
+        self.health -= BULLET_DAMAGE
         if self.health <= 0:
             self.kill()  # Supprimer la spirte de l'ennemi du groupe
 

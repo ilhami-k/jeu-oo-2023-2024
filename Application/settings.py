@@ -24,3 +24,4 @@ BULLET_SPEED = 2
 ATTACK_COOLDOWN = 150 # Temps entre chaque tir 
 BULLET_LIFETIME = 200 # Durée de vie d'une balle
 BULLET_SCALE = 8
+BULLET_DAMAGE = 3
