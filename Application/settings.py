@@ -8,6 +8,7 @@ ZOOM = 1
 # Player settings
 PLAYER_SPEED = 1
 PLAYER_HEALTH = 10
+PLAYER_MAX_HEALTH = 10
 
 # Zombie settings
 ZOMBIE_SPEED = 1
