@@ -34,7 +34,7 @@ class Entity(pygame.sprite.Sprite):
         # Réduire la vitesse de déplacement en diagonale (A vérifier si ca fonctionne bien)
         if x != 0 and y != 0:
             x *= math.sqrt(2) / 2
-            y *= math.sqrt(2) / 2
+            y *= math.sqrt(2) / 2 
         self.position[0] += x
         self.position[1] += y
 
@@ -49,6 +49,8 @@ class Entity(pygame.sprite.Sprite):
 class Player(Entity):
     def __init__(self, x, y):
         super().__init__(x, y, "Application/Player.png", 'Player', PLAYER_SPEED, PLAYER_HEALTH, ATTACK_COOLDOWN)
+        self.max_health = PLAYER_MAX_HEALTH
+
 
     def shoot(self, target_x, target_y, bullet_group):
         angle = math.atan2(target_y - self.position[1], target_x - self.position[0])
@@ -57,6 +59,24 @@ class Player(Entity):
     def cooldown_tick(self):
         if self.attack_cooldown > 0:
             self.attack_cooldown -= 1
+            
+    #gestion de l'apparence de la barre de vie du joueur 
+    def update_healthbar (self, screen):
+        #couleur de la barre de vie 
+        bar_color = (85,209,70)
+        #couleur de fond de barre
+        bar_fond_color = (255,95,65)
+        #position de la barre 
+        bar_position = [self.rect.x, self.rect.y, self.health, 5]
+        #position de l'arriere plan de la barre 
+        bar_fond_position = [self.rect.x, self.rect.y, self.max_health, 5]
+
+        #affichage de l'arriere plan
+        pygame.draw.rect(screen, bar_fond_color, bar_fond_position)
+        #afficher la barre de vie 
+        pygame.draw.rect(screen, bar_color, bar_position)
+    
+
 
 class Enemy(Entity):
     def update(self, player):

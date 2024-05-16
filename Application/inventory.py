@@ -24,7 +24,7 @@ class Inventory:
                 y_offset = 20
 
                 #affichage du titre 
-                title = font.render("Inventory", True, (255, 255, 255))  # Blanc
+                title = font.render("Inventaire", True, (255, 255, 255))  # Blanc
                 title_rect = title.get_rect(center=(WIDTH / 2, 50))
                 screen.blit(title, title_rect)
 

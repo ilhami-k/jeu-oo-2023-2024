@@ -2,21 +2,20 @@ import pygame
 from settings import *
 
 class Item:
-    def __init__ (self, nom, info, size, color):
+    def __init__ (self, nom, info, scale, color):
         self.nom = nom
         self.info = info
-        self.size = size
+        self.scale = scale
         self.color = color
 
     def draw_item(self, surface, position):
-        pygame.draw.rect(surface, self.color, (position[0], position[1], self.size[0], self.size[1]))
+        pygame.draw.rect(surface, self.color, (position[0], position[1], self.scale[0], self.scale[1]))
       
 #toutes les classes suivantes héritent de la classe item
 class Healer (Item):
-    def __init__(self, nom, info, size, color, heal):
-        super().__init__(nom, info, size, color)
+    def __init__(self, nom, info, scale, color, heal):
+        super().__init__(nom, info, scale, color)
         self.heal = heal
-
     """reprend tout les objets pour le soin
     si le max n'est pas déja atteint"""
     def healing (self):
@@ -29,8 +28,7 @@ class Power (Item):
         super().__init__(nom, info, scale, color)
         self.bullet_speed = bullet_speed
         self.bullet_damage = bullet_damage
-        self.bullet_size = bullet_size
-        
+        self.bullet_size = bullet_size        
     def damage (self):
         pass
 
