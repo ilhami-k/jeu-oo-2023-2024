@@ -71,6 +71,10 @@ class Game:
             if obj.type == "spawn_skeleton":
                 self.all_enemies.append(Skeleton(obj.x, obj.y))  # Passer la référence au groupe ici
                 self.group.add(self.all_enemies)
+            if obj.type == 'spawn_npc':
+                self.npc = Npc(obj.x, obj.y)
+                self.group.add(self.npc)
+
 
         # Détection des collisions avec les objets de type "colliDeco" sur la carte
         self.collision = []
