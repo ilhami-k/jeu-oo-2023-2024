@@ -7,6 +7,7 @@ from settings import *
 from interface import *
 from inventory import *
 from item import *
+from save_system import SaveSystem
 
 
 class Game:
@@ -30,12 +31,15 @@ class Game:
         self.intro_background = pygame.image.load("Application/background.png")
         self.running = True # Variable GLOBALE pour contrôler l'exécution du jeu
         self.new_game = False #Variable globale pour savoir si c'est un nouveau jeu 
+        self.prologue_on = False
 
         #création de l'inventaire 
         self.inventory = Inventory()
+        
 
         #initialise l'inventaire sur fermé
         self.show_inventory = False
+        self.interface = Interface(self.player,self.running,self.prologue_on,self.new_game)
 
     def switch_map(self, map_name, spawn_name):
         self.all_enemies = []  # Réinitialiser la liste des ennemis
@@ -166,107 +170,6 @@ class Game:
                 self.show_inventory = True
         elif pressed [pygame.K_e]:
                 self.show_inventory = False
-            
-
-
-    def intro_screen(self):
-        intro = True
-        title = self.font.render("Projet OO", True, 'Black')
-        title_rect = title.get_rect(center=(WIDTH/2, HEIGHT/4))
-        continue_button = Button(WIDTH/2 - 100, HEIGHT/2 - 150, 200, 50, (255, 255, 255), (0, 0, 0), "Continue", 36)
-        play_button = Button(WIDTH/2 - 100, HEIGHT/2 -50 , 200, 50, (255, 255, 255), (0, 0, 0), "New Game", 36)
-        exit_button = Button(WIDTH/2 - 100, HEIGHT/2 + 50, 200, 50, (255, 255, 255), (0, 0, 0), "Exit", 36)
-
-        while intro:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    intro = False
-                    self.running = False
-            mouse_pos = pygame.mouse.get_pos()
-            mouse_pressed = pygame.mouse.get_pressed()
-            if continue_button.is_pressed(mouse_pos, mouse_pressed):
-                intro = False
-                save_load = SaveSystem(".json",'Application/save_data/')
-                player_position = save_load.load_data("player_position")
-                if player_position:
-                    self.player.position = player_position
-                    self.player.rect.x, self.player.rect.y = player_position
-
-            if play_button.is_pressed(mouse_pos, mouse_pressed):
-                intro = False
-                self.new_game = True
-                self.epilogue_on = True
-
-            if exit_button.is_pressed(mouse_pos, mouse_pressed):
-                intro = False
-                self.running = False
-            
-            stretched_image = pygame.transform.scale(self.intro_background,(800,1000))
-            self.screen.blit(stretched_image, (0, 0))
-            self.screen.blit(title, title_rect)
-            self.screen.blit(continue_button.image, continue_button.rect)
-            self.screen.blit(play_button.image, play_button.rect)
-            self.screen.blit(exit_button.image, exit_button.rect)
-            
-            pygame.display.update()  
-
-    def menu_screen(self):
-        menu = True
-        title = self.font.render("Menu", True, 'Black')
-        title_rect = title.get_rect(center=(WIDTH/2, HEIGHT/4))
-        continue_button = Button(WIDTH/2 - 100, HEIGHT/2 - 150, 200, 50, (255, 255, 255), (0, 0, 0), "Continue", 36)
-        save_game = Button(WIDTH/2 - 100, HEIGHT/2 -50 , 200, 50, (255, 255, 255), (0, 0, 0), "Save game", 36)
-        exit_button = Button(WIDTH/2 - 100, HEIGHT/2 + 50, 200, 50, (255, 255, 255), (0, 0, 0), "Exit", 36)
-
-        while menu:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    menu = False
-                    self.running = False
-            mouse_pos = pygame.mouse.get_pos()
-            mouse_pressed = pygame.mouse.get_pressed()
-            if continue_button.is_pressed(mouse_pos, mouse_pressed):
-                menu = False
-            if save_game.is_pressed(mouse_pos, mouse_pressed):
-                save_load = SaveSystem(".json",'Application/save_data/')
-                save_load.save_data((self.player.rect.x,self.player.rect.y), "player_position")
-                print("Game saved")
-            if exit_button.is_pressed(mouse_pos, mouse_pressed):
-                menu = False
-                self.running = False
-            
-            stretched_image = pygame.transform.scale(self.intro_background,(800,1000))
-            self.screen.blit(stretched_image, (0, 0))
-            self.screen.blit(title, title_rect)
-            self.screen.blit(continue_button.image, continue_button.rect)
-            self.screen.blit(save_game.image, save_game.rect)
-            self.screen.blit(exit_button.image, exit_button.rect)
-            
-            pygame.display.update()
-
-
-    def prologue(self):
-        self.prologue_on = True
-        pygame.display.update()
-
-        while self.epilogue_on:
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:
-                        self.epilogue_on = False
-                if event.type == pygame.QUIT:
-                    self.epilogue_on = False
-                    self.running = False
-            
-            
-            self.screen.fill((0,0,0))
-            prologue_box = DialogueBox("Il était une fois, dans un monde lointain, un jeune aventurier qui partit à la recherche de trésors cachés. Il se nommait Arthur et était connu pour sa bravoure et sa témérité. Un jour, alors qu'il explorait une grotte mystérieuse, il découvrit une carte ancienne indiquant l'emplacement d'un trésor légendaire. Arthur décida de partir à la recherche de ce trésor, mais il ne savait pas encore qu'il allait devoir affronter de nombreux dangers et énigmes pour parvenir à ses fins.", 22, 700, 150, 50, HEIGHT - 250, (255, 255, 128,128), (0, 0, 0))
-            prologue_box.draw(self.screen)
-            #  def __init__(self, text, font_size=24, width=600, height=200, x=100, y=100, bg_color=(255, 255, 255), text_color=(0, 0, 0)):
-            press_enter_box = DialogueBox("Appuyez sur Entrée pour continuer...", 22, 300, 50, WIDTH/2 - 150, HEIGHT - 50, (255, 255, 255), (0, 0, 0))
-            press_enter_box.draw(self.screen)
-            pygame.display.update()
-        
 
     def draw_inventory(self):
         if self.show_inventory:
@@ -278,9 +181,11 @@ class Game:
     def run(self):
         clock = pygame.time.Clock()
         # Affichage de l'écran d'introduction
-        self.intro_screen()
+        self.interface.intro_screen()
+        self.running = self.interface.intro_screen() #pour pouvoir quitter le jeu lors de l'ecran du menu
+        self.new_game = self.interface.intro_screen()
         if self.new_game: 
-            self.prologue() 
+            self.interface.prologue() 
         
         while self.running:
             self.player.save_location()
@@ -318,7 +223,8 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        self.menu_screen() 
+                        self.interface.menu_screen() 
+                        self.running = self.interface.menu_screen()
                 if event.type == pygame.QUIT:
                     self.running = False
 
@@ -326,26 +232,3 @@ class Game:
         
         # Fermeture de la fenêtre pygame
         pygame.quit()
-
-class SaveSystem:
-    def __init__(self, file_extension, save_folder):
-        self.file_extension = file_extension
-        self.save_folder = save_folder
-    
-    def save_data(self, data, name):
-        data_file_path = self.save_folder + name + self.file_extension
-        with open(data_file_path, "w") as data_file:
-            json.dump(data, data_file)
-    
-    def load_data(self, name):
-        data_file_path = self.save_folder + name + self.file_extension
-        print("Loading data from:", data_file_path)
-        try:
-            with open(data_file_path, "r") as data_file:
-                data = json.load(data_file)
-                return data
-        except FileNotFoundError or json.decoder.JSONDecodeError:
-            print('No save found, Creating a new one.')
-            default_data = None
-            self.save_data(default_data, name)
-            return default_data
