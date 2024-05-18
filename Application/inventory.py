@@ -4,13 +4,15 @@ from item import *
 class Inventory:
     def __init__(self):
         self.items = []
-        self.items.append(appel)
-        self.items.append(berry)
+        
+        # Test pour voir si les objets sont bien ajoutés à l'inventaire
+        # self.items.append(appel)
+        # self.items.append(berry)
 
-    def add(self, item):
+    def add_item(self, item):
         self.items.append(item)
 
-    def remove(self, item):
+    def remove_item(self, item):
         if item in self.items:
             self.items.remove(item)
         else:

@@ -20,7 +20,7 @@ class Game:
         self.player = Player(0, 0)
 
         # Initialisation de la liste des items
-        self.list_items = [appel, berry, military, police, uzi, bazooka, pistol]
+        self.list_items_on_map = [appel, berry, military, police, uzi, bazooka, pistol]
 
         self.all_enemies = []  # Liste pour les ennemis
 
@@ -84,7 +84,7 @@ class Game:
             # Si l'objet est un item
             if obj.type == "item":
                 # Parcourir les objets de la liste
-                for item in self.list_items:
+                for item in self.list_items_on_map:
                     # Si le nom de l'objet de la liste correspond au nom de l'objet du fichier TMX
                     if item.nom == obj.name:
                         # Positionner l'objet sur la carte
@@ -157,6 +157,17 @@ class Game:
             elif self.player.rect.colliderect(self.enter_other_map2_rect):
                 self.switch_map("map3.tmx", "spawn_map3_2")
 
+    def take_item(self):
+        for item in self.list_items_on_map:
+            # Vérifier si le joueur est en collision avec un objet
+            if pygame.sprite.collide_rect(self.player, item):
+                # Effectuer l'action de ramassage de l'objet
+                self.inventory.add_item(item)
+                # Supprimer l'item de la liste des items sur la carte pour ne pas qu'il réapparaisse
+                self.list_items_on_map.remove(item)
+                # Supprimer l'objet du groupe de calques
+                self.group.remove(item)
+
     def handle_input(self): 
         pressed = pygame.key.get_pressed() # Gestion des entrées du joueur (mouvement et tir) 
         mouse_pressed = pygame.mouse.get_pressed() # Gestion du tir du joueur (avec le bouton gauche de la souris)
@@ -181,6 +192,10 @@ class Game:
         # Gestion de l'affichage de l'inventaire avec une seule touche
         if pressed[pygame.K_i]:
             self.show_inventory = not self.show_inventory
+
+        # Gestion de la prise d'objet
+        if pressed[pygame.K_e]:
+            self.take_item()
 
     def draw_inventory(self):
         if self.show_inventory:
