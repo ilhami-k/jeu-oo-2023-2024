@@ -19,6 +19,9 @@ class Game:
         # Création du joueur et ajout au groupe de calques
         self.player = Player(0, 0)
 
+        # Initialisation de la liste des items
+        self.list_items = [appel, berry, military, police, uzi, bazooka, pistol]
+
         self.all_enemies = []  # Liste pour les ennemis
 
         # Appel de la méthode switch_map pour charger la première carte
@@ -78,6 +81,16 @@ class Game:
             if obj.type == 'spawn_npc':
                 self.npc = Npc(obj.x, obj.y)
                 self.group.add(self.npc)
+            # Si l'objet est un item
+            if obj.type == "item":
+                # Parcourir les objets de la liste
+                for item in self.list_items:
+                    # Si le nom de l'objet de la liste correspond au nom de l'objet du fichier TMX
+                    if item.nom == obj.name:
+                        # Positionner l'objet sur la carte
+                        item.rect.x = obj.x
+                        item.rect.y = obj.y
+                        self.group.add(item)
 
         # Détection des collisions avec les objets de type "colliDeco" sur la carte
         self.collision = []
