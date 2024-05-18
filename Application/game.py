@@ -165,11 +165,11 @@ class Game:
                 self.player.shoot(mouse_x, mouse_y, self.all_bullets)
                 self.player.attack_cooldown = ATTACK_COOLDOWN
         
-        #gestion affichage de l'inventaire 
-        if pressed[pygame.K_a]:
-                self.show_inventory = True
-        elif pressed [pygame.K_e]:
-                self.show_inventory = False
+        # Gestion de l'affichage de l'inventaire avec une seule touche
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_i:
+                    self.show_inventory = not self.show_inventory
 
     def draw_inventory(self):
         if self.show_inventory:

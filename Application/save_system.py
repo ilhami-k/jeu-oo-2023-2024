@@ -1,5 +1,6 @@
 import json
 from game import *
+
 class SaveSystem:
     def __init__(self, file_extension, save_folder):
         self.file_extension = file_extension
