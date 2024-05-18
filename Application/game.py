@@ -78,7 +78,7 @@ class Game:
             if obj.type == 'spawn_npc':
                 self.npc = Npc(obj.x, obj.y)
                 self.group.add(self.npc)
-                
+
         # Détection des collisions avec les objets de type "colliDeco" sur la carte
         self.collision = []
         for obj in tmx_data.objects:
@@ -166,10 +166,8 @@ class Game:
                 self.player.attack_cooldown = ATTACK_COOLDOWN
         
         # Gestion de l'affichage de l'inventaire avec une seule touche
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_i:
-                    self.show_inventory = not self.show_inventory
+        if pressed[pygame.K_i]:
+            self.show_inventory = not self.show_inventory
 
     def draw_inventory(self):
         if self.show_inventory:
