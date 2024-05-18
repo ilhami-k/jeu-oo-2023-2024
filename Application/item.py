@@ -1,7 +1,7 @@
 import pygame
 from settings import *
 
-class Item:
+class Item(pygame.sprite.Sprite):
     def __init__ (self, nom, info, size, color):
         self.nom = nom
         self.info = info

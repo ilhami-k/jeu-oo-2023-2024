@@ -78,8 +78,7 @@ class Game:
             if obj.type == 'spawn_npc':
                 self.npc = Npc(obj.x, obj.y)
                 self.group.add(self.npc)
-
-
+                
         # Détection des collisions avec les objets de type "colliDeco" sur la carte
         self.collision = []
         for obj in tmx_data.objects:
@@ -100,10 +99,11 @@ class Game:
         for collision_rect in self.collision:
             if self.player.rect.colliderect(collision_rect):
                 self.player.move_back()
-        # Vérification des collisions entre l'ennemi et les objets de collision
-        for enemy in self.all_enemies:
-            if enemy.rect.colliderect(collision_rect):
-                enemy.move_back()
+        # BUG Vérification des collisions entre l'ennemi et les objets de collision
+        # for enemy in self.all_enemies:
+        #     for collision_rect in self.collision:
+        #         if enemy.rect.colliderect(collision_rect):
+        #             enemy.move_back()
 
         # Vérification des collisions entre les balles et l'ennemi
         for bullet in self.all_bullets:
@@ -177,7 +177,6 @@ class Game:
     
         pygame.display.update()
 
-
     def run(self):
         clock = pygame.time.Clock()
         # Affichage de l'écran d'introduction
@@ -214,8 +213,7 @@ class Game:
             
             #affichage de l'inventaire (i)
             self.draw_inventory()
-
-                         
+                   
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
             
