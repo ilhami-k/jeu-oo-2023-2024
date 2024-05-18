@@ -102,4 +102,5 @@ class Skeleton(Enemy):
         self.initial_attack_cooldown = SKELETON_ATTACK_COOLDOWN
 
 class Npc(Entity):
-    pass  # Ajoutez ici les méthodes et attributs spécifiques à la classe PNJ
+    def __init__(self, x, y):
+        super().__init__(x, y, "Application/NPC.png", 'npc', NPC_SPEED, NPC_HEALTH, NPC_ATTACK_COOLDOWN)
