@@ -10,6 +10,7 @@ from item import *
 from save_system import SaveSystem
 
 
+
 class Game:
     def __init__(self):
         # Initialisation de la fenêtre de jeu
@@ -17,12 +18,16 @@ class Game:
         pygame.display.set_caption(TITRE)  # Définir le titre de la fenêtre
 
         # Création du joueur et ajout au groupe de calques
-        self.player = Player(0, 0)
+        self.player = Player(0,0)
+
 
         # Initialisation de la liste des items
         self.list_items_on_map = [appel, berry, military, police, uzi, bazooka, pistol]
 
         self.all_enemies = []  # Liste pour les ennemis
+        # Liste pour les ennemis
+        self.all_enemies = []  
+
 
         # Appel de la méthode switch_map pour charger la première carte
         self.switch_map("map1.tmx", "spawn_player")
@@ -43,6 +48,7 @@ class Game:
         #initialise l'inventaire sur fermé
         self.show_inventory = False
         self.interface = Interface(self.player,self.running,self.prologue_on,self.new_game)
+
 
     def switch_map(self, map_name, spawn_name):
         self.all_enemies = []  # Réinitialiser la liste des ennemis
@@ -199,7 +205,8 @@ class Game:
 
     def draw_inventory(self):
         if self.show_inventory:
-            self.inventory.show_inventory(self.screen, self.font, 800)
+            self.inventory.show_inventory(self.screen, self.font, 800)   
+            
     
         pygame.display.update()
 
@@ -237,9 +244,11 @@ class Game:
             for enemy in self.all_enemies:
                 pygame.draw.rect(self.screen, (0, 255, 0), enemy.rect, 2)
             
+            #affichage de la barre de vie
+            self.player.update_healthbar(self.screen)
+                        
             #affichage de l'inventaire (i)
             self.draw_inventory()
-                   
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
             
