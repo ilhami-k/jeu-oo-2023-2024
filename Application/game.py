@@ -45,6 +45,7 @@ class Game:
         #initialise l'inventaire sur fermé
         self.show_inventory = False
         self.interface = Interface(self.player,self.running,self.prologue_on,self.new_game)
+        self.npc = None
 
 
     def switch_map(self, map_name, spawn_name):
@@ -82,7 +83,7 @@ class Game:
                 self.all_enemies.append(Skeleton(obj.x, obj.y))  # Passer la référence au groupe ici
                 self.group.add(self.all_enemies)
             if obj.type == 'spawn_npc':
-                self.npc = Npc(obj.x, obj.y)
+                self.npc = Npc(obj.x, obj.y,'test')
                 self.group.add(self.npc)
             # Si l'objet est un item
             if obj.type == "item":
@@ -167,6 +168,8 @@ class Game:
         elif self.map == 'mapBoss.tmx':
             if self.player.rect.colliderect(self.enter_other_map1_rect):
                 self.switch_map('map3.tmx',"spawn_map3_3")
+        if self.npc:
+            self.npc.update(self.player)
 
     def take_item(self):
         for item in self.list_items_on_map:
@@ -178,7 +181,9 @@ class Game:
                 self.list_items_on_map.remove(item)
                 # Supprimer l'objet du groupe de calques
                 self.group.remove(item)
-
+    def draw_dialogue_box(self):
+        if self.npc and self.npc.dialogue_box:
+            self.npc.dialogue_box.draw(self.screen)
     def handle_input(self): 
         pressed = pygame.key.get_pressed() # Gestion des entrées du joueur (mouvement et tir) 
         mouse_pressed = pygame.mouse.get_pressed() # Gestion du tir du joueur (avec le bouton gauche de la souris)
@@ -207,13 +212,12 @@ class Game:
         # Gestion de la prise d'objet
         if pressed[pygame.K_e]:
             self.take_item()
-
+        if pressed[pygame.K_f] and self.npc and self.npc.in_interaction_range(self.player):
+            self.npc.interact(self.player)
     def draw_inventory(self):
         if self.show_inventory:
-            self.inventory.show_inventory(self.screen, self.font, 800)   
+            self.inventory.show_inventory(self.screen, self.font, 800)
             
-    
-        pygame.display.update()
 
     def run(self):
         clock = pygame.time.Clock()
@@ -241,6 +245,7 @@ class Game:
             # Affichage des balles tirées par le joueur
             self.all_bullets.draw(self.screen)
             
+            
             # Centrage de la caméra sur le joueur
             self.group.center(self.player.rect.center)
 
@@ -254,6 +259,7 @@ class Game:
                         
             #affichage de l'inventaire (i)
             self.draw_inventory()
+            self.draw_dialogue_box()
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
             

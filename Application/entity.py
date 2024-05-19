@@ -3,6 +3,7 @@ import math
 from settings import *
 from bullet import Bullet
 from game import *
+from interface import *
 
 class Entity(pygame.sprite.Sprite):
     def __init__(self, x, y, image_path, name, speed, health, attack_cooldown=0):
@@ -122,5 +123,22 @@ class Skeleton(Enemy):
         self.initial_attack_cooldown = SKELETON_ATTACK_COOLDOWN
 
 class Npc(Entity):
-    def __init__(self, x, y):
+    def __init__(self, x, y,lines):
         super().__init__(x, y, "Application/NPC.png", 'npc', NPC_SPEED, NPC_HEALTH, NPC_ATTACK_COOLDOWN)
+        self.x = x
+        self.y = y
+        self.lines = lines
+        self.interaction_range = 50
+        self.dialogue_box = None
+    def interact(self,player):
+        if self.in_interaction_range(player):
+            self.dialogue_box = DialogueBox(self.lines, 22, 700, 150, 50, HEIGHT - 250, (255, 255, 128,128), (0, 0, 0))
+            return True
+        return False
+    def in_interaction_range (self,player):
+        distance = math.sqrt((self.position[0] - player.position[0]) ** 2 + (self.position[1] - player.position[1]) ** 2)
+        return distance <= self.interaction_range
+
+    def draw_dialogue_box(self):
+        if self.npc and self.npc.dialogue_box:
+            self.npc.dialogue_box.draw(self.screen)
