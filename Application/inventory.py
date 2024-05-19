@@ -28,11 +28,6 @@ class Inventory:
         inventory_surface.fill((50, 50, 50, 128))  # Remplit la surface avec une couleur de fond semi-transparente
         y_offset = 20  # Initialisation de l'offset vertical pour l'affichage des items
 
-        # Affichage du titre "Inventory" au centre du haut de l'inventaire
-        title = font.render("Inventory", True, (255, 255, 255))  # Rend le texte en blanc
-        title_rect = title.get_rect(center=(WIDTH / 2, 50))
-        screen.blit(title, title_rect)
-
         #affichage du titre 
         title = font.render("Inventaire", True, (255, 255, 255))  # Blanc
         title_rect = title.get_rect(center=(WIDTH / 2, 50))
