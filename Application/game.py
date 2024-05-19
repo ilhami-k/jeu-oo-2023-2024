@@ -10,6 +10,7 @@ from item import *
 from save_system import SaveSystem
 
 
+
 class Game:
     def __init__(self):
         # Initialisation de la fenêtre de jeu
@@ -17,7 +18,11 @@ class Game:
         pygame.display.set_caption(TITRE)  # Définir le titre de la fenêtre
 
         # Création du joueur et ajout au groupe de calques
-        self.player = Player(0, 0)
+        self.player = Player(0,0)
+
+
+        # Initialisation de la liste des items
+        self.list_items_on_map = [appel, berry, military, police, uzi, bazooka, pistol]
 
         self.all_enemies = []  # Liste pour les ennemis
 
@@ -40,6 +45,7 @@ class Game:
         #initialise l'inventaire sur fermé
         self.show_inventory = False
         self.interface = Interface(self.player,self.running,self.prologue_on,self.new_game)
+
 
     def switch_map(self, map_name, spawn_name):
         self.all_enemies = []  # Réinitialiser la liste des ennemis
@@ -78,7 +84,16 @@ class Game:
             if obj.type == 'spawn_npc':
                 self.npc = Npc(obj.x, obj.y)
                 self.group.add(self.npc)
-
+            # Si l'objet est un item
+            if obj.type == "item":
+                # Parcourir les objets de la liste
+                for item in self.list_items_on_map:
+                    # Si le nom de l'objet de la liste correspond au nom de l'objet du fichier TMX
+                    if item.nom == obj.name:
+                        # Positionner l'objet sur la carte
+                        item.rect.x = obj.x
+                        item.rect.y = obj.y
+                        self.group.add(item)
 
         # Détection des collisions avec les objets de type "colliDeco" sur la carte
         self.collision = []
@@ -103,10 +118,11 @@ class Game:
         for collision_rect in self.collision:
             if self.player.rect.colliderect(collision_rect):
                 self.player.move_back()
-        # Vérification des collisions entre l'ennemi et les objets de collision
-        for enemy in self.all_enemies:
-            if enemy.rect.colliderect(collision_rect):
-                enemy.move_back()
+        # BUG Vérification des collisions entre l'ennemi et les objets de collision
+        # for enemy in self.all_enemies:
+        #     for collision_rect in self.collision:
+        #         if enemy.rect.colliderect(collision_rect):
+        #             enemy.move_back()
 
         # Vérification des collisions entre les balles et l'ennemi
         for bullet in self.all_bullets:
@@ -172,18 +188,20 @@ class Game:
                 self.player.shoot(mouse_x, mouse_y, self.all_bullets)
                 self.player.attack_cooldown = ATTACK_COOLDOWN
         
-        #gestion affichage de l'inventaire 
-        if pressed[pygame.K_a]:
-                self.show_inventory = True
-        elif pressed [pygame.K_e]:
-                self.show_inventory = False
+        # Gestion de l'affichage de l'inventaire avec une seule touche
+        if pressed[pygame.K_i]:
+            self.show_inventory = not self.show_inventory
+
+        # Gestion de la prise d'objet
+        if pressed[pygame.K_e]:
+            self.take_item()
 
     def draw_inventory(self):
         if self.show_inventory:
-            self.inventory.show_inventory(self.screen, self.font, 800)
+            self.inventory.show_inventory(self.screen, self.font, 800)   
+            
     
         pygame.display.update()
-
 
     def run(self):
         clock = pygame.time.Clock()
@@ -219,10 +237,11 @@ class Game:
             for enemy in self.all_enemies:
                 pygame.draw.rect(self.screen, (0, 255, 0), enemy.rect, 2)
             
+            #affichage de la barre de vie
+            self.player.update_healthbar(self.screen)
+                        
             #affichage de l'inventaire (i)
             self.draw_inventory()
-
-                         
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
             
