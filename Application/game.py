@@ -161,9 +161,9 @@ class Game:
                 self.player.attack_cooldown = ATTACK_COOLDOWN
         
         #gestion affichage de l'inventaire 
-        if pressed[pygame.K_i]:
+        if pressed[pygame.K_a]:
                 self.show_inventory = True
-        elif pressed [pygame.K_i]:
+        elif pressed [pygame.K_e]:
                 self.show_inventory = False
             
 
