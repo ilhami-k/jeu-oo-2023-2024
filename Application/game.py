@@ -107,6 +107,9 @@ class Game:
         self.enter_other_map1_rect = pygame.Rect(enter_other_map1.x, enter_other_map1.y, enter_other_map1.width, enter_other_map1.height)
         enter_other_map2 = tmx_data.get_object_by_name("enter_other_map2")
         self.enter_other_map2_rect = pygame.Rect(enter_other_map2.x, enter_other_map2.y, enter_other_map2.width, enter_other_map2.height)
+        if map_name == 'map3.tmx':
+            enter_map_boss = tmx_data.get_object_by_name("enter_map_boss")
+            self.enter_map_boss_rect = pygame.Rect(enter_map_boss.x, enter_map_boss.y, enter_map_boss.width, enter_map_boss.height)
 
     def update(self): 
         # Mise à jour du groupe de calques
@@ -155,11 +158,16 @@ class Game:
                 self.switch_map("map1.tmx", "spawn_map1_2")
             elif self.player.rect.colliderect(self.enter_other_map2_rect):
                 self.switch_map("map4.tmx", "spawn_map4_2")
+            elif self.player.rect.colliderect(self.enter_map_boss_rect):
+                self.switch_map("mapBoss.tmx", "spawn_map_boss")
         elif self.map == 'map4.tmx':
             if self.player.rect.colliderect(self.enter_other_map1_rect):
                 self.switch_map("map2.tmx", "spawn_map2_2")
             elif self.player.rect.colliderect(self.enter_other_map2_rect):
                 self.switch_map("map3.tmx", "spawn_map3_2")
+        elif self.map == 'mapBoss.tmx':
+            if self.player.rect.colliderect(self.enter_other_map1_rect):
+                self.switch_map('map3.tmx',"spawn_map3_3")
         if self.npc:
             self.npc.update(self.player)
 

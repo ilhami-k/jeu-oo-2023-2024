@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="41">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="47">
  <tileset firstgid="1" source="Modern_Exteriors_Complete_Tileset.tsx"/>
  <layer id="1" name="Calque de Tuiles 1" width="50" height="50">
   <data encoding="csv">
@@ -221,7 +221,6 @@
   <object id="1" type="collision" x="0.666667" y="388" width="254" height="10"/>
   <object id="2" type="collision" x="289.333" y="388.667" width="249.333" height="10"/>
   <object id="3" type="collision" x="528.667" y="400" width="10.6667" height="401.333"/>
-  <object id="4" type="collision" x="112.5" y="477.5" width="78.5" height="81.5"/>
   <object id="5" type="collision" x="179.5" y="564.5" width="8" height="9"/>
   <object id="6" type="collision" x="63" y="496" width="17" height="58"/>
   <object id="7" type="collision" x="16" y="518" width="15.5" height="37"/>
@@ -274,6 +273,13 @@
    <point/>
   </object>
   <object id="40" name="Skeleton" type="spawn_skeleton" x="140" y="664">
+   <point/>
+  </object>
+  <object id="41" type="collision" x="113" y="511.5" width="22.5" height="48.5"/>
+  <object id="42" type="collision" x="168.5" y="510.5" width="22.5" height="48.5"/>
+  <object id="44" type="collision" x="113.5" y="472.5" width="73" height="40.5"/>
+  <object id="45" name="enter_map_boss" x="136" y="513.5" width="31.5" height="46.5"/>
+  <object id="46" name="spawn_map3_3" x="151" y="603.5">
    <point/>
   </object>
  </objectgroup>
