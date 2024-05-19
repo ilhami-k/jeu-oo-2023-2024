@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="117">
- <tileset firstgid="1" source="../../../../Desktop/Pygame/Decors Jeux.tsx"/>
+ <tileset firstgid="1" source="Modern_Exteriors_Complete_Tileset.tsx"/>
  <layer id="1" name="background" width="50" height="50">
   <data encoding="csv">
 1414,1414,1414,1414,1414,1414,1414,1414,1414,1414,193,369,369,370,193,194,195,196,194,195,197,198,197,198,199,200,198,199,200,200,194,195,196,370,371,372,196,372,196,194,1414,1414,1414,1414,1414,1414,1414,1414,1414,1414,
