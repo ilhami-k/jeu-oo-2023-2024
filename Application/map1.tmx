@@ -331,4 +331,7 @@
    <point/>
   </object>
   <object id="52" name="police" type="item" x="413.333" y="592">
-
+   <point/>
+  </object>
+ </objectgroup>
+</map>
