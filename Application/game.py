@@ -167,6 +167,18 @@ class Game:
         elif self.map == 'mapBoss.tmx':
             if self.player.rect.colliderect(self.enter_other_map1_rect):
                 self.switch_map('map3.tmx',"spawn_map3_3")
+
+    def take_item(self):
+        for item in self.list_items_on_map:
+            # Vérifier si le joueur est en collision avec un objet
+            if pygame.sprite.collide_rect(self.player, item):
+                # Effectuer l'action de ramassage de l'objet
+                self.inventory.add_item(item)
+                # Supprimer l'item de la liste des items sur la carte pour ne pas qu'il réapparaisse
+                self.list_items_on_map.remove(item)
+                # Supprimer l'objet du groupe de calques
+                self.group.remove(item)
+
     def handle_input(self): 
         pressed = pygame.key.get_pressed() # Gestion des entrées du joueur (mouvement et tir) 
         mouse_pressed = pygame.mouse.get_pressed() # Gestion du tir du joueur (avec le bouton gauche de la souris)
