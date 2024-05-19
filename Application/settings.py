@@ -33,8 +33,8 @@ BULLET_DAMAGE = 3
 
 # Appel setting
 APPLE_INFO = 'le fruit préferé de Newton' 
-APPLE_SCALE = 2
-APPEL_COLOR = (0,0,0)
+APPLE_SCALE = 4
+APPLE_COLOR = (0,255,0)
 APPLE_HEAL = 5
 
 # Berry setting

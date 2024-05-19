@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="52">
+
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="53">
+
  <tileset firstgid="1" source="Modern_Exteriors_Complete_Tileset.tsx"/>
  <layer id="1" name="Calque de Tuiles 1" width="50" height="50">
   <data encoding="csv">
@@ -318,8 +320,15 @@
   </object>
   <object id="45" type="collision" x="465.667" y="267" width="37.6667" height="19.3333"/>
   <object id="46" type="collision" x="504.333" y="268.667" width="6.33333" height="9"/>
-  <object id="48" name="apple" type="item" x="445.979" y="405.558">
+
+  <object id="49" name="pomme" type="item" x="465.333" y="532">
    <point/>
   </object>
- </objectgroup>
-</map>
+  <object id="50" name="bazooka" type="item" x="413.333" y="529.333">
+   <point/>
+  </object>
+  <object id="51" name="uzi" type="item" x="468" y="590.667">
+   <point/>
+  </object>
+  <object id="52" name="police" type="item" x="413.333" y="592">
+
