@@ -125,8 +125,6 @@ class Skeleton(Enemy):
 class Npc(Entity):
     def __init__(self, x, y,lines):
         super().__init__(x, y, "Application/NPC.png", 'npc', NPC_SPEED, NPC_HEALTH, NPC_ATTACK_COOLDOWN)
-        self.x = x
-        self.y = y
         self.lines = lines
         self.interaction_range = 50
         self.dialogue_box = None
