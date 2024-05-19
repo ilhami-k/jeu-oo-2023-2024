@@ -8,7 +8,7 @@ ZOOM = 1
 # Player settings
 PLAYER_SPEED = 5
 PLAYER_HEALTH = 10
-PLAYER_MAX_HEALTH = 10
+PLAYER_MAX_HEALTH = 100000
 
 # Zombie settings
 ZOMBIE_SPEED = 1
@@ -26,7 +26,7 @@ NPC_ATTACK_COOLDOWN = 25
 
 # Bullet settings
 BULLET_SPEED = 2
-ATTACK_COOLDOWN = 150 # Temps entre chaque tir 
+ATTACK_COOLDOWN = 1 # Temps entre chaque tir 
 BULLET_LIFETIME = 200 # Durée de vie d'une balle
 BULLET_SCALE = 8
 BULLET_DAMAGE = 3
