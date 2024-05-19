@@ -33,21 +33,10 @@ class Inventory:
         title_rect = title.get_rect(center=(WIDTH / 2, 50))
         screen.blit(title, title_rect)
 
-                #affichage du titre 
-                title = font.render("Inventaire", True, (255, 255, 255))  # Blanc
-                title_rect = title.get_rect(center=(WIDTH / 2, 50))
-                screen.blit(title, title_rect)
-
-                #gestion de l'affichage du texte des items
-                item_font = pygame.font.Font(None, 20)
-
-                # Affichez chaque item dans l'inventaire
-                for item in self.items:
-                    item_text = item_font.render(f"{item.nom}: {item.info}", True, (255, 255, 255))
-                    inventory_surface.blit(item_text, (20, y_offset))
-                    y_offset += 40
-                
-                
+        #affichage du titre 
+        title = font.render("Inventaire", True, (255, 255, 255))  # Blanc
+        title_rect = title.get_rect(center=(WIDTH / 2, 50))
+        screen.blit(title, title_rect)
 
         # Affiche chaque item dans l'inventaire
         for item in self.items:

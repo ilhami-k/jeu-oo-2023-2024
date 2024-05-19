@@ -25,9 +25,6 @@ class Game:
         self.list_items_on_map = [appel, berry, military, police, uzi, bazooka, pistol]
 
         self.all_enemies = []  # Liste pour les ennemis
-        # Liste pour les ennemis
-        self.all_enemies = []  
-
 
         # Appel de la méthode switch_map pour charger la première carte
         self.switch_map("map1.tmx", "spawn_player")
