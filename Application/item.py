@@ -28,16 +28,6 @@ class Healer(Item):
 
     def draw_item(self, surface, position):
         surface.blit(self.image, position)
-      
-#toutes les classes suivantes héritent de la classe item
-class Healer (Item):
-    def __init__(self, nom, info, scale, color, heal):
-        super().__init__(0,0, nom, info, scale, color)
-        self.heal = heal
-    """reprend tout les objets pour le soin
-    si le max n'est pas déja atteint"""
-    def healing (self):
-        pass
 
 class Power(Item):
     """Reprend les améliorations qui auront pour effet 
