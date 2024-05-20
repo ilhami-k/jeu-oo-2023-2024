@@ -75,3 +75,9 @@ POLICE_INFO = "blindage de la police anti émeute"
 POLICE_SCALE = 5
 POLICE_COLOR = (96,3,8)
 POLICE_SHIELD = 3
+
+# Tooth settings
+TOOTH_INFO = "dent de monstre"
+TOOTH_SCALE = 2
+TOOTH_COLOR = (255,255,255)
+

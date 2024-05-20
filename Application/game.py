@@ -2,6 +2,7 @@ import pygame
 import pytmx
 import pyscroll
 import json
+import random
 from entity import *
 from settings import *
 from interface import *
@@ -20,9 +21,9 @@ class Game:
         # Création du joueur et ajout au groupe de calques
         self.player = Player(0,0)
 
-
         # Initialisation de la liste des items
         self.list_items_on_map = [appel, berry, military, police, uzi, bazooka, pistol]
+        self.list_items_on_monster = [tooth]
 
         self.all_enemies = []  # Liste pour les ennemis
 
@@ -133,6 +134,13 @@ class Game:
                     enemy.take_damage()
                     if enemy.health <= 0:
                         self.all_enemies.remove(enemy) # Supprimer l'ennemi du groupe (rect)
+                        # Probabilité de drop d'un item
+                        drop_chance = 0.2  # Probabilité de 20%
+                        if random.random() < drop_chance:
+                            item = random.choice(self.list_items_on_monster)
+                            item.rect.x = enemy.rect.x
+                            item.rect.y = enemy.rect.y
+                            self.group.add(item)
 
         # Mise à jour des balles tirées par le joueur
         for bullet in self.all_bullets:
@@ -177,10 +185,21 @@ class Game:
             if pygame.sprite.collide_rect(self.player, item):
                 # Effectuer l'action de ramassage de l'objet
                 self.inventory.add_item(item)
-                # Supprimer l'item de la liste des items sur la carte pour ne pas qu'il réapparaisse
-                self.list_items_on_map.remove(item)
                 # Supprimer l'objet du groupe de calques
                 self.group.remove(item)
+                # Supprimer l'objet de la liste des objets sur la carte
+                self.list_items_on_map.remove(item)
+
+        for item in self.list_items_on_monster:
+            # Vérifier si le joueur est en collision avec un objet
+            if pygame.sprite.collide_rect(self.player, item):
+                # Effectuer l'action de ramassage de l'objet
+                self.inventory.add_item(item)
+                # Supprimer l'objet du groupe de calques
+                self.group.remove(item)
+                # Supprimer l'objet de la liste des objets sur la carte
+                self.list_items_on_monster.remove(item)
+
     def draw_dialogue_box(self):
         if self.npc and self.npc.dialogue_box:
             self.npc.dialogue_box.draw(self.screen)
@@ -212,8 +231,11 @@ class Game:
         # Gestion de la prise d'objet
         if pressed[pygame.K_e]:
             self.take_item()
+            
+        # Gestion de l'interaction avec les NPC
         if pressed[pygame.K_f] and self.npc and self.npc.in_interaction_range(self.player):
             self.npc.interact(self.player)
+
     def draw_inventory(self):
         if self.show_inventory:
             self.inventory.show_inventory(self.screen, self.font, 800)
