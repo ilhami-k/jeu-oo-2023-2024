@@ -184,6 +184,7 @@ class Game:
                 self.list_items_on_map.remove(item)
                 # Supprimer l'objet du groupe de calques
                 self.group.remove(item)
+    
     def draw_dialogue_box(self):
         if self.npc and self.npc.dialogue_box:
             self.npc.dialogue_box.draw(self.screen)
@@ -217,6 +218,7 @@ class Game:
             self.take_item()
         if pressed[pygame.K_f] and self.npc and self.npc.in_interaction_range(self.player):
             self.npc.interact(self.player)
+
     def draw_inventory(self):
         if self.show_inventory:
             self.inventory.show_inventory(self.screen, self.font, 800)
@@ -275,13 +277,11 @@ class Game:
                         self.interface.menu_screen() 
                         self.running = self.interface.menu_screen()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1: 
+                    if event.button == 2: 
                         for rect, item in self.item_rects:
                             if rect.collidepoint(event.pos):
-                                if isinstance(item, Healer):
-                                    Healer.healing()
-                                if isinstance(item, Power):
-                                    pass
+                                self.inventory.use_item(item)
+                                
                 elif event.type == pygame.QUIT:
                     self.running = False
 

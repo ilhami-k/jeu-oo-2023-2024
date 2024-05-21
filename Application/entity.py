@@ -68,9 +68,9 @@ class Player(Entity):
         #couleur de fond de barre
         bar_fond_color = (255,95,65)
         #position de la barre 
-        bar_position = [self.rect.x, self.rect.y, self.health, 5]
+        bar_position = [15, 15, self.health, 10]
         #position de l'arriere plan de la barre 
-        bar_fond_position = [self.rect.x, self.rect.y, self.max_health, 5]
+        bar_fond_position = [15, 15, self.max_health, 10]
 
         #affichage de l'arriere plan
         pygame.draw.rect(screen, bar_fond_color, bar_fond_position)

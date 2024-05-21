@@ -7,9 +7,9 @@ class Inventory:
         self.items = []  # Initialise une liste vide pour stocker les items de l'inventaire
         self.item_rects = []
 
-        # Test pour voir si les objets sont bien ajoutés à l'inventaire
-        # self.items.append(appel)
-        # self.items.append(berry)
+        #Test pour voir si les objets sont bien ajoutés à l'inventaire
+        self.items.append(appel)
+        self.items.append(military)
 
     def add_item(self, item):
         self.items.append(item)  # Ajoute un item à l'inventaire
@@ -20,9 +20,18 @@ class Inventory:
         else:
             print(f"{item} n'est pas dans l'inventaire.")  # Message si l'item n'est pas trouvé
 
+    def use_item(self, item):
+        if isinstance(item, Healer):
+            item.healing()
+        if isinstance(item, Power):
+            item.damage()
+        if isinstance(item, Armor): 
+            item.protect()
+     
+
 
     def show_inventory(self, screen, font, WIDTH):
-        small_font = pygame.font.Font(None, 24)  # Définit une police plus petite pour les items de l'inventaire
+        small_font = pygame.font.Font(None, 20)  # Définit une police plus petite pour les items de l'inventaire
         
         # Crée une surface pour l'inventaire
         inventory_surface = pygame.Surface((300, 400), pygame.SRCALPHA)
@@ -44,7 +53,7 @@ class Inventory:
                 pygame.draw.rect(inventory_surface, (0,0,0), text_rect.inflate(10,10), 2)
                 inventory_surface.blit(item_text, (20, y_offset))  # Affiche la ligne de texte sur la surface de l'inventaire
                 self.item_rects.append((text_rect.inflate(10,10), item))
-                y_offset += 20  # Ajoute un espace vertical entre les lignes
+                y_offset += 30  # Ajoute un espace vertical entre les lignes
             
         # Affiche la surface de l'inventaire sur l'écran principal
         screen.blit(inventory_surface, (WIDTH - 310, 10))  # Positionne l'inventaire dans le coin supérieur droit

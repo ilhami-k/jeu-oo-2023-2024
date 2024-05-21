@@ -15,34 +15,23 @@ class Item(pygame.sprite.Sprite):
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
+    
+    def draw_item(self, surface, position):
+        surface.blit(self.image, position)
 
-# Toutes les classes suivantes héritent de la classe Item
 class Healer(Item):
     def __init__(self, nom, info, scale, color, heal):
         super().__init__(0, 0, nom, info, scale, color)  # Note: Position temporaire (0, 0)
         self.heal = heal
 
-    def healing(self):
-        # Reprend tout les objets pour le soin
-        # Si le maximum n'est pas déjà atteint
-        pass
-
-    def draw_item(self, surface, position):
-        surface.blit(self.image, position)
-      
-#toutes les classes suivantes héritent de la classe item
-class Healer (Item):
-    def __init__(self, nom, info, scale, color, heal):
-        super().__init__(0,0, nom, info, scale, color)
-        self.heal = heal
-    """reprend tout les objets pour le soin
-    si le max n'est pas déja atteint"""
-
-    def healing (self, item):
-        if item == "baie":
-            health = health + BERRY_HEAL
-        elif item == "pomme":
-            health = health + APPLE_HEAL
+    def healing(self, health, max_health):
+       """ # Reprend tout les objets pour le soin
+        Si le maximum n'est pas déjà atteint"""
+       if health < max_health:
+           health += self.heal
+           if health > max_health:
+               health = max_health
+        
 
 class Power(Item):
     """Reprend les améliorations qui auront pour effet 
@@ -54,7 +43,7 @@ class Power(Item):
         self.bullet_size = bullet_size
         
     def damage(self):
-        pass   
+        pass 
 
 class Armor(Item):
     """Reprend les armures qui augmentent la barre de vie principale"""
@@ -62,8 +51,8 @@ class Armor(Item):
         super().__init__(0, 0, nom, info, scale, color)  # Note: Position temporaire (0, 0)
         self.shield = shield
 
-    def protect(self):
-        pass
+    def protect(self, max_health):
+        max_health += self.shield
 
 
 appel = Healer('pomme', APPLE_INFO, APPLE_SCALE, APPLE_COLOR, APPLE_HEAL)
