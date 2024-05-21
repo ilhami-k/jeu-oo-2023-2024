@@ -24,7 +24,10 @@ class Game:
         # Initialisation de la liste des items
         self.list_items_on_map = [appel, berry, military, police, uzi, bazooka, pistol]
 
+
         self.all_enemies = []  # Liste pour les ennemis
+
+        self.item_rects = []
 
         # Appel de la méthode switch_map pour charger la première carte
         self.switch_map("map1.tmx", "spawn_player")
@@ -43,7 +46,7 @@ class Game:
         
 
         #initialise l'inventaire sur fermé
-        self.show_inventory = False
+        self.show_inventory = True
         self.interface = Interface(self.player,self.running,self.prologue_on,self.new_game)
         self.npc = None
 
@@ -259,6 +262,8 @@ class Game:
                         
             #affichage de l'inventaire (i)
             self.draw_inventory()
+
+            #affichage de la dialogue box
             self.draw_dialogue_box()
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
@@ -269,7 +274,15 @@ class Game:
                     if event.key == pygame.K_ESCAPE:
                         self.interface.menu_screen() 
                         self.running = self.interface.menu_screen()
-                if event.type == pygame.QUIT:
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1: 
+                        for rect, item in self.item_rects:
+                            if rect.collidepoint(event.pos):
+                                if isinstance(item, Healer):
+                                    Healer.healing()
+                                if isinstance(item, Power):
+                                    pass
+                elif event.type == pygame.QUIT:
                     self.running = False
 
             clock.tick(FPS)

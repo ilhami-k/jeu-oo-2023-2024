@@ -5,7 +5,8 @@ from item import *  # Importation des classes ou fonctions définies dans le fic
 class Inventory:
     def __init__(self):
         self.items = []  # Initialise une liste vide pour stocker les items de l'inventaire
-        
+        self.item_rects = []
+
         # Test pour voir si les objets sont bien ajoutés à l'inventaire
         # self.items.append(appel)
         # self.items.append(berry)
@@ -30,7 +31,7 @@ class Inventory:
 
         #affichage du titre 
         title = font.render("Inventaire", True, (255, 255, 255))  # Blanc
-        title_rect = title.get_rect(center=(WIDTH / 2, 50))
+        title_rect = title.get_rect(center=(WIDTH / 2, 20))
         screen.blit(title, title_rect)
 
         # Affiche chaque item dans l'inventaire
@@ -39,7 +40,10 @@ class Inventory:
             item_text_lines = textwrap.wrap(f"{item.nom}: {item.info}", width=35)
             for line in item_text_lines:
                 item_text = small_font.render(line, True, (255, 255, 255))  # Rend chaque ligne de texte en blanc
+                text_rect = item_text.get_rect(topleft=(20, y_offset))
+                pygame.draw.rect(inventory_surface, (0,0,0), text_rect.inflate(10,10), 2)
                 inventory_surface.blit(item_text, (20, y_offset))  # Affiche la ligne de texte sur la surface de l'inventaire
+                self.item_rects.append((text_rect.inflate(10,10), item))
                 y_offset += 20  # Ajoute un espace vertical entre les lignes
             
         # Affiche la surface de l'inventaire sur l'écran principal
