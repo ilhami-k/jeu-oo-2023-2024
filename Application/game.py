@@ -44,17 +44,17 @@ class Game:
 
         self.QuestManager = QuestManager()
          #premiere quete
-        main_quest = MainQuest("Main Quest", "Defeat the Boss", 1)
+        self.main_quest = MainQuest("Quête principale", "Vaincre le boss", 1)
 
         # deuxieme quete
-        secondary_quest1 = SecondaryQuests("Secondary Quest 1", "Defeat 10 enemies", 10)
+        self.secondary_quest1 = SecondaryQuests("Quête secondaire", "Tuer 10 ennemis", 10)
         #troisieme quete
-        secondary_quest2 = SecondaryQuests("Secondary Quest 2", "Collect 5 items from enemies", 5)
+        self.secondary_quest2 = SecondaryQuests("Quête secondaire", "Obtenir 5 items", 5)
 
         # Add quests to QuestManager
-        self.QuestManager.addQuest(main_quest)
-        self.QuestManager.addQuest(secondary_quest1)
-        self.QuestManager.addQuest(secondary_quest2)
+        self.QuestManager.addQuest(self.main_quest)
+        self.QuestManager.addQuest(self.secondary_quest1)
+        self.QuestManager.addQuest(self.secondary_quest2)
 
         #initialise l'inventaire sur fermé
         self.show_inventory = False
@@ -150,7 +150,7 @@ class Game:
                     enemy.take_damage()
                     if enemy.health <= 0:
                         self.all_enemies.remove(enemy) # Supprimer l'ennemi du groupe (rect)
-
+                        self.secondary_quest1.updateProgress()
         # Mise à jour des balles tirées par le joueur
         for bullet in self.all_bullets:
             bullet.update()
@@ -194,6 +194,7 @@ class Game:
             if pygame.sprite.collide_rect(self.player, item):
                 # Effectuer l'action de ramassage de l'objet
                 self.inventory.add_item(item)
+                self.secondary_quest2.updateProgress()
                 # Supprimer l'item de la liste des items sur la carte pour ne pas qu'il réapparaisse
                 self.list_items_on_map.remove(item)
                 # Supprimer l'objet du groupe de calques
@@ -221,7 +222,7 @@ class Game:
             if self.player.attack_cooldown == 0:
                 self.player.shoot(mouse_x, mouse_y, self.all_bullets)
                 self.player.attack_cooldown = ATTACK_COOLDOWN
-        
+
         # Gestion de l'affichage de l'inventaire avec une seule touche
         if pressed[pygame.K_i]:
             self.show_inventory = not self.show_inventory
