@@ -246,12 +246,11 @@ class Game:
         clock = pygame.time.Clock()
         # Affichage de l'écran d'introduction
         self.interface.intro_screen()
-        self.running = self.interface.intro_screen() #pour pouvoir quitter le jeu lors de l'ecran du menu
-        self.new_game = self.interface.intro_screen()
-        if self.new_game: 
-            self.interface.prologue() 
         
-        while self.running:
+        if self.interface.new_game: 
+            self.interface.prologue() 
+
+        while self.interface.running:
             self.player.save_location()
             # Gestion des entrées du joueur et des événements de jeu
             self.handle_input()
@@ -292,12 +291,12 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        self.interface.menu_screen() 
-                        self.running = self.interface.menu_screen()
+                        self.interface.menu_screen()
                 if event.type == pygame.QUIT:
-                    self.running = False
+                    self.interface.running = False
 
             clock.tick(FPS)
         
         # Fermeture de la fenêtre pygame
         pygame.quit()
+
