@@ -44,3 +44,5 @@ class Inventory:
             
         # Affiche la surface de l'inventaire sur l'écran principal
         screen.blit(inventory_surface, (WIDTH - 310, 10))  # Positionne l'inventaire dans le coin supérieur droit
+    def items(self):
+        return self.items #pour pouvoir sauvegarder l'inventaire
