@@ -23,15 +23,8 @@ class Healer(Item):
     def __init__(self, nom, info, scale, color, heal):
         super().__init__(0, 0, nom, info, scale, color)  # Note: Position temporaire (0, 0)
         self.heal = heal
+    
 
-    def healing(self, health, max_health):
-       """ # Reprend tout les objets pour le soin
-        Si le maximum n'est pas déjà atteint"""
-       if health < max_health:
-           health += self.heal
-           if health > max_health:
-               health = max_health
-        
 
 class Power(Item):
     """Reprend les améliorations qui auront pour effet 

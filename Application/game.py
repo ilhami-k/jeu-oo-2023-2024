@@ -188,6 +188,7 @@ class Game:
     def draw_dialogue_box(self):
         if self.npc and self.npc.dialogue_box:
             self.npc.dialogue_box.draw(self.screen)
+
     def handle_input(self): 
         pressed = pygame.key.get_pressed() # Gestion des entrées du joueur (mouvement et tir) 
         mouse_pressed = pygame.mouse.get_pressed() # Gestion du tir du joueur (avec le bouton gauche de la souris)
@@ -201,14 +202,15 @@ class Game:
             self.player.move(-PLAYER_SPEED, 0)
         if pressed[pygame.K_d]:
             self.player.move(PLAYER_SPEED, 0)
+        
 
         # Gestion du tir du joueur
+        mouse_x, mouse_y = pygame.mouse.get_pos()
         if mouse_pressed[0]:  # Si le bouton gauche de la souris est enfoncé
-            mouse_x, mouse_y = pygame.mouse.get_pos()
             if self.player.attack_cooldown == 0:
                 self.player.shoot(mouse_x, mouse_y, self.all_bullets)
                 self.player.attack_cooldown = ATTACK_COOLDOWN
-        
+                
         # Gestion de l'affichage de l'inventaire avec une seule touche
         if pressed[pygame.K_i]:
             self.show_inventory = not self.show_inventory
@@ -218,7 +220,7 @@ class Game:
             self.take_item()
         if pressed[pygame.K_f] and self.npc and self.npc.in_interaction_range(self.player):
             self.npc.interact(self.player)
-
+        
     def draw_inventory(self):
         if self.show_inventory:
             self.inventory.show_inventory(self.screen, self.font, 800)
@@ -267,8 +269,7 @@ class Game:
 
             #affichage de la dialogue box
             self.draw_dialogue_box()
-            # Mise à jour de l'affichage de l'écran
-            pygame.display.flip()
+
             
             # Gestion des événements du jeu
             for event in pygame.event.get():
@@ -277,14 +278,13 @@ class Game:
                         self.interface.menu_screen() 
                         self.running = self.interface.menu_screen()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 2: 
-                        for rect, item in self.item_rects:
-                            if rect.collidepoint(event.pos):
-                                self.inventory.use_item(item)
-                                
+                    mouse_pos = event.pos
+                    self.inventory.handle_click(mouse_pos)
                 elif event.type == pygame.QUIT:
                     self.running = False
-
+                    
+            # Mise à jour de l'affichage de l'écran
+            pygame.display.flip()
             clock.tick(FPS)
         
         # Fermeture de la fenêtre pygame

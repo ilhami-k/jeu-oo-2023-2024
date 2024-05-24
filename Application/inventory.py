@@ -6,6 +6,7 @@ class Inventory:
     def __init__(self):
         self.items = []  # Initialise une liste vide pour stocker les items de l'inventaire
         self.item_rects = []
+        self.hover_item = None  
 
         #Test pour voir si les objets sont bien ajoutés à l'inventaire
         self.items.append(appel)
@@ -20,17 +21,15 @@ class Inventory:
         else:
             print(f"{item} n'est pas dans l'inventaire.")  # Message si l'item n'est pas trouvé
 
-    def use_item(self, item):
-        if isinstance(item, Healer):
-            item.healing()
-        if isinstance(item, Power):
-            item.damage()
-        if isinstance(item, Armor): 
-            item.protect()
-     
+    def handle_click(self, mouse_pos):
+        for rect, item in self.item_rects:
+            if rect.collidepoint(mouse_pos):
+               self.remove_item(item)
+
 
 
     def show_inventory(self, screen, font, WIDTH):
+        self.item_rects.clear()
         small_font = pygame.font.Font(None, 20)  # Définit une police plus petite pour les items de l'inventaire
         
         # Crée une surface pour l'inventaire
@@ -48,12 +47,20 @@ class Inventory:
             # Divise le texte de l'item en plusieurs lignes si nécessaire pour s'adapter à la largeur de 35 caractères
             item_text_lines = textwrap.wrap(f"{item.nom}: {item.info}", width=35)
             for line in item_text_lines:
-                item_text = small_font.render(line, True, (255, 255, 255))  # Rend chaque ligne de texte en blanc
+                color = (255,255,255) if item != self.hover_item else (255,0,0)
+                item_text = small_font.render(line, True, color)  # Rend chaque ligne de texte en blanc
                 text_rect = item_text.get_rect(topleft=(20, y_offset))
-                pygame.draw.rect(inventory_surface, (0,0,0), text_rect.inflate(10,10), 2)
-                inventory_surface.blit(item_text, (20, y_offset))  # Affiche la ligne de texte sur la surface de l'inventaire
-                self.item_rects.append((text_rect.inflate(10,10), item))
-                y_offset += 30  # Ajoute un espace vertical entre les lignes
+                inflated_rect = text_rect.inflate(10,10)
+
+                # crée une surface pour chaque item
+                item_surface = pygame.Surface((inflated_rect.width, inflated_rect.height))
+                item_surface.fill((0,0,0))
+                pygame.draw.rect(item_surface, (255,255,255), item_surface.get_rect(), 2)
+                item_surface.blit(item_text, (5,5))
+                #pygame.draw.rect(inventory_surface, (0,0,0), text_rect.inflate(10,10), 2)
+                inventory_surface.blit(item_surface, (10, y_offset))
+                self.item_rects.append((pygame.Rect((WIDTH - 310 + 20, 10 + y_offset), item_surface.get_size()), item))
+                y_offset += inflated_rect.height + 10
             
         # Affiche la surface de l'inventaire sur l'écran principal
         screen.blit(inventory_surface, (WIDTH - 310, 10))  # Positionne l'inventaire dans le coin supérieur droit
