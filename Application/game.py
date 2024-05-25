@@ -246,7 +246,7 @@ class Game:
         game_state = {
             'map': self.map,
             'player_position': (self.player.rect.x, self.player.rect.y),
-            #'inventory': self.inventory.items(),
+            #'inventory': self.inventory.item(),
             #'quests': self.questmanager.active_quests()
         }
         self.save_load.save_data(game_state, 'game_state')
@@ -258,7 +258,7 @@ class Game:
             self.switch_map(self.map)
             self.player.rect.x, self.player.rect.y = game_state.get('player_position', (0, 0))
             self.player.position = [self.player.rect.x,self.player.rect.y]
-            #self.game.inventory.items = game_state.get('inventory', [])
+            #self.inventory.items = game_state.get('inventory', [])
             #self.game.questmanager.active_quests(game_state.get('quests', []))
 
     def run(self):
@@ -285,8 +285,6 @@ class Game:
 
             # Affichage des balles tirées par le joueur
             self.all_bullets.draw(self.screen)
-            
-            
             # Centrage de la caméra sur le joueur
             self.group.center(self.player.rect.center)
 
@@ -297,6 +295,9 @@ class Game:
             
             #affichage de la barre de vie
             self.player.update_healthbar(self.screen)
+            if self.player.health <= 0:
+                self.death_screen()
+                return
                         
             #affichage de l'inventaire (i)
             self.draw_inventory()
@@ -389,36 +390,31 @@ class Game:
                 self.screen.blit(exit_button.image, exit_button.rect)
                 
                 pygame.display.update()
-    def menu_screen(self):
-            menu = True
-            title = self.font.render("Menu", True, 'Black')
-            title_rect = title.get_rect(center=(WIDTH/2, HEIGHT/4))
-            continue_button = Button(WIDTH/2 - 100, HEIGHT/2 - 150, 200, 50, (255, 255, 255), (0, 0, 0), "Continue", 36)
-            save_game = Button(WIDTH/2 - 100, HEIGHT/2 -50 , 200, 50, (255, 255, 255), (0, 0, 0), "Save game", 36)
-            exit_button = Button(WIDTH/2 - 100, HEIGHT/2 + 50, 200, 50, (255, 255, 255), (0, 0, 0), "Exit", 36)
-            
-
-            while menu:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        menu = False
-                        self.running = False
-                mouse_pos = pygame.mouse.get_pos()
-                mouse_pressed = pygame.mouse.get_pressed()
-                if continue_button.is_pressed(mouse_pos, mouse_pressed):
-                    menu = False
-                if save_game.is_pressed(mouse_pos, mouse_pressed):
-                    self.save_game_state()
-                if exit_button.is_pressed(mouse_pos, mouse_pressed):
-                    menu = False
+    def death_screen(self):
+        self.death = True
+        title = self.font.render("You died", True, 'Black')
+        title_rect = title.get_rect(center=(WIDTH/2, HEIGHT/4))
+        return_main_menu = Button(WIDTH/2 - 100, HEIGHT/2 - 150, 200, 50, (255, 255, 255), (0, 0, 0), "Main Menu", 36)
+        exit_button = Button(WIDTH/2 - 100, HEIGHT/2 + 50, 200, 50, (255, 255, 255), (0, 0, 0), "Exit", 36)
+        while self.death:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.death = False
                     self.running = False
-                    return self.running
-                
-                stretched_image = pygame.transform.scale(self.intro_background,(800,1000))
-                self.screen.blit(stretched_image, (0, 0))
-                self.screen.blit(title, title_rect)
-                self.screen.blit(continue_button.image, continue_button.rect)
-                self.screen.blit(save_game.image, save_game.rect)
-                self.screen.blit(exit_button.image, exit_button.rect)
-                
-                pygame.display.update()
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+            if return_main_menu.is_pressed(mouse_pos, mouse_pressed):
+                self.death = False
+                self.intro_screen()
+            if exit_button.is_pressed(mouse_pos, mouse_pressed):
+                self.death = False
+                self.running = False
+                return self.running
+            
+            stretched_image = pygame.transform.scale(self.intro_background,(800,1000))
+            self.screen.blit(stretched_image, (0, 0))
+            self.screen.blit(title, title_rect)
+            self.screen.blit(return_main_menu.image, return_main_menu.rect)
+            self.screen.blit(exit_button.image, exit_button.rect)
+            
+            pygame.display.update()
