@@ -63,8 +63,8 @@ class Player(Entity):
     
     def healing(self):
         self.health += APPLE_HEAL
-        if self.health > PLAYER_MAX_HEALTH:
-            self.health = PLAYER_MAX_HEALTH
+        if self.health > self.max_health:
+            self.health = self.max_health
     
 
             

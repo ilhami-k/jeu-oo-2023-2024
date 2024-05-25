@@ -278,8 +278,8 @@ class Game:
                         self.interface.menu_screen() 
                         self.running = self.interface.menu_screen()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    mouse_pos = event.pos
-                    self.inventory.handle_click(mouse_pos)
+                   if event.button==3:
+                        self.inventory.handle_click(event.pos)
                 elif event.type == pygame.QUIT:
                     self.running = False
                     

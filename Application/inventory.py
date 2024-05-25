@@ -1,12 +1,15 @@
 import pygame  # Bibliothèque pour créer des jeux vidéo en utilisant Python
 import textwrap  # Bibliothèque pour manipuler le texte, notamment pour le retour à la ligne
 from item import *  # Importation des classes ou fonctions définies dans le fichier item.py
+from entity import *  # Importation des classes ou fonctions définies dans le fichier entity.py
 
 class Inventory:
     def __init__(self):
         self.items = []  # Initialise une liste vide pour stocker les items de l'inventaire
         self.item_rects = []
-        self.hover_item = None  
+        self.hover_item = None
+        self.player = Player(0, 0)
+
 
         #Test pour voir si les objets sont bien ajoutés à l'inventaire
         self.items.append(appel)
@@ -24,7 +27,11 @@ class Inventory:
     def handle_click(self, mouse_pos):
         for rect, item in self.item_rects:
             if rect.collidepoint(mouse_pos):
-               self.remove_item(item)
+               self.use_item(item)
+    
+    def use_item(self, item):
+            self.player.healing(self)
+            self.remove_item(item)
 
 
 
