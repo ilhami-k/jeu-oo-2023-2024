@@ -83,7 +83,7 @@ class DialogueBox:
         lines.append(current_line)
         return lines
 class Interface:
-    def __init__(self,player,running,prologue_on,new_game):
+    def __init__(self,player,prologue_on,new_game):
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
@@ -95,7 +95,7 @@ class Interface:
         self.epilogue_on = False
         self.save_load = SaveSystem('.json','Application/save_data/')
         self.player = player
-        self.running = running
+
         self.prologue_on = prologue_on
         self.new_game = new_game
     def menu_screen(self):
@@ -134,6 +134,7 @@ class Interface:
     def prologue(self):
         self.prologue_on = True
         pygame.display.update()
+        self.death = False
 
         while self.prologue_on:
             for event in pygame.event.get():

@@ -58,7 +58,7 @@ class Game:
 
         #initialise l'inventaire sur fermé
         self.show_inventory = False
-        self.interface = Interface(self.player,self.running,self.prologue_on,self.new_game)
+        self.interface = Interface(self.player,self.prologue_on,self.new_game)
         self.npc = None
 
         #initialise l'affichage des quetes  sur fermé
@@ -267,8 +267,8 @@ class Game:
         self.intro_screen()
         
         if self.new_game: 
+            self.reset_game_state()
             self.interface.prologue() 
-
         while self.running:
             self.player.save_location()
             # Gestion des entrées du joueur et des événements de jeu
@@ -297,7 +297,7 @@ class Game:
             self.player.update_healthbar(self.screen)
             if self.player.health <= 0:
                 self.death_screen()
-                return
+                
                         
             #affichage de l'inventaire (i)
             self.draw_inventory()
@@ -323,6 +323,8 @@ class Game:
 
     def intro_screen(self):
             intro = True
+            self.reset_game_state()
+            self.death = False
             title = self.font.render("Projet OO", True, 'Black')
             title_rect = title.get_rect(center=(WIDTH/2, HEIGHT/4))
             continue_button = Button(WIDTH/2 - 100, HEIGHT/2 - 150, 200, 50, (255, 255, 255), (0, 0, 0), "Continue", 36)
@@ -347,7 +349,6 @@ class Game:
                 if exit_button.is_pressed(mouse_pos, mouse_pressed):
                     intro = False
                     self.running = False
-                    return self.running
                 
                 stretched_image = pygame.transform.scale(self.intro_background,(800,1000))
                 self.screen.blit(stretched_image, (0, 0))
@@ -405,11 +406,12 @@ class Game:
             mouse_pressed = pygame.mouse.get_pressed()
             if return_main_menu.is_pressed(mouse_pos, mouse_pressed):
                 self.death = False
+                self.reset_game_state()
                 self.intro_screen()
+                return
             if exit_button.is_pressed(mouse_pos, mouse_pressed):
                 self.death = False
                 self.running = False
-                return self.running
             
             stretched_image = pygame.transform.scale(self.intro_background,(800,1000))
             self.screen.blit(stretched_image, (0, 0))
@@ -418,3 +420,13 @@ class Game:
             self.screen.blit(exit_button.image, exit_button.rect)
             
             pygame.display.update()
+    def reset_game_state(self):
+        self.player = Player(0,0)
+        self.inventory = Inventory()
+        self.questmanager = QuestManager()
+        self.show_inventory = False
+        self.show_quests = False
+        self.npc = None
+        self.map = 'map1.tmx'
+        self.switch_map(self.map,'spawn_player')
+    
