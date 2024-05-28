@@ -30,8 +30,7 @@ class Inventory:
                self.use_item(item)
     
     def use_item(self, item):
-            self.player.healing(self)
-            self.remove_item(item)
+         self.remove_item(item)
 
 
 
