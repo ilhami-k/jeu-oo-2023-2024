@@ -61,7 +61,7 @@ class Game:
 
         #initialise l'inventaire sur fermé
         self.show_inventory = False
-        self.interface = Interface(self.player,self.running,self.prologue_on,self.new_game)
+        self.interface = Interface(self.player,self.prologue_on,self.new_game)
         self.npc = None
 
         #initialise l'affichage des quetes  sur fermé
