@@ -378,6 +378,7 @@ class Game:
                     menu = False
                 if save_game.is_pressed(mouse_pos, mouse_pressed):
                     self.save_game_state()
+                    print("Game saved.")
                 if exit_button.is_pressed(mouse_pos, mouse_pressed):
                     menu = False
                     self.running = False
