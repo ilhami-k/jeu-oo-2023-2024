@@ -27,6 +27,8 @@ class Button:
         self.text = self.font.render(self.content, True, self.foreground)
         self.text_rect = self.text.get_rect(center=(self.width/2, self.height/2))
         self.image.blit(self.text, self.text_rect)
+
+
     
     def is_pressed(self,pos,pressed):
         if self.rect.collidepoint(pos) and pressed[0]: #[0] car premier bouton de la liste
@@ -81,7 +83,7 @@ class DialogueBox:
         lines.append(current_line)
         return lines
 class Interface:
-    def __init__(self,player,running,prologue_on,new_game):
+    def __init__(self,player,prologue_on,new_game):
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
@@ -93,51 +95,9 @@ class Interface:
         self.epilogue_on = False
         self.save_load = SaveSystem('.json','Application/save_data/')
         self.player = player
-        self.running = running
+
         self.prologue_on = prologue_on
         self.new_game = new_game
-    def intro_screen(self):
-        intro = True
-        title = self.font.render("Projet OO", True, 'Black')
-        title_rect = title.get_rect(center=(WIDTH/2, HEIGHT/4))
-        continue_button = Button(WIDTH/2 - 100, HEIGHT/2 - 150, 200, 50, (255, 255, 255), (0, 0, 0), "Continue", 36)
-        play_button = Button(WIDTH/2 - 100, HEIGHT/2 -50 , 200, 50, (255, 255, 255), (0, 0, 0), "New Game", 36)
-        exit_button = Button(WIDTH/2 - 100, HEIGHT/2 + 50, 200, 50, (255, 255, 255), (0, 0, 0), "Exit", 36)
-        while intro:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    intro = False
-                    self.running = False
-            mouse_pos = pygame.mouse.get_pos()
-            mouse_pressed = pygame.mouse.get_pressed()
-            if continue_button.is_pressed(mouse_pos, mouse_pressed):
-                intro = False
-                save_load = SaveSystem(".json",'Application/save_data/')
-                player_position = save_load.load_data("player_position")
-                if player_position:
-                    self.player.position = player_position
-                    self.player.rect.x, self.player.rect.y = player_position
-
-            if play_button.is_pressed(mouse_pos, mouse_pressed):
-                intro = False
-                self.new_game = True
-                self.prologue_on = True
-                return self.new_game, self.prologue_on
-
-            if exit_button.is_pressed(mouse_pos, mouse_pressed):
-                intro = False
-                self.running = False
-                return self.running
-            
-            stretched_image = pygame.transform.scale(self.intro_background,(800,1000))
-            self.screen.blit(stretched_image, (0, 0))
-            self.screen.blit(title, title_rect)
-            self.screen.blit(continue_button.image, continue_button.rect)
-            self.screen.blit(play_button.image, play_button.rect)
-            self.screen.blit(exit_button.image, exit_button.rect)
-            
-            pygame.display.update() 
-            self.clock.tick(FPS)
     def menu_screen(self):
         menu = True
         title = self.font.render("Menu", True, 'Black')
@@ -145,6 +105,7 @@ class Interface:
         continue_button = Button(WIDTH/2 - 100, HEIGHT/2 - 150, 200, 50, (255, 255, 255), (0, 0, 0), "Continue", 36)
         save_game = Button(WIDTH/2 - 100, HEIGHT/2 -50 , 200, 50, (255, 255, 255), (0, 0, 0), "Save game", 36)
         exit_button = Button(WIDTH/2 - 100, HEIGHT/2 + 50, 200, 50, (255, 255, 255), (0, 0, 0), "Exit", 36)
+        
 
         while menu:
             for event in pygame.event.get():
@@ -156,8 +117,7 @@ class Interface:
             if continue_button.is_pressed(mouse_pos, mouse_pressed):
                 menu = False
             if save_game.is_pressed(mouse_pos, mouse_pressed):
-                self.save_load.save_data((self.player.rect.x,self.player.rect.y), "player_position")
-                print("Game saved")
+                self.game_state.save_game_state()
             if exit_button.is_pressed(mouse_pos, mouse_pressed):
                 menu = False
                 self.running = False
@@ -174,6 +134,7 @@ class Interface:
     def prologue(self):
         self.prologue_on = True
         pygame.display.update()
+        self.death = False
 
         while self.prologue_on:
             for event in pygame.event.get():
