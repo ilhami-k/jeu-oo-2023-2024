@@ -43,15 +43,12 @@ class Game:
 
         #création de l'inventaire 
         self.inventory = Inventory()
-
-
         self.questmanager = QuestManager()
-         #premiere quete
+        # premiere quete
         main_quest = MainQuest("Main Quest", "Defeat the Boss", 1)
-
         # deuxieme quete
         secondary_quest1 = SecondaryQuests("Secondary Quest 1", "Defeat 10 enemies", 10)
-        #troisieme quete
+        # troisieme quete
         secondary_quest2 = SecondaryQuests("Secondary Quest 2", "Collect 5 items from enemies", 5)
 
         # Add quests to QuestManager
@@ -59,12 +56,12 @@ class Game:
         self.questmanager.addQuest(secondary_quest1)
         self.questmanager.addQuest(secondary_quest2)
 
-        #initialise l'inventaire sur fermé
-        self.show_inventory = False
+        
+        self.show_inventory = True
         self.interface = Interface(self.player,self.prologue_on,self.new_game)
         self.npc = None
 
-        #initialise l'affichage des quetes  sur fermé
+        #initialise l'affichage des quetes sur fermé
         self.show_quests = False
         self.save_load = SaveSystem('.json','Application/save_data/')
 
@@ -231,7 +228,7 @@ class Game:
                 
         # Gestion de l'affichage de l'inventaire avec une seule touche
         if pressed[pygame.K_i]:
-            self.show_inventory = not self.show_inventory
+           self.show_inventory = not self.show_inventory
 
         # Gestion de l'affichage des quetes avec une seule touche
         if pressed[pygame.K_t]:
@@ -320,6 +317,10 @@ class Game:
                     if event.key == pygame.K_ESCAPE:
                         self.interface.menu_screen() 
                         self.running = self.interface.menu_screen()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        self.inventory.handle_click(event.pos)
+  
                 if event.type == pygame.QUIT:
                     self.running = False
                     

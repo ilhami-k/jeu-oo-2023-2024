@@ -6,8 +6,8 @@ TITRE = 'Projet OO'
 ZOOM = 1
 
 # Player settings
-PLAYER_SPEED = 5
-PLAYER_HEALTH = 10
+PLAYER_SPEED = 2
+PLAYER_HEALTH = 50
 PLAYER_MAX_HEALTH = 100
 
 # Zombie settings
