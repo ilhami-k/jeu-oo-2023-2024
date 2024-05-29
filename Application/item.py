@@ -1,70 +1,57 @@
 import pygame
 from settings import *
+from entity import *
 
 
 class Item(pygame.sprite.Sprite):
-    def __init__(self, x, y, nom, info, size, color):
+    def __init__(self, x, y, nom, info, scale, color):
         super().__init__()
         self.position = [x, y]
         self.nom = nom
         self.info = info
-        self.image = pygame.Surface((size, size))
+        self.image = pygame.Surface((scale, scale))
         self.image.fill(color)
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect(topleft=self.position)
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
-
-# Toutes les classes suivantes héritent de la classe Item
-class Healer(Item):
-    def __init__(self, nom, info, size, color, heal):
-        super().__init__(0, 0, nom, info, size, color)  # Note: Position temporaire (0, 0)
-        self.heal = heal
-
-    def healing(self):
-        # Reprend tout les objets pour le soin
-        # Si le maximum n'est pas déjà atteint
-        pass
-
+    
     def draw_item(self, surface, position):
         surface.blit(self.image, position)
-      
-#toutes les classes suivantes héritent de la classe item
-class Healer (Item):
+
+class Healer(Item):
     def __init__(self, nom, info, scale, color, heal):
-        super().__init__(0,0, nom, info, scale, color)
+        super().__init__(0, 0, nom, info, scale, color)  # Note: Position temporaire (0, 0)
         self.heal = heal
-    """reprend tout les objets pour le soin
-    si le max n'est pas déja atteint"""
-    def healing (self):
-        pass
+    
+
 
 class Power(Item):
     """Reprend les améliorations qui auront pour effet 
     de changer la qualité de la balle tirée (vitesse, dégâts, taille)"""
-    def __init__(self, nom, info, size, color, bullet_speed, bullet_damage, bullet_size):
-        super().__init__(0, 0, nom, info, size, color)  # Note: Position temporaire (0, 0)
+    def __init__(self, nom, info, scale, color, bullet_speed, bullet_damage, bullet_size):
+        super().__init__(0, 0, nom, info, scale, color)  # Note: Position temporaire (0, 0)
         self.bullet_speed = bullet_speed
         self.bullet_damage = bullet_damage
         self.bullet_size = bullet_size
         
     def damage(self):
-        pass     
+        pass 
 
 class Armor(Item):
     """Reprend les armures qui augmentent la barre de vie principale"""
-    def __init__(self, nom, info, size, color, shield):
-        super().__init__(0, 0, nom, info, size, color)  # Note: Position temporaire (0, 0)
+    def __init__(self, nom, info, scale, color, shield):
+        super().__init__(0, 0, nom, info, scale, color)  # Note: Position temporaire (0, 0)
         self.shield = shield
 
-    def protect(self):
-        pass
+    def protect(self, max_health):
+        max_health += self.shield
 
 
 appel = Healer('pomme', APPLE_INFO, APPLE_SCALE, APPLE_COLOR, APPLE_HEAL)
 berry = Healer("baie", BERRY_INFO, BERRY_SCALE, BERRY_COLOR, BERRY_HEAL)
 military = Armor("militaire", MILITARY_INFO, MILITARY_SCALE, MILITARY_COLOR, MILITARY_SHIELD)
-police = Armor("police", PISTOL_INFO, PISTOL_SCALE, PISTOL_COLOR, POLICE_SHIELD)
+police = Armor("police", POLICE_INFO, POLICE_SCALE, POLICE_COLOR, POLICE_SHIELD)
 uzi = Power("uzi", UZI_INFO, UZI_SCALE, UZI_COLOR, UZI_SPEED, UZI_DAMAGE, UZI_SCALE)
 bazooka = Power("bazooka", BAZOOKA_INFO, BAZOOKA_SCALE, BAZOOKA_COLOR, BAZOOKA_SPEED, BAZOOKA_DAMAGE, BAZOOKA_SCALE)
 pistol = Power("pistol", PISTOL_INFO, PISTOL_SCALE, PISTOL_COLOR, PISTOL_SPEED, PISTOL_DAMAGE, PISTOL_SCALE)

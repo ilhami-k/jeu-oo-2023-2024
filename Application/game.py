@@ -24,7 +24,10 @@ class Game:
         # Initialisation de la liste des items
         self.list_items_on_map = [appel, berry, military, police, uzi, bazooka, pistol]
 
+
         self.all_enemies = []  # Liste pour les ennemis
+
+        self.item_rects = []
 
         # Appel de la méthode switch_map pour charger la première carte
         self.switch_map("map1.tmx", "spawn_player")
@@ -40,15 +43,12 @@ class Game:
 
         #création de l'inventaire 
         self.inventory = Inventory()
-
-
         self.questmanager = QuestManager()
-         #premiere quete
+        # premiere quete
         main_quest = MainQuest("Main Quest", "Defeat the Boss", 1)
-
         # deuxieme quete
         secondary_quest1 = SecondaryQuests("Secondary Quest 1", "Defeat 10 enemies", 10)
-        #troisieme quete
+        # troisieme quete
         secondary_quest2 = SecondaryQuests("Secondary Quest 2", "Collect 5 items from enemies", 5)
 
         # Add quests to QuestManager
@@ -56,12 +56,12 @@ class Game:
         self.questmanager.addQuest(secondary_quest1)
         self.questmanager.addQuest(secondary_quest2)
 
-        #initialise l'inventaire sur fermé
-        self.show_inventory = False
+        
+        self.show_inventory = True
         self.interface = Interface(self.player,self.prologue_on,self.new_game)
         self.npc = None
 
-        #initialise l'affichage des quetes  sur fermé
+        #initialise l'affichage des quetes sur fermé
         self.show_quests = False
         self.save_load = SaveSystem('.json','Application/save_data/')
 
@@ -199,9 +199,11 @@ class Game:
                 self.list_items_on_map.remove(item)
                 # Supprimer l'objet du groupe de calques
                 self.group.remove(item)
+    
     def draw_dialogue_box(self):
         if self.npc and self.npc.dialogue_box:
             self.npc.dialogue_box.draw(self.screen)
+
     def handle_input(self): 
         pressed = pygame.key.get_pressed() # Gestion des entrées du joueur (mouvement et tir) 
         mouse_pressed = pygame.mouse.get_pressed() # Gestion du tir du joueur (avec le bouton gauche de la souris)
@@ -215,17 +217,18 @@ class Game:
             self.player.move(-PLAYER_SPEED, 0)
         if pressed[pygame.K_d]:
             self.player.move(PLAYER_SPEED, 0)
+        
 
         # Gestion du tir du joueur
+        mouse_x, mouse_y = pygame.mouse.get_pos()
         if mouse_pressed[0]:  # Si le bouton gauche de la souris est enfoncé
-            mouse_x, mouse_y = pygame.mouse.get_pos()
             if self.player.attack_cooldown == 0:
                 self.player.shoot(mouse_x, mouse_y, self.all_bullets)
                 self.player.attack_cooldown = ATTACK_COOLDOWN
-        
+                
         # Gestion de l'affichage de l'inventaire avec une seule touche
         if pressed[pygame.K_i]:
-            self.show_inventory = not self.show_inventory
+           self.show_inventory = not self.show_inventory
 
         # Gestion de l'affichage des quetes avec une seule touche
         if pressed[pygame.K_t]:
@@ -235,6 +238,7 @@ class Game:
             self.take_item()
         if pressed[pygame.K_f] and self.npc and self.npc.in_interaction_range(self.player):
             self.npc.interact(self.player)
+        
     def draw_inventory(self):
         if self.show_inventory:
             self.inventory.show_inventory(self.screen, self.font, 800)
@@ -301,9 +305,9 @@ class Game:
                         
             #affichage de l'inventaire (i)
             self.draw_inventory()
+
+            #affichage de la dialogue box
             self.draw_dialogue_box()
-            #affichage des quetes
-            self.draw_quests()
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
             
@@ -311,10 +315,17 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        self.menu_screen()
+                        self.interface.menu_screen() 
+                        self.running = self.interface.menu_screen()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        self.inventory.handle_click(event.pos)
+  
                 if event.type == pygame.QUIT:
                     self.running = False
-
+                    
+            # Mise à jour de l'affichage de l'écran
+            pygame.display.flip()
             clock.tick(FPS)
         
         # Fermeture de la fenêtre pygame
