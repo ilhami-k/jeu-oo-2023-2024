@@ -68,7 +68,7 @@ class QuestManager:
 
         for quest in self.quests:
             # Divise le texte des quetes en plusieurs lignes si nécessaire pour s'adapter à la largeur de 35 caractères
-            item_text_lines = textwrap.wrap(f"{quest.name}: {quest.description}", width=35)
+            item_text_lines = textwrap.wrap(f"{quest.name}: {quest.description} {quest.current}/{quest.goal}", width=35)
             for line in item_text_lines:
                 quests_text = small_font.render(line, True, (255, 255, 255))  # Rend chaque ligne de texte en blanc
                 quests_surface.blit(quests_text, (20, y_offset))  # Affiche la ligne de texte sur la surface
