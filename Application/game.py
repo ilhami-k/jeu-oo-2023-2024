@@ -24,7 +24,10 @@ class Game:
         # Initialisation de la liste des items
         self.list_items_on_map = [appel, berry, military, police, uzi, bazooka, pistol]
 
+
         self.all_enemies = []  # Liste pour les ennemis
+
+        self.item_rects = []
 
         # Appel de la méthode switch_map pour charger la première carte
         self.switch_map("map1.tmx", "spawn_player")
@@ -56,16 +59,17 @@ class Game:
         self.QuestManager.addQuest(self.secondary_quest1)
         self.QuestManager.addQuest(self.secondary_quest2)
 
-        #initialise l'inventaire sur fermé
-        self.show_inventory = False
-        self.interface = Interface(self.player,self.running,self.prologue_on,self.new_game)
+        
+        self.show_inventory = True
+        self.interface = Interface(self.player,self.prologue_on,self.new_game)
         self.npc = None
 
-        #initialise l'affichage des quetes  sur fermé
+        #initialise l'affichage des quetes sur fermé
         self.show_quests = False
+        self.save_load = SaveSystem('.json','Application/save_data/')
 
 
-    def switch_map(self, map_name, spawn_name):
+    def switch_map(self, map_name, spawn_name = None):
         self.all_enemies = []  # Réinitialiser la liste des ennemis
         try:
             self.group.empty()  # Supprimer tous les sprites du groupe
@@ -199,9 +203,11 @@ class Game:
                 self.list_items_on_map.remove(item)
                 # Supprimer l'objet du groupe de calques
                 self.group.remove(item)
+    
     def draw_dialogue_box(self):
         if self.npc and self.npc.dialogue_box:
             self.npc.dialogue_box.draw(self.screen)
+
     def handle_input(self): 
         pressed = pygame.key.get_pressed() # Gestion des entrées du joueur (mouvement et tir) 
         mouse_pressed = pygame.mouse.get_pressed() # Gestion du tir du joueur (avec le bouton gauche de la souris)
@@ -215,17 +221,17 @@ class Game:
             self.player.move(-PLAYER_SPEED, 0)
         if pressed[pygame.K_d]:
             self.player.move(PLAYER_SPEED, 0)
+        
 
         # Gestion du tir du joueur
+        mouse_x, mouse_y = pygame.mouse.get_pos()
         if mouse_pressed[0]:  # Si le bouton gauche de la souris est enfoncé
-            mouse_x, mouse_y = pygame.mouse.get_pos()
             if self.player.attack_cooldown == 0:
                 self.player.shoot(mouse_x, mouse_y, self.all_bullets)
                 self.player.attack_cooldown = ATTACK_COOLDOWN
-
         # Gestion de l'affichage de l'inventaire avec une seule touche
         if pressed[pygame.K_i]:
-            self.show_inventory = not self.show_inventory
+           self.show_inventory = not self.show_inventory
 
         # Gestion de l'affichage des quetes avec une seule touche
         if pressed[pygame.K_t]:
@@ -235,6 +241,7 @@ class Game:
             self.take_item()
         if pressed[pygame.K_f] and self.npc and self.npc.in_interaction_range(self.player):
             self.npc.interact(self.player)
+        
     def draw_inventory(self):
         if self.show_inventory:
             self.inventory.show_inventory(self.screen, self.font, 800)
@@ -242,16 +249,33 @@ class Game:
     def draw_quests(self):
         if self.show_quests:
             self.QuestManager.show_quests(self.screen, self.font, WIDTH)
+    def save_game_state(self):
+        game_state = {
+            'map': self.map,
+            'player_position': (self.player.rect.x, self.player.rect.y),
+            #'inventory': self.inventory.item(),
+            #'quests': self.questmanager.active_quests()
+        }
+        self.save_load.save_data(game_state, 'game_state')
+
+    def load_game_state(self):
+        game_state = self.save_load.load_data('game_state')
+        if game_state:
+            self.map = game_state.get('map', 'map1.tmx')
+            self.switch_map(self.map)
+            self.player.rect.x, self.player.rect.y = game_state.get('player_position', (0, 0))
+            self.player.position = [self.player.rect.x,self.player.rect.y]
+            #self.inventory.items = game_state.get('inventory', [])
+            #self.game.questmanager.active_quests(game_state.get('quests', []))
 
     def run(self):
         clock = pygame.time.Clock()
         # Affichage de l'écran d'introduction
-        self.interface.intro_screen()
-        self.running = self.interface.intro_screen() #pour pouvoir quitter le jeu lors de l'ecran du menu
-        self.new_game = self.interface.intro_screen()
-        if self.new_game: 
-            self.interface.prologue() 
+        self.intro_screen()
         
+        if self.new_game: 
+            self.reset_game_state()
+            self.interface.prologue() 
         while self.running:
             self.player.save_location()
             # Gestion des entrées du joueur et des événements de jeu
@@ -268,8 +292,6 @@ class Game:
 
             # Affichage des balles tirées par le joueur
             self.all_bullets.draw(self.screen)
-            
-            
             # Centrage de la caméra sur le joueur
             self.group.center(self.player.rect.center)
 
@@ -280,12 +302,15 @@ class Game:
             
             #affichage de la barre de vie
             self.player.update_healthbar(self.screen)
+            if self.player.health <= 0:
+                self.death_screen()
+                
                         
             #affichage de l'inventaire (i)
             self.draw_inventory()
+
+            #affichage de la dialogue box
             self.draw_dialogue_box()
-            #affichage des quetes
-            self.draw_quests()
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
             
@@ -295,10 +320,128 @@ class Game:
                     if event.key == pygame.K_ESCAPE:
                         self.interface.menu_screen() 
                         self.running = self.interface.menu_screen()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        self.inventory.handle_click(event.pos)
+  
                 if event.type == pygame.QUIT:
                     self.running = False
-
+                    
+            # Mise à jour de l'affichage de l'écran
+            pygame.display.flip()
             clock.tick(FPS)
         
         # Fermeture de la fenêtre pygame
         pygame.quit()
+
+
+    def intro_screen(self):
+            intro = True
+            self.reset_game_state()
+            self.death = False
+            title = self.font.render("Projet OO", True, 'Black')
+            title_rect = title.get_rect(center=(WIDTH/2, HEIGHT/4))
+            continue_button = Button(WIDTH/2 - 100, HEIGHT/2 - 150, 200, 50, (255, 255, 255), (0, 0, 0), "Continue", 36)
+            play_button = Button(WIDTH/2 - 100, HEIGHT/2 -50 , 200, 50, (255, 255, 255), (0, 0, 0), "New Game", 36)
+            exit_button = Button(WIDTH/2 - 100, HEIGHT/2 + 50, 200, 50, (255, 255, 255), (0, 0, 0), "Exit", 36)
+            while intro:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        intro = False
+                        self.running = False
+                mouse_pos = pygame.mouse.get_pos()
+                mouse_pressed = pygame.mouse.get_pressed()
+                if continue_button.is_pressed(mouse_pos, mouse_pressed):
+                    intro = False
+                    self.load_game_state()
+                if play_button.is_pressed(mouse_pos, mouse_pressed):
+                    intro = False
+                    self.new_game = True
+                    self.prologue_on = True
+                    return self.new_game, self.prologue_on
+
+                if exit_button.is_pressed(mouse_pos, mouse_pressed):
+                    intro = False
+                    self.running = False
+                
+                stretched_image = pygame.transform.scale(self.intro_background,(800,1000))
+                self.screen.blit(stretched_image, (0, 0))
+                self.screen.blit(title, title_rect)
+                self.screen.blit(continue_button.image, continue_button.rect)
+                self.screen.blit(play_button.image, play_button.rect)
+                self.screen.blit(exit_button.image, exit_button.rect)
+                
+                pygame.display.update() 
+    def menu_screen(self):
+            menu = True
+            title = self.font.render("Menu", True, 'Black')
+            title_rect = title.get_rect(center=(WIDTH/2, HEIGHT/4))
+            continue_button = Button(WIDTH/2 - 100, HEIGHT/2 - 150, 200, 50, (255, 255, 255), (0, 0, 0), "Continue", 36)
+            save_game = Button(WIDTH/2 - 100, HEIGHT/2 -50 , 200, 50, (255, 255, 255), (0, 0, 0), "Save game", 36)
+            exit_button = Button(WIDTH/2 - 100, HEIGHT/2 + 50, 200, 50, (255, 255, 255), (0, 0, 0), "Exit", 36)
+            
+
+            while menu:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        menu = False
+                        self.running = False
+                mouse_pos = pygame.mouse.get_pos()
+                mouse_pressed = pygame.mouse.get_pressed()
+                if continue_button.is_pressed(mouse_pos, mouse_pressed):
+                    menu = False
+                if save_game.is_pressed(mouse_pos, mouse_pressed):
+                    self.save_game_state()
+                    print("Game saved.")
+                if exit_button.is_pressed(mouse_pos, mouse_pressed):
+                    menu = False
+                    self.running = False
+                    return self.running
+                
+                stretched_image = pygame.transform.scale(self.intro_background,(800,1000))
+                self.screen.blit(stretched_image, (0, 0))
+                self.screen.blit(title, title_rect)
+                self.screen.blit(continue_button.image, continue_button.rect)
+                self.screen.blit(save_game.image, save_game.rect)
+                self.screen.blit(exit_button.image, exit_button.rect)
+                
+                pygame.display.update()
+    def death_screen(self):
+        self.death = True
+        title = self.font.render("You died", True, 'Black')
+        title_rect = title.get_rect(center=(WIDTH/2, HEIGHT/4))
+        return_main_menu = Button(WIDTH/2 - 100, HEIGHT/2 - 150, 200, 50, (255, 255, 255), (0, 0, 0), "Main Menu", 36)
+        exit_button = Button(WIDTH/2 - 100, HEIGHT/2 + 50, 200, 50, (255, 255, 255), (0, 0, 0), "Exit", 36)
+        while self.death:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.death = False
+                    self.running = False
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+            if return_main_menu.is_pressed(mouse_pos, mouse_pressed):
+                self.death = False
+                self.reset_game_state()
+                self.intro_screen()
+                return
+            if exit_button.is_pressed(mouse_pos, mouse_pressed):
+                self.death = False
+                self.running = False
+            
+            stretched_image = pygame.transform.scale(self.intro_background,(800,1000))
+            self.screen.blit(stretched_image, (0, 0))
+            self.screen.blit(title, title_rect)
+            self.screen.blit(return_main_menu.image, return_main_menu.rect)
+            self.screen.blit(exit_button.image, exit_button.rect)
+            
+            pygame.display.update()
+    def reset_game_state(self):
+        self.player = Player(0,0)
+        self.inventory = Inventory()
+        self.questmanager = QuestManager()
+        self.show_inventory = False
+        self.show_quests = False
+        self.npc = None
+        self.map = 'map1.tmx'
+        self.switch_map(self.map,'spawn_player')
+    

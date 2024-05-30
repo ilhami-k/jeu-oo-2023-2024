@@ -60,6 +60,13 @@ class Player(Entity):
     def cooldown_tick(self):
         if self.attack_cooldown > 0:
             self.attack_cooldown -= 1
+    
+    def healing(self):
+        self.health += APPLE_HEAL
+        if self.health > self.max_health:
+            self.health = self.max_health
+    
+
             
     #gestion de l'apparence de la barre de vie du joueur 
     def update_healthbar (self, screen):
@@ -68,9 +75,9 @@ class Player(Entity):
         #couleur de fond de barre
         bar_fond_color = (255,95,65)
         #position de la barre 
-        bar_position = [self.rect.x, self.rect.y, self.health, 5]
+        bar_position = [15, 15, self.health, 10]
         #position de l'arriere plan de la barre 
-        bar_fond_position = [self.rect.x, self.rect.y, self.max_health, 5]
+        bar_fond_position = [15, 15, self.max_health, 10]
 
         #affichage de l'arriere plan
         pygame.draw.rect(screen, bar_fond_color, bar_fond_position)
