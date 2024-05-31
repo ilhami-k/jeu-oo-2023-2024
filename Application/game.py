@@ -47,12 +47,12 @@ class Game:
 
         self.QuestManager = QuestManager()
          #premiere quete
-        self.main_quest = MainQuest("Quête principale", "Vaincre le boss", 1)
+        self.main_quest = Quest("Quête principale", "Vaincre le boss", 1,self.QuestManager)
 
         # deuxieme quete
-        self.secondary_quest1 = SecondaryQuests("Quête secondaire", "Tuer 10 ennemis", 10)
+        self.secondary_quest1 = Quest("Quête secondaire", "Tuer 10 ennemis", 10,self.QuestManager)
         #troisieme quete
-        self.secondary_quest2 = SecondaryQuests("Quête secondaire", "Obtenir 5 items", 5)
+        self.secondary_quest2 = Quest("Quête secondaire", "Obtenir 5 items", 5,self.QuestManager)
 
         # Add quests to QuestManager
         self.QuestManager.addQuest(self.main_quest)
@@ -241,7 +241,7 @@ class Game:
             self.take_item()
         if pressed[pygame.K_f] and self.npc and self.npc.in_interaction_range(self.player):
             self.npc.interact(self.player)
-        
+       
     def draw_inventory(self):
         if self.show_inventory:
             self.inventory.show_inventory(self.screen, self.font, 800)
@@ -308,6 +308,9 @@ class Game:
                         
             #affichage de l'inventaire (i)
             self.draw_inventory()
+
+            #affichage des quetes (t)
+            self.draw_quests()
 
             #affichage de la dialogue box
             self.draw_dialogue_box()
