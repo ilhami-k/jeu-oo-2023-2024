@@ -134,6 +134,18 @@ class Nohead(Enemy):
         super().__init__(x, y, "Application/Nohead.png", 'Nohead', NOHEAD_SPEED, NOHEAD_HEALTH, NOHEAD_ATTACK_COOLDOWN)
         self.initial_attack_cooldown = NOHEAD_ATTACK_COOLDOWN
 
+class Golem(Enemy):
+    def __init__(self, x, y):
+        super().__init__(x, y, "Application/Golem.png", 'Golem', GOLEM_SPEED, GOLEM_HEALTH, GOLEM_ATTACK_COOLDOWN)
+        self.initial_attack_cooldown = GOLEM_ATTACK_COOLDOWN
+        self.image = self.get_image(0, 0)
+        self.image.set_colorkey((0, 0, 0))
+
+    def get_image(self, x, y):
+        image = pygame.Surface((67, 69))
+        image.blit(self.sprite_sheet, (0, 0), (x, y, 67, 69))
+        return image
+
 class Npc(Entity):
     def __init__(self, x, y,lines):
         super().__init__(x, y, "Application/NPC.png", 'npc', NPC_SPEED, NPC_HEALTH, NPC_ATTACK_COOLDOWN)

@@ -21,6 +21,8 @@ class Game:
         # Création du joueur et ajout au groupe de calques
         self.player = Player(0,0)
 
+        self.golem_killed = False
+
         # Initialisation de la liste des items
         self.list_items_on_map = [appel, berry, military, police, uzi, bazooka, pistol]
 
@@ -105,6 +107,9 @@ class Game:
             if obj.type == "spawn_nohead":
                 self.all_enemies.append(Nohead(obj.x, obj.y))
                 self.group.add(self.all_enemies)
+            if obj.type == "spawn_golem" and not self.golem_killed:
+                self.all_enemies.append(Golem(obj.x, obj.y))
+                self.group.add(self.all_enemies)
             if obj.type == 'spawn_npc':
                 self.npc = Npc(obj.x, obj.y,'test')
                 self.group.add(self.npc)
@@ -155,6 +160,8 @@ class Game:
                     self.all_bullets.remove(bullet)
                     enemy.take_damage()
                     if enemy.health <= 0:
+                        if type(enemy) == Golem: # Si le type(class) de enemy est Golem, ..
+                            self.golem_killed = True  # Le Golem a été tué
                         self.all_enemies.remove(enemy) # Supprimer l'ennemi du groupe (rect)
                         self.drop_item(enemy) # Laisser tomber un objet
 
