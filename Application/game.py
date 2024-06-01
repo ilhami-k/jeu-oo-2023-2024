@@ -19,7 +19,7 @@ class Game:
 
         # Création du joueur et ajout au groupe de calques
         self.player = Player(0,0)
-
+        
 
         # Initialisation de la liste des items
         self.list_items_on_map = [appel, berry, military, police, uzi, bazooka, pistol]
@@ -232,7 +232,13 @@ class Game:
         # Gestion de l'affichage de l'inventaire avec une seule touche
         if pressed[pygame.K_i]:
            self.show_inventory = not self.show_inventory
-
+        
+        if pressed[pygame.K_o]:
+            self.inventory.use_item(appel, self.player)
+        
+        if pressed[pygame.K_p]:
+            self.inventory.use_item(military, self.player)
+ 
         # Gestion de l'affichage des quetes avec une seule touche
         if pressed[pygame.K_t]:
             self.show_quests = not self.show_quests
@@ -329,6 +335,19 @@ class Game:
   
                 if event.type == pygame.QUIT:
                     self.running = False
+                
+                        
+            #affichage de l'inventaire (i)
+            self.draw_inventory()
+
+            #affichage de la dialogue box
+            self.draw_dialogue_box()
+            # Mise à jour de l'affichage de l'écran
+            pygame.display.flip()
+            
+           
+
+                    
                     
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()

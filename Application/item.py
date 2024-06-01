@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from entity import *
+from entity import Player
 
 
 class Item(pygame.sprite.Sprite):
@@ -12,6 +12,7 @@ class Item(pygame.sprite.Sprite):
         self.image = pygame.Surface((scale, scale))
         self.image.fill(color)
         self.rect = self.image.get_rect(topleft=self.position)
+       
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
@@ -23,6 +24,14 @@ class Healer(Item):
     def __init__(self, nom, info, scale, color, heal):
         super().__init__(0, 0, nom, info, scale, color)  # Note: Position temporaire (0, 0)
         self.heal = heal
+
+    def healing(self, player):
+        if not isinstance(player, Player):
+            raise TypeError           
+        player.health = min (player.health + self.heal, player.max_health)
+
+        
+
     
 
 
@@ -44,8 +53,11 @@ class Armor(Item):
         super().__init__(0, 0, nom, info, scale, color)  # Note: Position temporaire (0, 0)
         self.shield = shield
 
-    def protect(self, max_health):
-        max_health += self.shield
+    def protect(self, player):
+        if not isinstance(player, Player):
+            raise TypeError
+        player.max_health += self.shield
+        player.health += self.shield
 
 
 appel = Healer('pomme', APPLE_INFO, APPLE_SCALE, APPLE_COLOR, APPLE_HEAL)

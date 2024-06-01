@@ -9,6 +9,7 @@ class Inventory:
         self.item_rects = []
         self.hover_item = None
         self.player = Player(0, 0)
+        
 
 
         #Test pour voir si les objets sont bien ajoutés à l'inventaire
@@ -27,10 +28,17 @@ class Inventory:
     def handle_click(self, mouse_pos):
         for rect, item in self.item_rects:
             if rect.collidepoint(mouse_pos):
-               self.use_item(item)
+               self.use_item(item, self.player)
     
-    def use_item(self, item):
-         self.remove_item(item)
+    def use_item(self, item, player):
+        if isinstance(item, Healer):
+            item.healing(player)
+            self.remove_item(item)
+        if isinstance(item, Armor):
+            item.protect(player)
+            self.remove_item(item)
+      
+        
 
 
 
