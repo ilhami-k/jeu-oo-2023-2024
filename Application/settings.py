@@ -47,7 +47,7 @@ BULLET_DAMAGE = 3
 APPLE_INFO = 'le fruit préferé de Newton' 
 APPLE_SCALE = 4
 APPLE_COLOR = (0,255,0)
-APPLE_HEAL = 5
+APPLE_HEAL = 15
 
 # Berry setting
 BERRY_INFO = "souvent récolté près des arbustes"
@@ -80,7 +80,7 @@ PISTOL_COLOR = (18,18,8)
 MILITARY_INFO = "armure porté par l'armée americaine"
 MILITARY_SCALE = 3
 MILITARY_COLOR = (45,5,5)
-MILITARY_SHIELD = 5
+MILITARY_SHIELD = 3
 
 # Police settings
 POLICE_INFO = "blindage de la police anti émeute"

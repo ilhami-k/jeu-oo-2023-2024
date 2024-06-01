@@ -59,7 +59,7 @@ class Player(Entity):
     def cooldown_tick(self):
         if self.attack_cooldown > 0:
             self.attack_cooldown -= 1
-    
+  
     def healing(self):
         self.health += APPLE_HEAL
         if self.health > self.max_health:

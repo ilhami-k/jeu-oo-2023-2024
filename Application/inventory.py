@@ -9,6 +9,7 @@ class Inventory:
         self.item_rects = []
         self.hover_item = None
         self.player = Player(0, 0)
+        
 
 
         #Test pour voir si les objets sont bien ajoutés à l'inventaire
@@ -27,10 +28,17 @@ class Inventory:
     def handle_click(self, mouse_pos):
         for rect, item in self.item_rects:
             if rect.collidepoint(mouse_pos):
-               self.use_item(item)
+               self.use_item(item, self.player)
     
-    def use_item(self, item):
-         self.remove_item(item)
+    def use_item(self, item, player):
+        if isinstance(item, Healer):
+            item.healing(player)
+            self.remove_item(item)
+        if isinstance(item, Armor):
+            item.protect(player)
+            self.remove_item(item)
+      
+        
 
 
 
@@ -70,6 +78,19 @@ class Inventory:
             
         # Affiche la surface de l'inventaire sur l'écran principal
         screen.blit(inventory_surface, (WIDTH - 310, 10))  # Positionne l'inventaire dans le coin supérieur droit
-    def item(self):
-        list_items = self.items
-        return list_items #pour pouvoir sauvegarder l'inventaire
+    
+    def save_inventory(self):
+        return [item.serialize() for item in self.items]
+
+    def load_inventory(self, items_data):
+        self.items = []
+        for item_data in items_data:
+            item_type = item_data.pop('type')
+            if item_type == 'Healer':
+                item = Healer.deserialize(item_data)
+            elif item_type == 'Power':
+                item = Power.deserialize(item_data)
+            elif item_type == 'Armor':
+                item = Armor.deserialize(item_data)
+            self.items.append(item)
+
