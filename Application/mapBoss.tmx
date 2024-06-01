@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="117">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="118">
  <tileset firstgid="1" source="Modern_Exteriors_Complete_Tileset.tsx"/>
  <layer id="1" name="background" width="50" height="50">
   <data encoding="csv">
@@ -133,6 +133,9 @@
   <object id="114" type="collision" x="180" y="244.667" width="42.6667" height="44"/>
   <object id="115" type="collision" x="180.667" y="514.667" width="40.6667" height="40.6667"/>
   <object id="116" type="collision" x="578.667" y="513.333" width="40.6667" height="46.6667"/>
+  <object id="117" name="Golem" type="spawn_golem" x="400.334" y="76.1905">
+   <point/>
+  </object>
  </objectgroup>
  <layer id="3" name="Décord" width="50" height="50">
   <data encoding="csv">

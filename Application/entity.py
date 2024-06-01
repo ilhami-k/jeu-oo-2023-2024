@@ -52,7 +52,6 @@ class Player(Entity):
         super().__init__(x, y, "Application/Player.png", 'Player', PLAYER_SPEED, PLAYER_HEALTH, ATTACK_COOLDOWN)
         self.max_health = PLAYER_MAX_HEALTH
 
-
     def shoot(self, target_x, target_y, bullet_group):
         angle = math.atan2(target_y - self.position[1], target_x - self.position[0])
         bullet_group.add(Bullet(self.position[0], self.position[1], angle))
@@ -60,9 +59,12 @@ class Player(Entity):
     def cooldown_tick(self):
         if self.attack_cooldown > 0:
             self.attack_cooldown -= 1
-   
-
-            
+  
+    def healing(self):
+        self.health += APPLE_HEAL
+        if self.health > self.max_health:
+            self.health = self.max_health
+    
     #gestion de l'apparence de la barre de vie du joueur 
     def update_healthbar (self, screen):
         #couleur de la barre de vie 
@@ -79,8 +81,6 @@ class Player(Entity):
         #afficher la barre de vie 
         pygame.draw.rect(screen, bar_color, bar_position)
     
-
-
 class Enemy(Entity):
     def update(self, player):
         # Calculer la direction vers le joueur
@@ -124,11 +124,31 @@ class Skeleton(Enemy):
         super().__init__(x, y, "Application/Skeleton.png", 'Skeleton', SKELETON_SPEED, SKELETON_HEALTH, SKELETON_ATTACK_COOLDOWN)
         self.initial_attack_cooldown = SKELETON_ATTACK_COOLDOWN
 
+class Nohead(Enemy):
+    def __init__(self, x, y):
+        super().__init__(x, y, "Application/Nohead.png", 'Nohead', NOHEAD_SPEED, NOHEAD_HEALTH, NOHEAD_ATTACK_COOLDOWN)
+        self.initial_attack_cooldown = NOHEAD_ATTACK_COOLDOWN
+
+class Golem(Enemy):
+    def __init__(self, x, y):
+        super().__init__(x, y, "Application/Golem.png", 'Golem', GOLEM_SPEED, GOLEM_HEALTH, GOLEM_ATTACK_COOLDOWN)
+        self.initial_attack_cooldown = GOLEM_ATTACK_COOLDOWN
+        self.image = self.get_image(0, 0)
+        self.image.set_colorkey((0, 0, 0))
+
+    def get_image(self, x, y):
+        image = pygame.Surface((67, 69))
+        image.blit(self.sprite_sheet, (0, 0), (x, y, 67, 69))
+        return image
+    
+    def rage(self):
+        if self.health <= GOLEM_HEALTH / 2:
+            self.speed = GOLEM_SPEED * 2
+            self.attack_cooldown = GOLEM_ATTACK_COOLDOWN / 2
+
 class Npc(Entity):
     def __init__(self, x, y,lines):
         super().__init__(x, y, "Application/NPC.png", 'npc', NPC_SPEED, NPC_HEALTH, NPC_ATTACK_COOLDOWN)
-        self.x = x
-        self.y = y
         self.lines = lines
         self.interaction_range = 50
         self.dialogue_box = None

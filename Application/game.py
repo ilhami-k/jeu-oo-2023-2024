@@ -2,6 +2,7 @@ import pygame
 import pytmx
 import pyscroll
 import json
+import random
 from entity import *
 from settings import *
 from interface import *
@@ -19,13 +20,13 @@ class Game:
 
         # Création du joueur et ajout au groupe de calques
         self.player = Player(0,0)
-        
+
+        self.golem_killed = False
 
         # Initialisation de la liste des items
         self.list_items_on_map = [appel, berry, military, police, uzi, bazooka, pistol]
 
-
-        self.all_enemies = []  # Liste pour les ennemis
+        self.list_items_on_monster = [tooth]
 
         self.item_rects = []
 
@@ -103,6 +104,12 @@ class Game:
             if obj.type == "spawn_skeleton":
                 self.all_enemies.append(Skeleton(obj.x, obj.y))  # Passer la référence au groupe ici
                 self.group.add(self.all_enemies)
+            if obj.type == "spawn_nohead":
+                self.all_enemies.append(Nohead(obj.x, obj.y))
+                self.group.add(self.all_enemies)
+            if obj.type == "spawn_golem" and not self.golem_killed:
+                self.all_enemies.append(Golem(obj.x, obj.y))
+                self.group.add(self.all_enemies)
             if obj.type == 'spawn_npc':
                 self.npc = Npc(obj.x, obj.y,'test')
                 self.group.add(self.npc)
@@ -135,7 +142,7 @@ class Game:
     def update(self): 
         # Mise à jour du groupe de calques
         self.group.update(self.player)
-
+        
         # Vérification des collisions entre le joueur et les objets de collision
         for collision_rect in self.collision:
             if self.player.rect.colliderect(collision_rect):
@@ -153,8 +160,11 @@ class Game:
                     self.all_bullets.remove(bullet)
                     enemy.take_damage()
                     if enemy.health <= 0:
+                        if type(enemy) == Golem: # Si le type(class) de enemy est Golem, ..
+                            self.golem_killed = True  # Le Golem a été tué
                         self.all_enemies.remove(enemy) # Supprimer l'ennemi du groupe (rect)
-                        self.secondary_quest1.updateProgress()
+                        self.drop_item(enemy) # Laisser tomber un objet
+
         # Mise à jour des balles tirées par le joueur
         for bullet in self.all_bullets:
             bullet.update()
@@ -163,6 +173,10 @@ class Game:
             else:
                 bullet.lifetime -= 1
 
+        for enemy in self.all_enemies:
+            if type(enemy) == Golem:
+                enemy.rage()
+            
         # Vérification des transitions entre les cartes
         if self.map == 'map1.tmx':
             if self.player.rect.colliderect(self.enter_other_map1_rect):
@@ -192,18 +206,36 @@ class Game:
         if self.npc:
             self.npc.update(self.player)
 
+    def drop_item(self, enemy):
+        drop_chance = 0.1  # Taux de drop de 10%
+        if random.random() < drop_chance:
+            item_type = random.choice(["tooth", "heart"])
+            if item_type == "tooth":
+                dropped_item = Item(enemy.rect.x, enemy.rect.y, "dent", TOOTH_INFO, TOOTH_SCALE, TOOTH_COLOR)
+            elif item_type == "heart":
+                dropped_item = Item(enemy.rect.x, enemy.rect.y, "coeur", HEART_INFO, HEART_SCALE, HEART_COLOR)
+            self.list_items_on_monster.append(dropped_item)  # Ajouter l'item à la liste des items sur la carte
+            self.group.add(dropped_item)  # Ajouter l'item au groupe de sprites pour qu'il soit affiché
+
     def take_item(self):
         for item in self.list_items_on_map:
             # Vérifier si le joueur est en collision avec un objet
             if pygame.sprite.collide_rect(self.player, item):
                 # Effectuer l'action de ramassage de l'objet
                 self.inventory.add_item(item)
-                self.secondary_quest2.updateProgress()
                 # Supprimer l'item de la liste des items sur la carte pour ne pas qu'il réapparaisse
                 self.list_items_on_map.remove(item)
-                # Supprimer l'objet du groupe de calques
                 self.group.remove(item)
-    
+
+        for item in self.list_items_on_monster:
+            # Vérifier si le joueur est en collision avec un objet
+            if pygame.sprite.collide_rect(self.player, item):
+                # Effectuer l'action de ramassage de l'objet
+                self.inventory.add_item(item)
+                # Supprimer l'objet du groupe de calques
+                self.list_items_on_monster.remove(item)
+                self.group.remove(item)
+
     def draw_dialogue_box(self):
         if self.npc and self.npc.dialogue_box:
             self.npc.dialogue_box.draw(self.screen)
@@ -245,9 +277,11 @@ class Game:
         # Gestion de la prise d'objet
         if pressed[pygame.K_e]:
             self.take_item()
+            
+        # Gestion de l'interaction avec les NPC
         if pressed[pygame.K_f] and self.npc and self.npc.in_interaction_range(self.player):
             self.npc.interact(self.player)
-       
+        
     def draw_inventory(self):
         if self.show_inventory:
             self.inventory.show_inventory(self.screen, self.font, 800)
