@@ -213,6 +213,7 @@ class Game:
                 self.inventory.add_item(item)
                 # Supprimer l'item de la liste des items sur la carte pour ne pas qu'il réapparaisse
                 self.list_items_on_map.remove(item)
+                self.group.remove(item)
 
         for item in self.list_items_on_monster:
             # Vérifier si le joueur est en collision avec un objet
