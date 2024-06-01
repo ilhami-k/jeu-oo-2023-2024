@@ -17,10 +17,11 @@ import pygame
 
 #Mission principale affichée apres introduction
 class Quest:
-    def __init__(self,name,description,goal,current = 0):
+    def __init__(self,name,description,goal,manager,current = 0):
         self.name = name
         self.description = description
         self.goal = goal
+        self.manager = manager
         self.current = current
         self.completed = False
 
@@ -28,32 +29,25 @@ class Quest:
         if not self.completed: #Si objectif pas complété
             self.current += 1
             self.checkCompletion(self.current) #envoie la valeur de self.current comme donnée à la méthode de la classe mère qui regarde si la quête est complétée.
-
+        
     def checkCompletion(self,current):
           if current >= self.goal:
                 self.completed = True #Objectif complété
+                self.manager.deleteQuest(self)  # Supprime la quête du gestionnaire
 
-class MainQuest(Quest):
-    def __init__(self,name,description,goal):
-        super().__init__(name,description,goal)
-    
-class SecondaryQuests(Quest):
-    def __init__(self,name,description,goal):
-        super().__init__(name,description,goal)
 
 class QuestManager:
     def __init__(self):
         self.quests = [] #Liste quêtes
+      
     
     def addQuest(self,quest):
         self.quests.append(quest)
     
-    def active_quests(self):
-        return [quest for quest in self.quests if not quest.completed] #compréhension de liste qui fait une liste qui comprendra les quêtes qui se trouvent dans la liste self.quests et qui ne sont pas completed 
-    
-    def completed_quests(self):
-        return [quest for quest in self.quests if quest.completed] ##compréhension de liste qui fait une liste qui comprendra les quêtes qui se trouvent dans la liste self.quests et qui sont completed 
-    
+    def deleteQuest(self,quest):
+        if quest in self.quests:
+            self.quests.remove(quest)
+
     def show_quests(self,screen,font,WIDTH):
         small_font = pygame.font.Font(None,24) #Définit une police plus petite pour les quetes
 
@@ -68,7 +62,7 @@ class QuestManager:
 
         for quest in self.quests:
             # Divise le texte des quetes en plusieurs lignes si nécessaire pour s'adapter à la largeur de 35 caractères
-            item_text_lines = textwrap.wrap(f"{quest.name}: {quest.description}", width=35)
+            item_text_lines = textwrap.wrap(f"{quest.name}: {quest.description} {quest.current}/{quest.goal}", width=35)
             for line in item_text_lines:
                 quests_text = small_font.render(line, True, (255, 255, 255))  # Rend chaque ligne de texte en blanc
                 quests_surface.blit(quests_text, (20, y_offset))  # Affiche la ligne de texte sur la surface

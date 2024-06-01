@@ -44,18 +44,21 @@ class Game:
 
         #création de l'inventaire 
         self.inventory = Inventory()
-        self.questmanager = QuestManager()
-        # premiere quete
-        main_quest = MainQuest("Main Quest", "Defeat the Boss", 1)
+
+
+        self.QuestManager = QuestManager()
+         #premiere quete
+        self.main_quest = Quest("Quête principale", "Vaincre le boss", 1,self.QuestManager)
+
         # deuxieme quete
-        secondary_quest1 = SecondaryQuests("Secondary Quest 1", "Defeat 10 enemies", 10)
-        # troisieme quete
-        secondary_quest2 = SecondaryQuests("Secondary Quest 2", "Collect 5 items from enemies", 5)
+        self.secondary_quest1 = Quest("Quête secondaire", "Tuer 10 ennemis", 10,self.QuestManager)
+        #troisieme quete
+        self.secondary_quest2 = Quest("Quête secondaire", "Obtenir 5 items", 5,self.QuestManager)
 
         # Add quests to QuestManager
-        self.questmanager.addQuest(main_quest)
-        self.questmanager.addQuest(secondary_quest1)
-        self.questmanager.addQuest(secondary_quest2)
+        self.QuestManager.addQuest(self.main_quest)
+        self.QuestManager.addQuest(self.secondary_quest1)
+        self.QuestManager.addQuest(self.secondary_quest2)
 
         
         self.show_inventory = True
@@ -152,13 +155,6 @@ class Game:
                     enemy.take_damage()
                     if enemy.health <= 0:
                         self.all_enemies.remove(enemy) # Supprimer l'ennemi du groupe (rect)
-                        # Probabilité de drop d'un item
-                        drop_chance = 0.2  # Probabilité de 20%
-                        if random.random() < drop_chance:
-                            item = random.choice(self.list_items_on_monster)
-                            item.rect.x = enemy.rect.x
-                            item.rect.y = enemy.rect.y
-                            self.group.add(item)
 
         # Mise à jour des balles tirées par le joueur
         for bullet in self.all_bullets:
@@ -203,9 +199,7 @@ class Game:
             if pygame.sprite.collide_rect(self.player, item):
                 # Effectuer l'action de ramassage de l'objet
                 self.inventory.add_item(item)
-                # Supprimer l'objet du groupe de calques
-                self.group.remove(item)
-                # Supprimer l'objet de la liste des objets sur la carte
+                # Supprimer l'item de la liste des items sur la carte pour ne pas qu'il réapparaisse
                 self.list_items_on_map.remove(item)
 
         for item in self.list_items_on_monster:
@@ -240,7 +234,6 @@ class Game:
             if self.player.attack_cooldown == 0:
                 self.player.shoot(mouse_x, mouse_y, self.all_bullets)
                 self.player.attack_cooldown = ATTACK_COOLDOWN
-                
         # Gestion de l'affichage de l'inventaire avec une seule touche
         if pressed[pygame.K_i]:
            self.show_inventory = not self.show_inventory
@@ -255,6 +248,7 @@ class Game:
         # Gestion de l'interaction avec les NPC
         if pressed[pygame.K_f] and self.npc and self.npc.in_interaction_range(self.player):
             self.npc.interact(self.player)
+        
     def draw_inventory(self):
         if self.show_inventory:
             self.inventory.show_inventory(self.screen, self.font, 800)
@@ -321,6 +315,9 @@ class Game:
                         
             #affichage de l'inventaire (i)
             self.draw_inventory()
+
+            #affichage des quetes (t)
+            self.draw_quests()
 
             #affichage de la dialogue box
             self.draw_dialogue_box()
