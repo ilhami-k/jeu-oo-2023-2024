@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="66">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="68">
  <tileset firstgid="1" source="Modern_Exteriors_Complete_Tileset.tsx"/>
  <layer id="1" name="Calque de Tuiles 1" width="50" height="50">
   <data encoding="csv">
@@ -349,6 +349,12 @@
    <point/>
   </object>
   <object id="65" name="NPC" type="spawn_npc" x="679.031" y="418.379">
+   <point/>
+  </object>
+  <object id="66" name="Nohead" type="spawn_nohead" x="664" y="723">
+   <point/>
+  </object>
+  <object id="67" name="Nohead" type="spawn_nohead" x="442" y="81">
    <point/>
   </object>
  </objectgroup>

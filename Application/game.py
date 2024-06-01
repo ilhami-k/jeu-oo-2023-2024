@@ -26,8 +26,6 @@ class Game:
 
         self.list_items_on_monster = [tooth]
 
-        self.all_enemies = []  # Liste pour les ennemis
-
         self.item_rects = []
 
         # Appel de la méthode switch_map pour charger la première carte
@@ -103,6 +101,9 @@ class Game:
             # Création des Skeletons à partir des objets spawn_skeleton sur la carte
             if obj.type == "spawn_skeleton":
                 self.all_enemies.append(Skeleton(obj.x, obj.y))  # Passer la référence au groupe ici
+                self.group.add(self.all_enemies)
+            if obj.type == "spawn_nohead":
+                self.all_enemies.append(Nohead(obj.x, obj.y))
                 self.group.add(self.all_enemies)
             if obj.type == 'spawn_npc':
                 self.npc = Npc(obj.x, obj.y,'test')

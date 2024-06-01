@@ -129,6 +129,11 @@ class Skeleton(Enemy):
         super().__init__(x, y, "Application/Skeleton.png", 'Skeleton', SKELETON_SPEED, SKELETON_HEALTH, SKELETON_ATTACK_COOLDOWN)
         self.initial_attack_cooldown = SKELETON_ATTACK_COOLDOWN
 
+class Nohead(Enemy):
+    def __init__(self, x, y):
+        super().__init__(x, y, "Application/Nohead.png", 'Nohead', NOHEAD_SPEED, NOHEAD_HEALTH, NOHEAD_ATTACK_COOLDOWN)
+        self.initial_attack_cooldown = NOHEAD_ATTACK_COOLDOWN
+
 class Npc(Entity):
     def __init__(self, x, y,lines):
         super().__init__(x, y, "Application/NPC.png", 'npc', NPC_SPEED, NPC_HEALTH, NPC_ATTACK_COOLDOWN)
