@@ -155,6 +155,7 @@ class Game:
                     enemy.take_damage()
                     if enemy.health <= 0:
                         self.all_enemies.remove(enemy) # Supprimer l'ennemi du groupe (rect)
+                        self.drop_item(enemy) # Laisser tomber un objet
 
         # Mise à jour des balles tirées par le joueur
         for bullet in self.all_bullets:
@@ -193,6 +194,17 @@ class Game:
         if self.npc:
             self.npc.update(self.player)
 
+    def drop_item(self, enemy):
+        drop_chance = 0.1  # Taux de drop de 10%
+        if random.random() < drop_chance:
+            item_type = random.choice(["tooth", "heart"])
+            if item_type == "tooth":
+                dropped_item = Item(enemy.rect.x, enemy.rect.y, "dent", TOOTH_INFO, TOOTH_SCALE, TOOTH_COLOR)
+            elif item_type == "heart":
+                dropped_item = Item(enemy.rect.x, enemy.rect.y, "coeur", HEART_INFO, HEART_SCALE, HEART_COLOR)
+            self.list_items_on_monster.append(dropped_item)  # Ajouter l'item à la liste des items sur la carte
+            self.group.add(dropped_item)  # Ajouter l'item au groupe de sprites pour qu'il soit affiché
+
     def take_item(self):
         for item in self.list_items_on_map:
             # Vérifier si le joueur est en collision avec un objet
@@ -208,7 +220,9 @@ class Game:
                 # Effectuer l'action de ramassage de l'objet
                 self.inventory.add_item(item)
                 # Supprimer l'objet du groupe de calques
+                self.list_items_on_monster.remove(item)
                 self.group.remove(item)
+
     def draw_dialogue_box(self):
         if self.npc and self.npc.dialogue_box:
             self.npc.dialogue_box.draw(self.screen)

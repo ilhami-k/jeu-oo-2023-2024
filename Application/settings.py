@@ -4,6 +4,7 @@ HEIGHT = 800
 FPS = 120
 TITRE = 'Projet OO'
 ZOOM = 1
+DROP_RATE = 0.1
 
 # Player settings
 PLAYER_SPEED = 2
@@ -81,4 +82,9 @@ POLICE_SHIELD = 3
 TOOTH_INFO = "dent de monstre"
 TOOTH_SCALE = 2
 TOOTH_COLOR = (255,255,255)
+
+# Heart settings
+HEART_INFO = "coeur de monstre"
+HEART_SCALE = 3
+HEART_COLOR = (255,0,0)
 
