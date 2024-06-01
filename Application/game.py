@@ -142,7 +142,7 @@ class Game:
     def update(self): 
         # Mise à jour du groupe de calques
         self.group.update(self.player)
-
+        
         # Vérification des collisions entre le joueur et les objets de collision
         for collision_rect in self.collision:
             if self.player.rect.colliderect(collision_rect):
@@ -173,6 +173,10 @@ class Game:
             else:
                 bullet.lifetime -= 1
 
+        for enemy in self.all_enemies:
+            if type(enemy) == Golem:
+                enemy.rage()
+            
         # Vérification des transitions entre les cartes
         if self.map == 'map1.tmx':
             if self.player.rect.colliderect(self.enter_other_map1_rect):

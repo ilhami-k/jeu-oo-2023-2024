@@ -52,7 +52,6 @@ class Player(Entity):
         super().__init__(x, y, "Application/Player.png", 'Player', PLAYER_SPEED, PLAYER_HEALTH, ATTACK_COOLDOWN)
         self.max_health = PLAYER_MAX_HEALTH
 
-
     def shoot(self, target_x, target_y, bullet_group):
         angle = math.atan2(target_y - self.position[1], target_x - self.position[0])
         bullet_group.add(Bullet(self.position[0], self.position[1], angle))
@@ -66,8 +65,6 @@ class Player(Entity):
         if self.health > self.max_health:
             self.health = self.max_health
     
-
-            
     #gestion de l'apparence de la barre de vie du joueur 
     def update_healthbar (self, screen):
         #couleur de la barre de vie 
@@ -84,8 +81,6 @@ class Player(Entity):
         #afficher la barre de vie 
         pygame.draw.rect(screen, bar_color, bar_position)
     
-
-
 class Enemy(Entity):
     def update(self, player):
         # Calculer la direction vers le joueur
@@ -145,6 +140,11 @@ class Golem(Enemy):
         image = pygame.Surface((67, 69))
         image.blit(self.sprite_sheet, (0, 0), (x, y, 67, 69))
         return image
+    
+    def rage(self):
+        if self.health <= GOLEM_HEALTH / 2:
+            self.speed = GOLEM_SPEED * 2
+            self.attack_cooldown = GOLEM_ATTACK_COOLDOWN / 2
 
 class Npc(Entity):
     def __init__(self, x, y,lines):
