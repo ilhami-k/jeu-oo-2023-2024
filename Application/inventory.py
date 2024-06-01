@@ -78,6 +78,19 @@ class Inventory:
             
         # Affiche la surface de l'inventaire sur l'écran principal
         screen.blit(inventory_surface, (WIDTH - 310, 10))  # Positionne l'inventaire dans le coin supérieur droit
-    def item(self):
-        list_items = self.items
-        return list_items #pour pouvoir sauvegarder l'inventaire
+    
+    def save_inventory(self):
+        return [item.serialize() for item in self.items]
+
+    def load_inventory(self, items_data):
+        self.items = []
+        for item_data in items_data:
+            item_type = item_data.pop('type')
+            if item_type == 'Healer':
+                item = Healer.deserialize(item_data)
+            elif item_type == 'Power':
+                item = Power.deserialize(item_data)
+            elif item_type == 'Armor':
+                item = Armor.deserialize(item_data)
+            self.items.append(item)
+

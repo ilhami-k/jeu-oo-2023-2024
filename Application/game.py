@@ -259,7 +259,7 @@ class Game:
         game_state = {
             'map': self.map,
             'player_position': (self.player.rect.x, self.player.rect.y),
-            #'inventory': self.inventory.item(),
+            'inventory': self.inventory.save_inventory(),
             #'quests': self.questmanager.active_quests()
         }
         self.save_load.save_data(game_state, 'game_state')
@@ -270,8 +270,8 @@ class Game:
             self.map = game_state.get('map', 'map1.tmx')
             self.switch_map(self.map)
             self.player.rect.x, self.player.rect.y = game_state.get('player_position', (0, 0))
-            self.player.position = [self.player.rect.x,self.player.rect.y]
-            #self.inventory.items = game_state.get('inventory', [])
+            self.player.position = [self.player.rect.x, self.player.rect.y]
+            self.inventory.load_inventory(game_state.get('inventory', []))
             #self.game.questmanager.active_quests(game_state.get('quests', []))
 
     def run(self):
@@ -327,8 +327,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        self.interface.menu_screen() 
-                        self.running = self.interface.menu_screen()
+                        self.menu_screen() 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         self.inventory.handle_click(event.pos)
