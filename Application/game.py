@@ -48,12 +48,12 @@ class Game:
 
         self.QuestManager = QuestManager()
          #premiere quete
-        self.main_quest = Quest("Quête principale", "Vaincre le boss", 1,appel,self.QuestManager,self.inventory)
+        self.main_quest = Quest("Quête principale", "Vaincre le boss", 1,uzi,self.QuestManager,self.inventory)
 
         # deuxieme quete
-        self.secondary_quest1 = Quest("Quête secondaire", "Tuer 10 ennemis", 10,military,self.QuestManager,self.inventory)
+        self.secondary_quest1 = Quest("Quête secondaire", "Tuer 10 ennemis", 10,uzi,self.QuestManager,self.inventory)
         #troisieme quete
-        self.secondary_quest2 = Quest("Quête secondaire", "Obtenir 5 items", 5,appel,self.QuestManager,self.inventory)
+        self.secondary_quest2 = Quest("Quête secondaire", "Obtenir 5 dents et 5 coeurs", 5,bazooka,self.QuestManager,self.inventory)
 
         # Add quests to QuestManager
         self.QuestManager.addQuest(self.main_quest)

@@ -32,15 +32,12 @@ class Quest:
     def updateProgress(self):
         if not self.completed: #Si objectif pas complété
             self.current += 1
-            self.checkCompletion(self.current) #envoie la valeur de self.current comme donnée à la méthode qui regarde si la quête est complétée.
+            self.checkCompletion()
         
-    def checkCompletion(self,current):
-          if current >= self.goal:
+    def checkCompletion(self):
+          if self.current >= self.goal:
                 self.completed = True #Objectif complété
-                if self.reward == appel:
-                    self.inventory.add_item(appel)
-                elif self.reward == military:
-                    self.inventory.add_item(military)
+                self.inventory.add_item(self.reward) #Ajoute la récompense à l'inventaire
                 self.manager.deleteQuest(self)  # Supprime la quête du gestionnaire
 
 
