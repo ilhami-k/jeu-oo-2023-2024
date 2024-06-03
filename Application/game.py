@@ -48,12 +48,12 @@ class Game:
 
         self.QuestManager = QuestManager()
          #premiere quete
-        self.main_quest = Quest("Quête principale", "Vaincre le boss", 1,self.QuestManager)
+        self.main_quest = Quest("Quête principale", "Vaincre le boss", 1,appel,self.QuestManager,self.inventory)
 
         # deuxieme quete
-        self.secondary_quest1 = Quest("Quête secondaire", "Tuer 10 ennemis", 10,self.QuestManager)
+        self.secondary_quest1 = Quest("Quête secondaire", "Tuer 10 ennemis", 10,military,self.QuestManager,self.inventory)
         #troisieme quete
-        self.secondary_quest2 = Quest("Quête secondaire", "Obtenir 5 items", 5,self.QuestManager)
+        self.secondary_quest2 = Quest("Quête secondaire", "Obtenir 5 items", 5,appel,self.QuestManager,self.inventory)
 
         # Add quests to QuestManager
         self.QuestManager.addQuest(self.main_quest)
@@ -164,6 +164,7 @@ class Game:
                             self.golem_killed = True  # Le Golem a été tué
                         self.all_enemies.remove(enemy) # Supprimer l'ennemi du groupe (rect)
                         self.drop_item(enemy) # Laisser tomber un objet
+                        self.secondary_quest1.updateProgress() #Met à jour la quête secondaire 
 
         # Mise à jour des balles tirées par le joueur
         for bullet in self.all_bullets:
@@ -226,6 +227,7 @@ class Game:
                 # Supprimer l'item de la liste des items sur la carte pour ne pas qu'il réapparaisse
                 self.list_items_on_map.remove(item)
                 self.group.remove(item)
+                self.secondary_quest2.updateProgress()
 
         for item in self.list_items_on_monster:
             # Vérifier si le joueur est en collision avec un objet

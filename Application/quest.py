@@ -1,5 +1,6 @@
 import textwrap
 import pygame
+from item import *
 #Mission principale:
 #Tuer le boss qui pop dés que le jeu commence apres le prologue
 
@@ -17,22 +18,28 @@ import pygame
 
 #Mission principale affichée apres introduction
 class Quest:
-    def __init__(self,name,description,goal,manager,current = 0):
+    def __init__(self,name,description,goal,reward,manager,inventory,current = 0):
         self.name = name
         self.description = description
         self.goal = goal
+        self.reward = reward
         self.manager = manager
+        self.inventory = inventory
         self.current = current
         self.completed = False
 
     def updateProgress(self):
         if not self.completed: #Si objectif pas complété
             self.current += 1
-            self.checkCompletion(self.current) #envoie la valeur de self.current comme donnée à la méthode de la classe mère qui regarde si la quête est complétée.
+            self.checkCompletion(self.current) #envoie la valeur de self.current comme donnée à la méthode qui regarde si la quête est complétée.
         
     def checkCompletion(self,current):
           if current >= self.goal:
                 self.completed = True #Objectif complété
+                if self.reward == appel:
+                    self.inventory.add_item(appel)
+                elif self.reward == military:
+                    self.inventory.add_item(military)
                 self.manager.deleteQuest(self)  # Supprime la quête du gestionnaire
 
 
@@ -70,3 +77,4 @@ class QuestManager:
     
        # Affiche la surface de l'inventaire sur l'écran principal
         screen.blit(quests_surface, (WIDTH - 310, 10))  # Positionne l'inventaire dans le coin supérieur droit
+
