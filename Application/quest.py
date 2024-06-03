@@ -1,6 +1,7 @@
 import textwrap
 import pygame
 from item import *
+from inventory import *
 #Mission principale:
 #Tuer le boss qui pop dés que le jeu commence apres le prologue
 

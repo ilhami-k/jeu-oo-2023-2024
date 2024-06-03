@@ -208,8 +208,8 @@ class Game:
             self.npc.update(self.player)
 
     def drop_item(self, enemy):
-        drop_chance = 0.1  # Taux de drop de 10%
-        if random.random() < drop_chance:
+        drop_rate = DROP_RATE # Taux de drop de 10%
+        if random.random() < drop_rate:
             item_type = random.choice(["tooth", "heart"])
             if item_type == "tooth":
                 dropped_item = Item(enemy.rect.x, enemy.rect.y, "dent", TOOTH_INFO, TOOTH_SCALE, TOOTH_COLOR)
@@ -227,7 +227,6 @@ class Game:
                 # Supprimer l'item de la liste des items sur la carte pour ne pas qu'il réapparaisse
                 self.list_items_on_map.remove(item)
                 self.group.remove(item)
-                self.secondary_quest2.updateProgress()
 
         for item in self.list_items_on_monster:
             # Vérifier si le joueur est en collision avec un objet
@@ -237,6 +236,7 @@ class Game:
                 # Supprimer l'objet du groupe de calques
                 self.list_items_on_monster.remove(item)
                 self.group.remove(item)
+                self.secondary_quest2.updateProgress()
 
     def draw_dialogue_box(self):
         if self.npc and self.npc.dialogue_box:
