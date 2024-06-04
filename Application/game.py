@@ -207,8 +207,8 @@ class Game:
             self.npc.update(self.player)
 
     def drop_item(self, enemy):
-        drop_chance = 0.1  # Taux de drop de 10%
-        if random.random() < drop_chance:
+        drop_rate = DROP_RATE  # Taux de drop de 10%
+        if random.random() < drop_rate:
             item_type = random.choice(["tooth", "heart"])
             if item_type == "tooth":
                 dropped_item = Item(enemy.rect.x, enemy.rect.y, "dent", TOOTH_INFO, TOOTH_SCALE, TOOTH_COLOR)
@@ -266,10 +266,10 @@ class Game:
            self.show_inventory = not self.show_inventory
         
         if pressed[pygame.K_o]:
-            self.inventory.use_item(appel, self.player)
+            self.inventory.use_item(Healer, self.player)
         
         if pressed[pygame.K_p]:
-            self.inventory.use_item(military, self.player)
+            self.inventory.use_item(Armor, self.player)
  
         # Gestion de l'affichage des quetes avec une seule touche
         if pressed[pygame.K_t]:

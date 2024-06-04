@@ -48,9 +48,8 @@ class Healer(Item):
         color = pygame.Color(*data['color'])
         return Healer(data['nom'], data['info'], data['scale'], color, data['heal'])
     def healing(self, player):
-        if not isinstance(player, Player):
-            raise TypeError           
-        player.health = min (player.health + self.heal, player.max_health) 
+        if isinstance(player, Player):           
+            player.health = min (player.health + self.heal, player.max_health) 
 
 
 class Weapon(Item):
@@ -84,10 +83,9 @@ class Armor(Item):
         self.shield = shield
 
     def protect(self, player):
-        if not isinstance(player, Player):
-            raise TypeError
-        player.max_health += self.shield
-        player.health += self.shield
+        if isinstance(player, Player):
+            player.max_health += self.shield
+            player.health += self.shield
 
     def serialize(self):
         data = super().serialize()

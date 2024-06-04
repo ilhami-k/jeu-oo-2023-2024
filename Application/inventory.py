@@ -15,6 +15,8 @@ class Inventory:
         #Test pour voir si les objets sont bien ajoutés à l'inventaire
         self.items.append(appel)
         self.items.append(military)
+        self.items.append(appel)
+        self.items.append(military)
 
     def add_item(self, item):
         self.items.append(item)  # Ajoute un item à l'inventaire
@@ -24,19 +26,26 @@ class Inventory:
             self.items.remove(item)  # Retire l'item de l'inventaire s'il est présent
         else:
             print(f"{item} n'est pas dans l'inventaire.")  # Message si l'item n'est pas trouvé
-
+    
+   
     def handle_click(self, mouse_pos):
         for rect, item in self.item_rects:
             if rect.collidepoint(mouse_pos):
                self.use_item(item, self.player)
     
-    def use_item(self, item, player):
-        if isinstance(item, Healer):
-            item.healing(player)
-            self.remove_item(item)
-        if isinstance(item, Armor):
-            item.protect(player)
-            self.remove_item(item)
+    def use_item(self, item_type, player):
+        for i, item in enumerate(self.items):
+            if isinstance(item, item_type):
+                if isinstance(item, Healer):
+                    item.healing(player)
+                elif isinstance(item, Armor):
+                    item.protect(player)
+                del self.items[i]
+                return
+            print ("item utilisé")
+        print("L'objet n'est pas dans l'inventaire.")
+        
+                    
 
     def is_equip(self, item):
         if isinstance(item, Weapon):
