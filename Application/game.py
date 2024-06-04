@@ -177,7 +177,10 @@ class Game:
         for enemy in self.all_enemies:
             if type(enemy) == Golem:
                 enemy.rage()
-            
+
+        self.secondary_quest1.checkCompletion(self.inventory) 
+        self.secondary_quest2.checkCompletion(self.inventory)
+        self.main_quest.checkCompletion(self.inventory)  
         # Vérification des transitions entre les cartes
         if self.map == 'map1.tmx':
             if self.player.rect.colliderect(self.enter_other_map1_rect):
