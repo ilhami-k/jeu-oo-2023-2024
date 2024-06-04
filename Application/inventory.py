@@ -37,7 +37,10 @@ class Inventory:
         if isinstance(item, Armor):
             item.protect(player)
             self.remove_item(item)
-      
+
+    def is_equip(self, item):
+        if isinstance(item, Weapon):
+            return
         
 
 
@@ -89,7 +92,7 @@ class Inventory:
             if item_type == 'Healer':
                 item = Healer.deserialize(item_data)
             elif item_type == 'Power':
-                item = Power.deserialize(item_data)
+                item = Weapon.deserialize(item_data)
             elif item_type == 'Armor':
                 item = Armor.deserialize(item_data)
             self.items.append(item)
