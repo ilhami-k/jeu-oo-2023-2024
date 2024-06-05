@@ -35,11 +35,12 @@ class Quest:
             self.checkCompletion(self.inventory)
         
     def checkCompletion(self,inventory):
-          if self.current >= self.goal:
+          if self.current >= self.goal: #and not self.completed
                 self.completed = True #Objectif complété
+                print(self.reward.nom)
                 inventory.add_item(self.reward) #Ajoute la récompense à l'inventaire
                 self.manager.deleteQuest(self)  # Supprime la quête du gestionnaire
-
+                self.current = 0
 
 class QuestManager:
     def __init__(self):

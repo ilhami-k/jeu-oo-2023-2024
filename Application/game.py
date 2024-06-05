@@ -51,7 +51,7 @@ class Game:
         self.main_quest = Quest("Quête principale", "Vaincre le boss", 1,uzi,self.QuestManager,self.inventory)
 
         # deuxieme quete
-        self.secondary_quest1 = Quest("Quête secondaire", "Tuer 10 ennemis", 10,uzi,self.QuestManager,self.inventory)
+        self.secondary_quest1 = Quest("Quête secondaire", "Tuer 10 ennemis", 10,tooth,self.QuestManager,self.inventory)
         #troisieme quete
         self.secondary_quest2 = Quest("Quête secondaire", "Obtenir 5 dents et 5 coeurs", 5,bazooka,self.QuestManager,self.inventory)
 
