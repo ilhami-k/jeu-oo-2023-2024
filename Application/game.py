@@ -48,12 +48,12 @@ class Game:
 
         self.QuestManager = QuestManager()
          #premiere quete
-        self.main_quest = Quest("Quête principale", "Vaincre le boss", 1,self.QuestManager)
+        self.main_quest = Quest("Quête principale", "Vaincre le boss", 1,uzi,self.QuestManager,self.inventory)
 
         # deuxieme quete
-        self.secondary_quest1 = Quest("Quête secondaire", "Tuer 10 ennemis", 10,self.QuestManager)
+        self.secondary_quest1 = Quest("Quête secondaire", "Tuer 10 ennemis", 10,tooth,self.QuestManager,self.inventory)
         #troisieme quete
-        self.secondary_quest2 = Quest("Quête secondaire", "Obtenir 5 items", 5,self.QuestManager)
+        self.secondary_quest2 = Quest("Quête secondaire", "Obtenir 5 dents et 5 coeurs", 5,bazooka,self.QuestManager,self.inventory)
 
         # Add quests to QuestManager
         self.QuestManager.addQuest(self.main_quest)
@@ -164,6 +164,7 @@ class Game:
                             self.golem_killed = True  # Le Golem a été tué
                         self.all_enemies.remove(enemy) # Supprimer l'ennemi du groupe (rect)
                         self.drop_item(enemy) # Laisser tomber un objet
+                        self.secondary_quest1.updateProgress() #Met à jour la quête secondaire 
 
         # Mise à jour des balles tirées par le joueur
         for bullet in self.all_bullets:
@@ -176,7 +177,10 @@ class Game:
         for enemy in self.all_enemies:
             if type(enemy) == Golem:
                 enemy.rage()
-            
+
+        self.secondary_quest1.checkCompletion(self.inventory) 
+        self.secondary_quest2.checkCompletion(self.inventory)
+        self.main_quest.checkCompletion(self.inventory)  
         # Vérification des transitions entre les cartes
         if self.map == 'map1.tmx':
             if self.player.rect.colliderect(self.enter_other_map1_rect):
@@ -235,6 +239,7 @@ class Game:
                 # Supprimer l'objet du groupe de calques
                 self.list_items_on_monster.remove(item)
                 self.group.remove(item)
+                self.secondary_quest2.updateProgress()
 
     def draw_dialogue_box(self):
         if self.npc and self.npc.dialogue_box:
