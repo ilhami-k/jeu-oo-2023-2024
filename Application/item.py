@@ -13,11 +13,6 @@ class Item(pygame.sprite.Sprite):
         self.image.fill(color)
         self.rect = self.image.get_rect(topleft=self.position)
 
-    def draw(self, surface):
-        surface.blit(self.image, self.rect)
-    
-    def draw_item(self, surface, position):
-        surface.blit(self.image, position)
     def serialize(self):
         color = self.image.get_at((0, 0))
         return {

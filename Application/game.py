@@ -273,10 +273,10 @@ class Game:
            self.show_inventory = not self.show_inventory
         
         if pressed[pygame.K_o]:
-            self.inventory.use_item(Healer, self.player)
+            self.inventory.use_item(appel, self.player)
         
         if pressed[pygame.K_p]:
-            self.inventory.use_item(Armor, self.player)
+            self.inventory.use_item(military, self.player)
  
         # Gestion de l'affichage des quetes avec une seule touche
         if pressed[pygame.K_t]:
