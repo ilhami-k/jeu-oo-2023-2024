@@ -18,6 +18,10 @@ class Inventory:
         self.items.append(appel)
         self.items.append(military)
 
+    def show_inventorytest(self):
+        for i in self.items:
+            print(i)
+
     def add_item(self, item):
         self.items.append(item)  # Ajoute un item à l'inventaire
 
