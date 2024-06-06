@@ -361,7 +361,7 @@ class Game:
 
             #affichage de la dialogue box
             self.draw_dialogue_box()
-            # Mise à jour de l'affichage de l'écran
+
             
             # Gestion des événements du jeu
             for event in pygame.event.get():
@@ -375,12 +375,6 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
                 
-                        
-            #affichage de l'inventaire (i)
-            self.draw_inventory()
-
-            #affichage de la dialogue box
-            self.draw_dialogue_box()
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
             clock.tick(FPS)
