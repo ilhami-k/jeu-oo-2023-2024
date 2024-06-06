@@ -31,10 +31,6 @@ class Inventory:
             print(f"{item} n'est pas dans l'inventaire.")  # Message si l'item n'est pas trouvé
     
    
-    def handle_click(self, mouse_pos):
-        for rect, item in self.item_rects:
-            if rect.collidepoint(mouse_pos):
-               self.use_item(item, self.player)
     
     def use_item(self, item, player):
         for i, item in enumerate(self.items):
@@ -62,11 +58,13 @@ class Inventory:
         # Crée une surface pour l'inventaire
         inventory_surface = pygame.Surface((300, 400), pygame.SRCALPHA)
         inventory_surface.fill((50, 50, 50, 128))  # Remplit la surface avec une couleur de fond semi-transparente
-        y_offset = 20  # Initialisation de l'offset vertical pour l'affichage des items
+        y_offset = 20
+        
 
         #affichage du titre 
         title = font.render("Inventaire", True, (255, 255, 255))  # Blanc
-        title_rect = title.get_rect(center=(WIDTH / 2, 20))
+        title_rect = title.get_rect(topleft=(550,20))
+        
         screen.blit(title, title_rect)
 
         # Affiche chaque item dans l'inventaire
@@ -80,13 +78,15 @@ class Inventory:
 
                 pygame.draw.rect(inventory_surface, (255, 255, 255), inflated_rect, 2)
                 inventory_surface.blit(item_text, (inflated_rect.x + 5, inflated_rect.y + 5))
-
-                self.item_rects.append((pygame.Rect((WIDTH - 310 + 20, 10 + y_offset), inflated_rect.size), item))
                 y_offset += inflated_rect.height + 10
+
+                self.item_rects.append((inflated_rect, item))
+
+                
 
             
         # Affiche la surface de l'inventaire sur l'écran principal
-        screen.blit(inventory_surface, (WIDTH - 310, 10))  # Positionne l'inventaire dans le coin supérieur droit
+        screen.blit(inventory_surface, (WIDTH - 310, 80))  # Positionne l'inventaire dans le coin supérieur droit
     
     def save_inventory(self):
         return [item.serialize() for item in self.items]

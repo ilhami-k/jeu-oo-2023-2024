@@ -58,25 +58,23 @@ class QuestManager:
 
     def show_quests(self,screen,font,WIDTH):
         small_font = pygame.font.Font(None,24) #Définit une police plus petite pour les quetes
-        quest_surface_x = 10
-
+        
         #Créé une surface pour l'affichage
         quests_surface = pygame.Surface((300,400), pygame.SRCALPHA) 
         quests_surface.fill((50, 50, 50, 128))  # Remplit la surface avec une couleur de fond semi-transparente
         y_offset = 1 # Initialisation de l'offset vertical pour l'affichage
         #affichage du titre 
         title = font.render("Quêtes", True, (255, 255, 255))  # Blanc 
-        title_rect = title.get_rect(center=(WIDTH / 2, 150))
+        title_rect = title.get_rect(topleft=(10, 30))
         screen.blit(title, title_rect) 
 
         for quest in self.quests:
             # Divise le texte des quetes en plusieurs lignes si nécessaire pour s'adapter à la largeur de 35 caractères
-            item_text_lines = textwrap.wrap(f"{quest.name}: {quest.description} {quest.current}/{quest.goal}", width=35)
+            item_text_lines = textwrap.wrap(f"{quest.name}: {quest.description} {quest.current}/{quest.goal}", width=30)
             for line in item_text_lines:
                 quests_text = small_font.render(line, True, (255, 255, 255))  # Rend chaque ligne de texte en blanc
                 quests_surface.blit(quests_text, (20, y_offset))  # Affiche la ligne de texte sur la surface
-                y_offset += 20  # Ajoute un espace vertical entre les lignes
+                y_offset += 20  
             
-    
-       # Affiche la surface de l'inventaire sur l'écran principal
-        screen.blit(quests_surface, (WIDTH - 310, 10))  # Positionne l'inventaire dans le coin supérieur droit
+
+        screen.blit(quests_surface, (10, 80))  
