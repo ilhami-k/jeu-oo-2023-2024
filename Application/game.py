@@ -273,10 +273,10 @@ class Game:
            self.show_inventory = not self.show_inventory
         
         if pressed[pygame.K_o]:
-            self.inventory.use_item(Healer, self.player)
+            self.inventory.use_item(appel, self.player)
         
         if pressed[pygame.K_p]:
-            self.inventory.use_item(Armor, self.player)
+            self.inventory.use_item(military, self.player)
  
         # Gestion de l'affichage des quetes avec une seule touche
         if pressed[pygame.K_t]:
@@ -361,7 +361,7 @@ class Game:
 
             #affichage de la dialogue box
             self.draw_dialogue_box()
-            # Mise à jour de l'affichage de l'écran
+
             
             # Gestion des événements du jeu
             for event in pygame.event.get():
@@ -375,12 +375,6 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
                 
-                        
-            #affichage de l'inventaire (i)
-            self.draw_inventory()
-
-            #affichage de la dialogue box
-            self.draw_dialogue_box()
             # Mise à jour de l'affichage de l'écran
             pygame.display.flip()
             clock.tick(FPS)
