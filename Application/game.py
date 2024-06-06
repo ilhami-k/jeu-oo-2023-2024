@@ -369,8 +369,8 @@ class Game:
                     if event.key == pygame.K_ESCAPE:
                         self.menu_screen() 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1:
-                        self.inventory.handle_click(event.pos)
+                    if event.button == 3:
+                        pass
   
                 if event.type == pygame.QUIT:
                     self.running = False
