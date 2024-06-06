@@ -54,12 +54,14 @@ class Game:
         self.secondary_quest1 = Quest("Quête secondaire", "Tuer 10 ennemis", 10,tooth,self.QuestManager,self.inventory)
         #troisieme quete
         self.secondary_quest2 = Quest("Quête secondaire", "Obtenir 5 dents et 5 coeurs", 5,bazooka,self.QuestManager,self.inventory)
+        #quatrieme quete
+        self.secondary_quest3 = Quest("Quête secondaire", "Récuperer un item caché", 1,"NOMITEM", self.QuestManager,self.inventory)
 
-        # Add quests to QuestManager
+        # Ajoute les quêtes dans le gestionnaire de quetes
         self.QuestManager.addQuest(self.main_quest)
         self.QuestManager.addQuest(self.secondary_quest1)
         self.QuestManager.addQuest(self.secondary_quest2)
-
+        self.QuestManager.addQuest(self.secondary_quest3)
         
         self.show_inventory = True
         self.interface = Interface(self.player,self.prologue_on,self.new_game)
