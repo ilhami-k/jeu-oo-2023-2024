@@ -29,7 +29,7 @@ class Item(pygame.sprite.Sprite):
             'scale': self.image.get_width(),
             'color': [color.r, color.g, color.b, color.a]
         }
-    @staticmethod
+
     def deserialize(data):
         color = pygame.Color(*data['color'])
         return Item(data['x'], data['y'], data['nom'], data['info'], data['scale'], color)
@@ -43,7 +43,7 @@ class Healer(Item):
         data.update({'type':'Healer', 'heal': self.heal})
         return data
 
-    @staticmethod
+
     def deserialize(data):
         color = pygame.Color(*data['color'])
         return Healer(data['nom'], data['info'], data['scale'], color, data['heal'])
@@ -72,7 +72,7 @@ class Weapon(Item):
         })
         return data
 
-    @staticmethod
+
     def deserialize(data):
         color = pygame.Color(*data['color'])
         return Weapon(data['nom'], data['info'], data['scale'], color, data['bullet_speed'], data['bullet_damage'], data['bullet_scale'])
@@ -94,7 +94,6 @@ class Armor(Item):
             'shield':self.shield
         })
         return data
-    @staticmethod
     def deserialize(data):
         return Armor(data['nom'], data['info'], data['scale'], data['color'], data['shield'])
 

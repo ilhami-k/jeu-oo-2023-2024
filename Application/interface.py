@@ -133,7 +133,6 @@ class Interface:
             pygame.display.update()
     def prologue(self):
         self.prologue_on = True
-        pygame.display.update()
         self.death = False
 
         while self.prologue_on:
