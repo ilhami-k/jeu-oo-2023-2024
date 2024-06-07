@@ -98,3 +98,7 @@ HEART_INFO = "coeur de monstre"
 HEART_SCALE = 3
 HEART_COLOR = (255,0,0)
 
+#pelluche settings
+PELUCHE_INFO = "objet mystique"
+PELUCHE_SCALE = 4
+PELUCHE_COLOR = (128, 64, 32)

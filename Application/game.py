@@ -24,7 +24,7 @@ class Game:
         self.golem_killed = False
 
         # Initialisation de la liste des items
-        self.list_items_on_map = [appel, berry, military, police, uzi, bazooka, pistol]
+        self.list_items_on_map = [appel, berry, military, police, uzi, bazooka, pistol, peluche]
 
         self.list_items_on_monster = [tooth]
 
@@ -55,7 +55,7 @@ class Game:
         #troisieme quete
         self.secondary_quest2 = Quest("Quête secondaire", "Obtenir 5 dents et 5 coeurs", 5,bazooka,self.QuestManager,self.inventory)
         #quatrieme quete
-        self.secondary_quest3 = Quest("Quête secondaire", "Récuperer un item caché", 1,"NOMITEM", self.QuestManager,self.inventory)
+        self.secondary_quest3 = Quest("Quête secondaire", "Récuperer un item caché", 1,peluche, self.QuestManager,self.inventory)
 
         # Ajoute les quêtes dans le gestionnaire de quetes
         self.QuestManager.addQuest(self.main_quest)
@@ -229,6 +229,8 @@ class Game:
             if pygame.sprite.collide_rect(self.player, item):
                 # Effectuer l'action de ramassage de l'objet
                 self.inventory.add_item(item)
+                if item == peluche:
+                    self.secondary_quest3.updateProgress()
                 # Supprimer l'item de la liste des items sur la carte pour ne pas qu'il réapparaisse
                 self.list_items_on_map.remove(item)
                 self.group.remove(item)
