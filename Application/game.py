@@ -164,6 +164,8 @@ class Game:
                     if enemy.health <= 0:
                         if type(enemy) == Golem: # Si le type(class) de enemy est Golem, ..
                             self.golem_killed = True  # Le Golem a été tué
+                            self.main_quest.updateProgress()
+
                         self.all_enemies.remove(enemy) # Supprimer l'ennemi du groupe (rect)
                         self.drop_item(enemy) # Laisser tomber un objet
                         self.secondary_quest1.updateProgress() #Met à jour la quête secondaire 
