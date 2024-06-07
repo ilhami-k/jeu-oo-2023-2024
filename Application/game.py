@@ -20,6 +20,7 @@ class Game:
 
         # Création du joueur et ajout au groupe de calques
         self.player = Player(0,0)
+        self.quest1active = False #Pour le compteur de monstres tues
 
         self.golem_killed = False
 
@@ -37,7 +38,7 @@ class Game:
 
         #Font pour le texte: 
         self.font = pygame.font.Font('freesansbold.ttf', 36)
-        self.intro_background = pygame.image.load("Application/background.png")
+        self.intro_background = pygame.image.load("Application/images/background.png")
         self.running = True # Variable GLOBALE pour contrôler l'exécution du jeu
         self.new_game = False #Variable globale pour savoir si c'est un nouveau jeu 
         self.prologue_on = False
@@ -59,9 +60,6 @@ class Game:
 
         # Ajoute les quêtes dans le gestionnaire de quetes
         self.QuestManager.addQuest(self.main_quest)
-        self.QuestManager.addQuest(self.secondary_quest1)
-        self.QuestManager.addQuest(self.secondary_quest2)
-        self.QuestManager.addQuest(self.secondary_quest3)
         
         self.show_inventory = True
         self.interface = Interface(self.player,self.prologue_on,self.new_game)
@@ -70,6 +68,7 @@ class Game:
         #initialise l'affichage des quetes sur fermé
         self.show_quests = False
         self.save_load = SaveSystem('.json','Application/save_data/')
+        self.quest_background = pygame.image.load("Application/images/quest_background.png")
 
 
     def switch_map(self, map_name, spawn_name = None):
@@ -113,7 +112,7 @@ class Game:
                 self.all_enemies.append(Golem(obj.x, obj.y))
                 self.group.add(self.all_enemies)
             if obj.type == 'spawn_npc':
-                self.npc = Npc(obj.x, obj.y,'test')
+                self.npc = Npc(obj.x, obj.y)
                 self.group.add(self.npc)
             # Si l'objet est un item
             if obj.type == "item":
@@ -168,7 +167,8 @@ class Game:
 
                         self.all_enemies.remove(enemy) # Supprimer l'ennemi du groupe (rect)
                         self.drop_item(enemy) # Laisser tomber un objet
-                        self.secondary_quest1.updateProgress() #Met à jour la quête secondaire 
+                        if self.quest1active:
+                            self.secondary_quest1.updateProgress() #Met à jour la quête secondaire 
 
         # Mise à jour des balles tirées par le joueur
         for bullet in self.all_bullets:
@@ -291,8 +291,11 @@ class Game:
             
         # Gestion de l'interaction avec les NPC
         if pressed[pygame.K_f] and self.npc and self.npc.in_interaction_range(self.player):
-            self.npc.interact(self.player)
-        
+            self.npc.interact(self.player,"Salut toi!")
+        if pressed[pygame.K_RETURN] and self.npc and self.npc.dialogue_box and self.npc.in_interaction_range:
+            self.npc.close_dialogue_box()
+
+            self.npc_interaction_screen()
     def draw_inventory(self):
         if self.show_inventory:
             self.inventory.show_inventory(self.screen, self.font, 800)
@@ -497,3 +500,38 @@ class Game:
         self.map = 'map1.tmx'
         self.switch_map(self.map,'spawn_player')
     
+    def npc_interaction_screen(self):
+        self.npc_interaction = True
+        title = self.font.render("Voici quelques quêtes pour toi.", True, 'White')
+        title_rect = title.get_rect(center=(WIDTH/2, HEIGHT/6))
+        quest_1 = Button(WIDTH/2 - 200, HEIGHT/2 - 150, 300, 50, (0, 0, 0,128), (255, 255, 128,64), "Tuer 10 ennemis!", 24)
+        quest_2 = Button(WIDTH/2 - 200, HEIGHT/2 - 50, 300, 50, (0, 0, 0,128), (255, 255, 128,64), "Trouver des materiaux", 24)
+        quest_3 = Button(WIDTH/2 - 200, HEIGHT/2 + 50, 300, 50, (0,0,0,128), (255, 255, 128,64), "Item caché", 24)
+        while self.npc_interaction:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.npc_interaction = False
+                    self.running = False
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+            if quest_1.is_pressed(mouse_pos, mouse_pressed):
+                self.QuestManager.addQuest(self.secondary_quest1)
+                self.quest1active = True
+                return
+            if quest_2.is_pressed(mouse_pos, mouse_pressed):
+                self.QuestManager.addQuest(self.secondary_quest2)
+                return
+            
+            if quest_3.is_pressed(mouse_pos, mouse_pressed):
+                self.QuestManager.addQuest(self.secondary_quest3)
+                return
+            
+            stretched_image = pygame.transform.scale(self.quest_background,(800,800))
+            self.screen.blit(stretched_image, (0, 0))
+            self.screen.blit(title, title_rect)
+            self.screen.blit(quest_1.image, quest_1.rect)
+            self.screen.blit(quest_2.image,quest_2.rect)
+            self.screen.blit(quest_3.image, quest_3.rect)
+            
+            pygame.display.update()
+        
