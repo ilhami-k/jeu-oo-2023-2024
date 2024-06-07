@@ -49,7 +49,7 @@ class Entity(pygame.sprite.Sprite):
 
 class Player(Entity):
     def __init__(self, x, y):
-        super().__init__(x, y, "Application/Player.png", 'Player', PLAYER_SPEED, PLAYER_HEALTH, ATTACK_COOLDOWN)
+        super().__init__(x, y, "Application/images/Player.png", 'Player', PLAYER_SPEED, PLAYER_HEALTH, ATTACK_COOLDOWN)
         self.max_health = PLAYER_MAX_HEALTH
 
     def shoot(self, target_x, target_y, bullet_group):
@@ -116,22 +116,22 @@ class Enemy(Entity):
 
 class Zombie(Enemy):
     def __init__(self, x, y):
-        super().__init__(x, y, "Application/Zombie.png", 'Zombie', ZOMBIE_SPEED, ZOMBIE_HEALTH, ZOMBIE_ATTACK_COOLDOWN)
+        super().__init__(x, y, "Application/images/Zombie.png", 'Zombie', ZOMBIE_SPEED, ZOMBIE_HEALTH, ZOMBIE_ATTACK_COOLDOWN)
         self.initial_attack_cooldown = ZOMBIE_ATTACK_COOLDOWN
 
 class Skeleton(Enemy):
     def __init__(self, x, y):
-        super().__init__(x, y, "Application/Skeleton.png", 'Skeleton', SKELETON_SPEED, SKELETON_HEALTH, SKELETON_ATTACK_COOLDOWN)
+        super().__init__(x, y, "Application/images/Skeleton.png", 'Skeleton', SKELETON_SPEED, SKELETON_HEALTH, SKELETON_ATTACK_COOLDOWN)
         self.initial_attack_cooldown = SKELETON_ATTACK_COOLDOWN
 
 class Nohead(Enemy):
     def __init__(self, x, y):
-        super().__init__(x, y, "Application/Nohead.png", 'Nohead', NOHEAD_SPEED, NOHEAD_HEALTH, NOHEAD_ATTACK_COOLDOWN)
+        super().__init__(x, y, "Application/images/Nohead.png", 'Nohead', NOHEAD_SPEED, NOHEAD_HEALTH, NOHEAD_ATTACK_COOLDOWN)
         self.initial_attack_cooldown = NOHEAD_ATTACK_COOLDOWN
 
 class Golem(Enemy):
     def __init__(self, x, y):
-        super().__init__(x, y, "Application/Golem.png", 'Golem', GOLEM_SPEED, GOLEM_HEALTH, GOLEM_ATTACK_COOLDOWN)
+        super().__init__(x, y, "Application/images/Golem.png", 'Golem', GOLEM_SPEED, GOLEM_HEALTH, GOLEM_ATTACK_COOLDOWN)
         self.initial_attack_cooldown = GOLEM_ATTACK_COOLDOWN
         self.image = self.get_image(0, 0)
         self.image.set_colorkey((0, 0, 0))
@@ -147,20 +147,28 @@ class Golem(Enemy):
             self.attack_cooldown = GOLEM_ATTACK_COOLDOWN / 2
 
 class Npc(Entity):
-    def __init__(self, x, y,lines):
-        super().__init__(x, y, "Application/NPC.png", 'npc', NPC_SPEED, NPC_HEALTH, NPC_ATTACK_COOLDOWN)
-        self.lines = lines
+    def __init__(self, x, y):
+        super().__init__(x, y, "Application/images/NPC.png", 'npc', NPC_SPEED, NPC_HEALTH, NPC_ATTACK_COOLDOWN)
         self.interaction_range = 50
         self.dialogue_box = None
-    def interact(self,player):
+    
+    def interact(self, player,lines):
+        self.lines = lines
         if self.in_interaction_range(player):
             self.dialogue_box = DialogueBox(self.lines, 22, 700, 150, 50, HEIGHT - 250, (255, 255, 128,128), (0, 0, 0))
             return True
         return False
-    def in_interaction_range (self,player):
+    
+    def in_interaction_range(self, player):
         distance = math.sqrt((self.position[0] - player.position[0]) ** 2 + (self.position[1] - player.position[1]) ** 2)
         return distance <= self.interaction_range
 
-    def draw_dialogue_box(self):
-        if self.npc and self.npc.dialogue_box:
-            self.npc.dialogue_box.draw(self.screen)
+    def draw_dialogue_box(self, screen):
+        if self.dialogue_box:
+            self.dialogue_box.draw(screen)
+
+    def close_dialogue_box(self):
+        self.dialogue_box = None
+
+
+

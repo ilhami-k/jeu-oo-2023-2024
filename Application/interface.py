@@ -1,40 +1,33 @@
 import pygame
-import sys
 from settings import *
 from game import *
 from save_system import SaveSystem
 class Button: 
-    def __init__(self, x, y, width, height, foreground,background,content,fontsize):
+    def __init__(self, x, y, width, height, foreground=(255,255,255,255), background=(0,0,0,256), content=None, fontsize=36):
         self.font = pygame.font.Font('freesansbold.ttf', fontsize)
         self.content = content
         
         self.x = x
         self.y = y 
-        
+        self.background = background
         self.width = width
         self.height = height
         
         self.foreground = foreground
-        self.background = background
-        
-        self.image = pygame.Surface((self.width, self.height))
-        self.image.fill(self.background)
-        self.rect = self.image.get_rect()
-        
+        self.image = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
+        self.rect = self.image.get_rect() 
         self.rect.x = self.x
         self.rect.y = self.y
+        self.image.fill(self.background)
+        self.text_surface = self.font.render(self.content, True, self.foreground)
+        self.text_rect = self.text_surface.get_rect(center=(self.width/2, self.height/2))
 
-        self.text = self.font.render(self.content, True, self.foreground)
-        self.text_rect = self.text.get_rect(center=(self.width/2, self.height/2))
-        self.image.blit(self.text, self.text_rect)
-
-
+        self.image.blit(self.text_surface, self.text_rect)
     
     def is_pressed(self,pos,pressed):
         if self.rect.collidepoint(pos) and pressed[0]: #[0] car premier bouton de la liste
             return True
         return False
-
 
 class DialogueBox:
     def __init__(self, text, font_size=24, width=600, height=200, x=100, y=100, bg_color=(255, 255, 255, 255), text_color=(255, 255, 255)):
@@ -89,7 +82,7 @@ class Interface:
         self.clock = pygame.time.Clock()
         self.running = True
         self.font = pygame.font.Font(None, 36)
-        self.intro_background = pygame.image.load("Application/background.png")
+        self.intro_background = pygame.image.load("Application/images/background.png")
         self.new_game = False
         self.prologue_on = False
         self.epilogue_on = False

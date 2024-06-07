@@ -78,3 +78,8 @@ class QuestManager:
             
 
         screen.blit(quests_surface, (10, 80))  
+    def active_quests(self):
+        if self.secondary_quest1 in self.quests:
+            return True
+        return False
+    
