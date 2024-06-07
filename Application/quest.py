@@ -42,7 +42,7 @@ class Quest:
                 inventory.add_item(self.reward) #Ajoute la récompense à l'inventaire
                 inventory.show_inventorytest()
                 self.manager.deleteQuest(self)  # Supprime la quête du gestionnaire
-                
+                self.current = 0
 
 class QuestManager:
     def __init__(self):
