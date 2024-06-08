@@ -25,7 +25,7 @@ class Game:
         self.golem_killed = False
 
         # Initialisation de la liste des items
-        self.list_items_on_map = [appel, berry, military, police, uzi, bazooka, pistol, peluche]
+        self.list_items_on_map = [apple, military, police, uzi, bazooka, pistol, peluche]
 
         self.list_items_on_monster = [tooth]
 
@@ -74,16 +74,16 @@ class Game:
 
     def give_reward_quests(self):
         if self.main_quest.completed and not self.main_quest.reward_given:
-            self.inventory.add_item(appel)
+            self.inventory.add_item(apple)
             self.main_quest.reward_given = True
         if self.secondary_quest1.completed and not self.secondary_quest1.reward_given:
-            self.inventory.add_item(appel)
+            self.inventory.add_item(apple)
             self.secondary_quest1.reward_given = True
         if self.secondary_quest2.completed and not self.secondary_quest2.reward_given:
-            self.inventory.add_item(appel)
+            self.inventory.add_item(apple)
             self.secondary_quest2.reward_given = True
         if self.secondary_quest3.completed and not self.secondary_quest3.reward_given:
-            self.inventory.add_item(appel)
+            self.inventory.add_item(apple)
             self.secondary_quest3.reward_given = True
 
     def switch_map(self, map_name, spawn_name = None):
@@ -102,11 +102,11 @@ class Game:
         # Recréer le groupe de calques avec le nouveau rendu de carte
         self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer, default_layer=2)
 
-        # Recherche de l'objet spawn_map2 dans les données de la carte
+        # Recherche de l'objet spawn_map dans les données de la carte
         spawn_map = tmx_data.get_object_by_name(spawn_name)
         self.group.add(self.player)
 
-        # Positionnement du joueur aux coordonnées de l'objet spawn_map2
+        # Positionnement du joueur aux coordonnées de l'objet spawn_map
         self.player.position = [spawn_map.x, spawn_map.y]
         self.player.rect.topleft = self.player.position
 
@@ -294,7 +294,7 @@ class Game:
                         self.show_inventory = not self.show_inventory
 
                 if event.key == pygame.K_o:
-                        self.inventory.use_item(appel, self.player)
+                        self.inventory.use_item(apple, self.player)
 
                 if event.key == pygame.K_p:
                         self.inventory.use_item(military, self.player)

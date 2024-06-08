@@ -12,9 +12,9 @@ class Inventory:
 
 
         #Test pour voir si les objets sont bien ajoutés à l'inventaire
-        self.items.append(appel)
+        self.items.append(apple)
         self.items.append(military)
-        self.items.append(appel)
+        self.items.append(apple)
         self.items.append(military)
 
     def show_inventorytest(self):
