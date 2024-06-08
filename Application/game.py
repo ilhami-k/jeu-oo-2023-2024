@@ -1,7 +1,6 @@
 import pygame
 import pytmx
 import pyscroll
-import json
 import random
 from entity import *
 from settings import *
@@ -47,18 +46,18 @@ class Game:
         self.inventory = Inventory()
 
 
-        self.QuestManager = QuestManager()
+        self.questmanager = QuestManager()
          #premiere quete
-        self.main_quest = Quest("Quête principale", "Vaincre le boss", 1,self.QuestManager)
+        self.main_quest = Quest("Quête principale", "Vaincre le boss", 1,self.questmanager)
 
         # deuxieme quete
-        self.secondary_quest1 = Quest("Quête secondaire", "Tuer 10 ennemis", 10,self.QuestManager)
+        self.secondary_quest1 = Quest("Quête secondaire_1", "Tuer 10 ennemis", 10,self.questmanager)
         #troisieme quete
-        self.secondary_quest2 = Quest("Quête secondaire", "Obtenir 5 dents et 5 coeurs", 5,self.QuestManager)
-        self.secondary_quest3 = Quest("Quête secondaire", "Récuperer un item caché", 1, self.QuestManager)
+        self.secondary_quest2 = Quest("Quête secondaire_2", "Obtenir 5 dents et 5 coeurs", 5,self.questmanager)
+        self.secondary_quest3 = Quest("Quête secondaire_3", "Récuperer un item caché", 1, self.questmanager)
 
         # Ajoute les quêtes dans le gestionnaire de quetes
-        self.QuestManager.addQuest(self.main_quest)
+        self.questmanager.add_quest(self.main_quest)
         
         self.show_inventory = True
         self.interface = Interface(self.player,self.prologue_on,self.new_game)
@@ -182,7 +181,7 @@ class Game:
 
                         self.all_enemies.remove(enemy) # Supprimer l'ennemi du groupe (rect)
                         self.drop_item(enemy) # Laisser tomber un objet
-                        if self.quest1active:
+                        if self.quest1active == True:
                             self.secondary_quest1.updateProgress() #Met à jour la quête secondaire 
 
         # Mise à jour des balles tirées par le joueur
@@ -289,7 +288,8 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
             if event.type == pygame.KEYDOWN:
-                
+                if event.key == pygame.K_ESCAPE:
+                    self.menu_screen()
                 if event.key == pygame.K_i:
                         self.show_inventory = not self.show_inventory
 
@@ -321,13 +321,35 @@ class Game:
     
     def draw_quests(self):
         if self.show_quests:
-            self.QuestManager.show_quests(self.screen, self.font, WIDTH)
+            self.questmanager.show_quests(self.screen, self.font, WIDTH)
+    def load_quests(self, quest_data):
+        for quest_info in quest_data:
+            quest_name = quest_info['name']
+            # Check if the quest is already present in the quest manager
+            if not self.questmanager.has_quest(quest_name):
+                quest = Quest(quest_info['name'], quest_info['description'], quest_info['goal'], self.questmanager, quest_info['current'])
+                quest.completed = quest_info['completed']
+                self.questmanager.add_quest(quest)
+
+
     def save_game_state(self):
+        active_quests = []
+        for quest in self.questmanager.quests:
+            quest_data = {
+                'name': quest.name,
+                'description': quest.description,
+                'goal': quest.goal,
+                'current': quest.current,
+                'completed': quest.completed
+            }
+            active_quests.append(quest_data)
+
         game_state = {
             'map': self.map,
             'player_position': (self.player.rect.x, self.player.rect.y),
             'inventory': self.inventory.save_inventory(),
-            #'quests': self.questmanager.active_quests()
+            'active_quests': active_quests,
+            'quest_1_active': self.quest1active
         }
         self.save_load.save_data(game_state, 'game_state')
 
@@ -339,7 +361,27 @@ class Game:
             self.player.rect.x, self.player.rect.y = game_state.get('player_position', (0, 0))
             self.player.position = [self.player.rect.x, self.player.rect.y]
             self.inventory.load_inventory(game_state.get('inventory', []))
-            #self.game.questmanager.active_quests(game_state.get('quests', []))
+            active_quests_data = game_state.get('active_quests', [])
+            self.quest1active = game_state.get('quest_1_active',False)
+            for quest_info in active_quests_data:
+                quest_name = quest_info['name']
+                quest_description = quest_info['description']
+                quest_goal = quest_info['goal']
+                quest_current = quest_info['current']
+                quest_completed = quest_info['completed']
+                if quest_name == "Quête secondaire_1":
+                    self.secondary_quest1 = Quest(quest_name, quest_description, quest_goal, self.questmanager, quest_current)
+                    self.secondary_quest1.completed = quest_completed
+                    self.questmanager.add_quest(self.secondary_quest1)
+                elif quest_name == "Quête secondaire_2":
+                    self.secondary_quest2 = Quest(quest_name, quest_description, quest_goal, self.questmanager, quest_current)
+                    self.secondary_quest2.completed = quest_completed
+                    self.questmanager.add_quest(self.secondary_quest2)
+                elif quest_name == "Quête secondaire_3":
+                    self.secondary_quest3 = Quest(quest_name, quest_description, quest_goal, self.questmanager, quest_current)
+                    self.secondary_quest3.completed = quest_completed
+                    self.questmanager.add_quest(self.secondary_quest3)
+            
 
     def run(self):
         clock = pygame.time.Clock()
@@ -350,6 +392,7 @@ class Game:
             self.reset_game_state()
             self.interface.prologue() 
         while self.running:
+            self.update()
             self.player.save_location()
             # Gestion des entrées du joueur et des événements de jeu
             self.handle_input()
@@ -358,7 +401,7 @@ class Game:
             self.player.cooldown_tick()
             
             # Mise à jour des sprites et de la carte
-            self.update()
+            
             
             # Affichage des sprites et de la carte
             self.group.draw(self.screen)
@@ -386,7 +429,6 @@ class Game:
             self.draw_quests()
             #donne les récompenses quand les quetes sont complétées
             self.give_reward_quests()
-
             #affichage de la dialogue box
             self.draw_dialogue_box()
 
@@ -514,7 +556,6 @@ class Game:
     def reset_game_state(self):
         self.player = Player(0,0)
         self.inventory = Inventory()
-        self.questmanager = QuestManager()
         self.show_inventory = False
         self.show_quests = False
         self.npc = None
@@ -540,19 +581,19 @@ class Game:
                 self.npc_interaction = False
                 self.npc.interact(self.player,NPC_DIALOGUE_10_MONSTER_QUEST)
                 self.in_dialogue = True
-                self.QuestManager.addQuest(self.secondary_quest1)
+                self.questmanager.add_quest(self.secondary_quest1)
                 self.quest1active = True
             
             if quest_2.is_pressed(mouse_pos, mouse_pressed):
                 self.npc.interact(self.player,NPC_DIALOGUE_HEART_MISSION)
                 self.in_dialogue = True
-                self.QuestManager.addQuest(self.secondary_quest2)
+                self.questmanager.add_quest(self.secondary_quest2)
                 return
             
             if quest_3.is_pressed(mouse_pos, mouse_pressed):
                 self.npc.interact(self.player,NPC_DIALOGUE_HIDDEN_OBJECT)
                 self.in_dialogue = True
-                self.QuestManager.addQuest(self.secondary_quest3)
+                self.questmanager.add_quest(self.secondary_quest3)
                 return
             if exit_button.is_pressed(mouse_pos, mouse_pressed):
                 return
