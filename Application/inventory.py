@@ -7,10 +7,6 @@ class Inventory:
     def __init__(self):
         self.items = []  # Initialise une liste vide pour stocker les items de l'inventaire
         self.item_rects = []
-        self.player = Player(0, 0)
-        
-
-
         #Test pour voir si les objets sont bien ajoutés à l'inventaire
         self.items.append(apple)
         self.items.append(military)

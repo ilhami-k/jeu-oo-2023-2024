@@ -23,3 +23,12 @@ class Bullet(pygame.sprite.Sprite):
     def check_collision(self, x, y):
         distance = math.sqrt((self.x - x) ** 2 + (self.y - y) ** 2)
         return distance < 10
+    
+class BossBullet(Bullet):
+    def __init__(self, x, y, angle):
+        super().__init__(x, y, angle)
+        self.speed = GOLEM_SHOOT_SPEED
+        self.lifetime = GOLEM_SHOOT_LIFETIME
+        self.damage = GOLEM_SHOOT_DAMAGE
+        self.image.fill((100, 100, 100))  # Couleur de la balle (rouge)
+        self.rect = self.image.get_rect(center=self.position)

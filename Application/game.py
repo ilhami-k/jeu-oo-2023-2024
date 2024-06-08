@@ -19,9 +19,12 @@ class Game:
 
         # Création du joueur et ajout au groupe de calques
         self.player = Player(0,0)
+
         self.quest1active = False #Pour le compteur de monstres tues
 
         self.golem_killed = False
+
+        self.frame_count = 0
 
         # Initialisation de la liste des items
         self.list_items_on_map = [apple, military, police, uzi, bazooka, pistol, peluche]
@@ -33,7 +36,8 @@ class Game:
         # Appel de la méthode switch_map pour charger la première carte
         self.switch_map("map1.tmx", "spawn_player")
 
-        self.all_bullets = pygame.sprite.Group() # Groupe pour les balles tirées par le joueur
+        self.boss_bullets = pygame.sprite.Group() # Groupe pour les balles tirées par le joueur
+        self.all_bullets = pygame.sprite.Group() # Groupe pour les balles tirées par les ennemis
 
         #Font pour le texte: 
         self.font = pygame.font.Font('freesansbold.ttf', 36)
@@ -44,7 +48,6 @@ class Game:
 
         #création de l'inventaire 
         self.inventory = Inventory()
-
 
         self.questmanager = QuestManager()
          #premiere quete
@@ -87,10 +90,7 @@ class Game:
 
     def switch_map(self, map_name, spawn_name = None):
         self.all_enemies = []  # Réinitialiser la liste des ennemis
-        try:
-            self.group.empty()  # Supprimer tous les sprites du groupe
-        except:
-            pass
+
         # Chargement des données de la carte à partir d'un fichier TMX
         tmx_data = pytmx.util_pygame.load_pygame(f"Application/{map_name}")
         map_data = pyscroll.data.TiledMapData(tmx_data)
@@ -157,7 +157,7 @@ class Game:
     def update(self): 
         # Mise à jour du groupe de calques
         self.group.update(self.player)
-        
+
         # Vérification des collisions entre le joueur et les objets de collision
         for collision_rect in self.collision:
             if self.player.rect.colliderect(collision_rect):
@@ -173,7 +173,7 @@ class Game:
             for enemy in self.all_enemies:
                 if bullet.rect.colliderect(enemy.rect):
                     self.all_bullets.remove(bullet)
-                    enemy.take_damage()
+                    enemy.take_damage(self.player.damage)
                     if enemy.health <= 0:
                         if type(enemy) == Golem: # Si le type(class) de enemy est Golem, ..
                             self.golem_killed = True  # Le Golem a été tué
@@ -183,7 +183,22 @@ class Game:
                         self.drop_item(enemy) # Laisser tomber un objet
                         if self.quest1active == True:
                             self.secondary_quest1.updateProgress() #Met à jour la quête secondaire 
+         
+        for enemy in self.all_enemies:
+            if enemy.rect.colliderect(self.player.rect):
+                enemy.attack(self.player, enemy.damage)
+            if type(enemy) == Golem:
+                enemy.rage()
+                self.frame_count += 1
+                for bullet in self.boss_bullets:
+                    if bullet.rect.colliderect(self.player.rect):
+                        self.player.take_damage(enemy.damage)
+                        self.boss_bullets.remove(bullet)
 
+                if self.frame_count >= GOLEM_SHOOT_COOLDOWN:
+                    enemy.shoot_all_directions(self.boss_bullets)
+                    self.frame_count = 0
+            
         # Mise à jour des balles tirées par le joueur
         for bullet in self.all_bullets:
             bullet.update()
@@ -192,9 +207,12 @@ class Game:
             else:
                 bullet.lifetime -= 1
 
-        for enemy in self.all_enemies:
-            if type(enemy) == Golem:
-                enemy.rage()
+        for bullet in self.boss_bullets:
+            bullet.update()
+            if bullet.lifetime <= 0:
+                self.boss_bullets.remove(bullet)
+            else:
+                bullet.lifetime -= 1
 
         # Vérification des transitions entre les cartes
         if self.map == 'map1.tmx':
@@ -408,6 +426,7 @@ class Game:
 
             # Affichage des balles tirées par le joueur
             self.all_bullets.draw(self.screen)
+            self.boss_bullets.draw(self.screen)
             # Centrage de la caméra sur le joueur
             self.group.center(self.player.rect.center)
 
