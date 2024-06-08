@@ -19,12 +19,15 @@ class Game:
 
         # Création du joueur et ajout au groupe de calques
         self.player = Player(0,0)
+
         self.quest1active = False #Pour le compteur de monstres tues
 
         self.golem_killed = False
 
+        self.frame_count = 0
+
         # Initialisation de la liste des items
-        self.list_items_on_map = [appel, berry, military, police, uzi, bazooka, pistol, peluche]
+        self.list_items_on_map = [apple, military, police, uzi, bazooka, pistol, peluche]
 
         self.list_items_on_monster = [tooth]
 
@@ -33,7 +36,8 @@ class Game:
         # Appel de la méthode switch_map pour charger la première carte
         self.switch_map("map1.tmx", "spawn_player")
 
-        self.all_bullets = pygame.sprite.Group() # Groupe pour les balles tirées par le joueur
+        self.boss_bullets = pygame.sprite.Group() # Groupe pour les balles tirées par le joueur
+        self.all_bullets = pygame.sprite.Group() # Groupe pour les balles tirées par les ennemis
 
         #Font pour le texte: 
         self.font = pygame.font.Font('freesansbold.ttf', 36)
@@ -44,7 +48,6 @@ class Game:
 
         #création de l'inventaire 
         self.inventory = Inventory()
-
 
         self.questmanager = QuestManager()
          #premiere quete
@@ -73,24 +76,21 @@ class Game:
 
     def give_reward_quests(self):
         if self.main_quest.completed and not self.main_quest.reward_given:
-            self.inventory.add_item(appel)
+            self.inventory.add_item(apple)
             self.main_quest.reward_given = True
         if self.secondary_quest1.completed and not self.secondary_quest1.reward_given:
-            self.inventory.add_item(appel)
+            self.inventory.add_item(apple)
             self.secondary_quest1.reward_given = True
         if self.secondary_quest2.completed and not self.secondary_quest2.reward_given:
-            self.inventory.add_item(appel)
+            self.inventory.add_item(apple)
             self.secondary_quest2.reward_given = True
         if self.secondary_quest3.completed and not self.secondary_quest3.reward_given:
-            self.inventory.add_item(appel)
+            self.inventory.add_item(apple)
             self.secondary_quest3.reward_given = True
 
     def switch_map(self, map_name, spawn_name = None):
         self.all_enemies = []  # Réinitialiser la liste des ennemis
-        try:
-            self.group.empty()  # Supprimer tous les sprites du groupe
-        except:
-            pass
+
         # Chargement des données de la carte à partir d'un fichier TMX
         tmx_data = pytmx.util_pygame.load_pygame(f"Application/{map_name}")
         map_data = pyscroll.data.TiledMapData(tmx_data)
@@ -101,11 +101,11 @@ class Game:
         # Recréer le groupe de calques avec le nouveau rendu de carte
         self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer, default_layer=2)
 
-        # Recherche de l'objet spawn_map2 dans les données de la carte
+        # Recherche de l'objet spawn_map dans les données de la carte
         spawn_map = tmx_data.get_object_by_name(spawn_name)
         self.group.add(self.player)
 
-        # Positionnement du joueur aux coordonnées de l'objet spawn_map2
+        # Positionnement du joueur aux coordonnées de l'objet spawn_map
         self.player.position = [spawn_map.x, spawn_map.y]
         self.player.rect.topleft = self.player.position
 
@@ -157,7 +157,7 @@ class Game:
     def update(self): 
         # Mise à jour du groupe de calques
         self.group.update(self.player)
-        
+
         # Vérification des collisions entre le joueur et les objets de collision
         for collision_rect in self.collision:
             if self.player.rect.colliderect(collision_rect):
@@ -173,7 +173,7 @@ class Game:
             for enemy in self.all_enemies:
                 if bullet.rect.colliderect(enemy.rect):
                     self.all_bullets.remove(bullet)
-                    enemy.take_damage()
+                    enemy.take_damage(self.player.damage)
                     if enemy.health <= 0:
                         if type(enemy) == Golem: # Si le type(class) de enemy est Golem, ..
                             self.golem_killed = True  # Le Golem a été tué
@@ -183,7 +183,22 @@ class Game:
                         self.drop_item(enemy) # Laisser tomber un objet
                         if self.quest1active == True:
                             self.secondary_quest1.updateProgress() #Met à jour la quête secondaire 
+         
+        for enemy in self.all_enemies:
+            if enemy.rect.colliderect(self.player.rect):
+                enemy.attack(self.player, enemy.damage)
+            if type(enemy) == Golem:
+                enemy.rage()
+                self.frame_count += 1
+                for bullet in self.boss_bullets:
+                    if bullet.rect.colliderect(self.player.rect):
+                        self.player.take_damage(enemy.damage)
+                        self.boss_bullets.remove(bullet)
 
+                if self.frame_count >= GOLEM_SHOOT_COOLDOWN:
+                    enemy.shoot_all_directions(self.boss_bullets)
+                    self.frame_count = 0
+            
         # Mise à jour des balles tirées par le joueur
         for bullet in self.all_bullets:
             bullet.update()
@@ -192,9 +207,12 @@ class Game:
             else:
                 bullet.lifetime -= 1
 
-        for enemy in self.all_enemies:
-            if type(enemy) == Golem:
-                enemy.rage()
+        for bullet in self.boss_bullets:
+            bullet.update()
+            if bullet.lifetime <= 0:
+                self.boss_bullets.remove(bullet)
+            else:
+                bullet.lifetime -= 1
 
         # Vérification des transitions entre les cartes
         if self.map == 'map1.tmx':
@@ -294,7 +312,7 @@ class Game:
                         self.show_inventory = not self.show_inventory
 
                 if event.key == pygame.K_o:
-                        self.inventory.use_item(appel, self.player)
+                        self.inventory.use_item(apple, self.player)
 
                 if event.key == pygame.K_p:
                         self.inventory.use_item(military, self.player)
@@ -408,6 +426,7 @@ class Game:
 
             # Affichage des balles tirées par le joueur
             self.all_bullets.draw(self.screen)
+            self.boss_bullets.draw(self.screen)
             # Centrage de la caméra sur le joueur
             self.group.center(self.player.rect.center)
 

@@ -92,7 +92,7 @@ class Armor(Item):
     def deserialize(data):
         return Armor(data['nom'], data['info'], data['scale'], data['color'], data['shield'])
 
-appel = Healer('pomme', APPLE_INFO, APPLE_SCALE, APPLE_COLOR, APPLE_HEAL)
+apple = Healer('pomme', APPLE_INFO, APPLE_SCALE, APPLE_COLOR, APPLE_HEAL)
 berry = Healer("baie", BERRY_INFO, BERRY_SCALE, BERRY_COLOR, BERRY_HEAL)
 military = Armor("militaire", MILITARY_INFO, MILITARY_SCALE, MILITARY_COLOR, MILITARY_SHIELD)
 police = Armor("police", POLICE_INFO, POLICE_SCALE, POLICE_COLOR, POLICE_SHIELD)

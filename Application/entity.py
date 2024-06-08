@@ -1,12 +1,12 @@
 import pygame
 import math
 from settings import *
-from bullet import Bullet
+from bullet import *
 from game import *
 from interface import *
 
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, x, y, image_path, name, speed, health, attack_cooldown=0):
+    def __init__(self, x, y, image_path, name, speed, health, attack_cooldown=0, damage=0):
         super().__init__()
         self.name = name 
         self.position = [x, y]
@@ -18,6 +18,7 @@ class Entity(pygame.sprite.Sprite):
         self.speed = speed
         self.health = health
         self.attack_cooldown = attack_cooldown
+        self.damage = damage
 
     def get_image(self, x, y):
         image = pygame.Surface((16, 24))  # Réduire la hauteur de 8 pixels de l'image
@@ -39,8 +40,8 @@ class Entity(pygame.sprite.Sprite):
         self.position[0] += x
         self.position[1] += y
 
-    def take_damage(self):
-        self.health -= BULLET_DAMAGE
+    def take_damage(self, damage):
+        self.health -= damage
         if self.health <= 0:
             self.kill()  # Supprimer la spirte de l'ennemi du groupe
 
@@ -49,12 +50,14 @@ class Entity(pygame.sprite.Sprite):
 
 class Player(Entity):
     def __init__(self, x, y):
-        super().__init__(x, y, "Application/images/Player.png", 'Player', PLAYER_SPEED, PLAYER_HEALTH, ATTACK_COOLDOWN)
+        super().__init__(x, y, "Application/images/Player.png", 'Player', PLAYER_SPEED, PLAYER_HEALTH, ATTACK_COOLDOWN, PLAYER_SHOOT_DAMAGE)
         self.max_health = PLAYER_MAX_HEALTH
 
     def shoot(self, target_x, target_y, bullet_group):
         angle = math.atan2(target_y - self.position[1], target_x - self.position[0])
-        bullet_group.add(Bullet(self.position[0], self.position[1], angle))
+        center_x = self.position[0] + self.rect.width / 2
+        center_y = self.position[1] + self.rect.height / 2
+        bullet_group.add(Bullet(center_x, center_y, angle))
 
     def cooldown_tick(self):
         if self.attack_cooldown > 0:
@@ -96,8 +99,8 @@ class Enemy(Entity):
         self.move(direction_x * self.speed, direction_y * self.speed)
 
         # Vérifier les collisions avec le joueur
-        if self.rect.colliderect(player.rect):
-            self.attack(player)
+        # if self.rect.colliderect(player.rect):
+        #     self.attack(player, self.damage)
 
         # Gérer le temps entre les attaques
         if self.attack_cooldown > 0:
@@ -106,32 +109,32 @@ class Enemy(Entity):
         # Mettre à jour la position du rectangle de collision
         self.rect.topleft = self.position
 
-    def attack(self, player):
+    def attack(self, player, damage):
         # Vérifier si l'ennemi peut attaquer
         if self.attack_cooldown == 0:
             # Infliger des dégâts au joueur
-            player.take_damage()
+            player.take_damage(damage)
             # Réinitialiser le cooldown d'attaque
             self.attack_cooldown = self.initial_attack_cooldown
 
 class Zombie(Enemy):
     def __init__(self, x, y):
-        super().__init__(x, y, "Application/images/Zombie.png", 'Zombie', ZOMBIE_SPEED, ZOMBIE_HEALTH, ZOMBIE_ATTACK_COOLDOWN)
+        super().__init__(x, y, "Application/images/Zombie.png", 'Zombie', ZOMBIE_SPEED, ZOMBIE_HEALTH, ZOMBIE_ATTACK_COOLDOWN, ZOMBIE_DAMAGE)
         self.initial_attack_cooldown = ZOMBIE_ATTACK_COOLDOWN
 
 class Skeleton(Enemy):
     def __init__(self, x, y):
-        super().__init__(x, y, "Application/images/Skeleton.png", 'Skeleton', SKELETON_SPEED, SKELETON_HEALTH, SKELETON_ATTACK_COOLDOWN)
+        super().__init__(x, y, "Application/images/Skeleton.png", 'Skeleton', SKELETON_SPEED, SKELETON_HEALTH, SKELETON_ATTACK_COOLDOWN, SKELETON_DAMAGE)
         self.initial_attack_cooldown = SKELETON_ATTACK_COOLDOWN
 
 class Nohead(Enemy):
     def __init__(self, x, y):
-        super().__init__(x, y, "Application/images/Nohead.png", 'Nohead', NOHEAD_SPEED, NOHEAD_HEALTH, NOHEAD_ATTACK_COOLDOWN)
+        super().__init__(x, y, "Application/images/Nohead.png", 'Nohead', NOHEAD_SPEED, NOHEAD_HEALTH, NOHEAD_ATTACK_COOLDOWN, NOHEAD_DAMAGE)
         self.initial_attack_cooldown = NOHEAD_ATTACK_COOLDOWN
 
 class Golem(Enemy):
     def __init__(self, x, y):
-        super().__init__(x, y, "Application/images/Golem.png", 'Golem', GOLEM_SPEED, GOLEM_HEALTH, GOLEM_ATTACK_COOLDOWN)
+        super().__init__(x, y, "Application/images/Golem.png", 'Golem', GOLEM_SPEED, GOLEM_HEALTH, GOLEM_ATTACK_COOLDOWN, GOLEM_DAMAGE)
         self.initial_attack_cooldown = GOLEM_ATTACK_COOLDOWN
         self.image = self.get_image(0, 0)
         self.image.set_colorkey((0, 0, 0))
@@ -144,7 +147,14 @@ class Golem(Enemy):
     def rage(self):
         if self.health <= GOLEM_HEALTH / 2:
             self.speed = GOLEM_SPEED * 2
-            self.attack_cooldown = GOLEM_ATTACK_COOLDOWN / 2
+            self.damage = GOLEM_DAMAGE * 4
+
+    def shoot_all_directions(self, bullet_group):
+        for angle in range(0, 360, 45):  # Tirer dans 8 directions (0, 45, 90, ..., 315 degrés)
+            rad_angle = math.radians(angle)
+            boss_center_x = self.position[0] + self.rect.width / 2
+            boss_center_y = self.position[1] + self.rect.height / 2
+            bullet_group.add(BossBullet(boss_center_x,boss_center_y, rad_angle))
 
 class Npc(Entity):
     def __init__(self, x, y):
