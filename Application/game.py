@@ -15,7 +15,7 @@ from quest import *
 class Game:
     def __init__(self):
         # Initialisation de la fenêtre de jeu
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT),pygame.SRCALPHA)
         pygame.display.set_caption(TITRE)  # Définir le titre de la fenêtre
 
         # Création du joueur et ajout au groupe de calques
@@ -69,6 +69,8 @@ class Game:
         self.show_quests = False
         self.save_load = SaveSystem('.json','Application/save_data/')
         self.quest_background = pygame.image.load("Application/images/quest_background.png")
+        self.quest_1_dialogue = DialogueBox(NPC_DIALOGUE_10_MONSTER_QUEST, 22, 700, 150, 50, HEIGHT - 250, (255, 255, 128, 128), (0, 0, 0))
+
 
     def give_reward_quests(self):
         if self.main_quest.completed and not self.main_quest.reward_given:
@@ -125,7 +127,7 @@ class Game:
                 self.all_enemies.append(Golem(obj.x, obj.y))
                 self.group.add(self.all_enemies)
             if obj.type == 'spawn_npc':
-                self.npc = Npc(obj.x, obj.y,NPC_DIALOGUE_BASIC)
+                self.npc = Npc(obj.x, obj.y)
                 self.group.add(self.npc)
             # Si l'objet est un item
             if obj.type == "item":
@@ -305,12 +307,13 @@ class Game:
 
                 if event.key == pygame.K_f and self.npc and self.npc.in_interaction_range(self.player):
                     if not self.in_dialogue:
-                        self.in_dialogue = self.npc.interact(self.player)
+                        self.in_dialogue = self.npc.interact(self.player,NPC_DIALOGUE_BASIC)
                 
                 if event.key == pygame.K_RETURN:
                     if self.in_dialogue:
                         if not self.npc.advance_dialogue():
                             self.in_dialogue = False
+                            self.npc_interaction_screen()
 
     def draw_inventory(self):
         if self.show_inventory:
@@ -525,6 +528,7 @@ class Game:
         quest_1 = Button(WIDTH/2 - 200, HEIGHT/2 - 150, 300, 50, (0, 0, 0,128), (255, 255, 128,64), "Tuer 10 ennemis!", 24)
         quest_2 = Button(WIDTH/2 - 200, HEIGHT/2 - 50, 300, 50, (0, 0, 0,128), (255, 255, 128,64), "Trouver des materiaux", 24)
         quest_3 = Button(WIDTH/2 - 200, HEIGHT/2 + 50, 300, 50, (0,0,0,128), (255, 255, 128,64), "Item caché", 24)
+        exit_button = Button(WIDTH/2 - 200, HEIGHT/2 + 150, 300, 50, (0,0,0,128), (255, 255, 128,64), "continuer l'aventure", 24)
         while self.npc_interaction:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -533,16 +537,24 @@ class Game:
             mouse_pos = pygame.mouse.get_pos()
             mouse_pressed = pygame.mouse.get_pressed()
             if quest_1.is_pressed(mouse_pos, mouse_pressed):
-                self.npc.interact("")
+                self.npc_interaction = False
+                self.npc.interact(self.player,NPC_DIALOGUE_10_MONSTER_QUEST)
+                self.in_dialogue = True
                 self.QuestManager.addQuest(self.secondary_quest1)
                 self.quest1active = True
-                return
+            
             if quest_2.is_pressed(mouse_pos, mouse_pressed):
+                self.npc.interact(self.player,NPC_DIALOGUE_HEART_MISSION)
+                self.in_dialogue = True
                 self.QuestManager.addQuest(self.secondary_quest2)
                 return
             
             if quest_3.is_pressed(mouse_pos, mouse_pressed):
+                self.npc.interact(self.player,NPC_DIALOGUE_HIDDEN_OBJECT)
+                self.in_dialogue = True
                 self.QuestManager.addQuest(self.secondary_quest3)
+                return
+            if exit_button.is_pressed(mouse_pos, mouse_pressed):
                 return
             
             stretched_image = pygame.transform.scale(self.quest_background,(800,800))
@@ -551,6 +563,7 @@ class Game:
             self.screen.blit(quest_1.image, quest_1.rect)
             self.screen.blit(quest_2.image,quest_2.rect)
             self.screen.blit(quest_3.image, quest_3.rect)
+            self.screen.blit(exit_button.image,exit_button.rect)
             
             pygame.display.update()
         
