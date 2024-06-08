@@ -2,6 +2,7 @@ import pygame
 from settings import *
 from game import *
 from save_system import SaveSystem
+import textwrap
 class Button: 
     def __init__(self, x, y, width, height, foreground=(255,255,255,255), background=(0,0,0,256), content=None, fontsize=36):
         self.font = pygame.font.Font('freesansbold.ttf', fontsize)
@@ -88,13 +89,21 @@ class Npc_Dialogues:
         self.index = 0
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.bg_color, (self.x, self.y, self.width, self.height))
+        pygame.draw.rect(screen, self.bg_color, (self.x, self.y, self.width, self.height), border_radius=10)
         if self.index < len(self.messages):
             speaker, message = self.messages[self.index]
-            color = self.text_color if speaker == 'npc' else (0, 255, 0)
-            speaker_text = "NPC: " if speaker == 'npc' else "Player: "
-            text_surface = self.font.render(speaker_text + message, True, color)
-            screen.blit(text_surface, (self.x + 10, self.y + 10))
+            color = self.text_color if speaker == 'npc' else (0, 0, 0)
+            speaker_text = "NPC" if speaker == 'npc' else "Player"
+            header_surface = self.font.render(speaker_text, True, (0, 0, 0))
+            header_rect = header_surface.get_rect(center=(self.x + self.width // 2, self.y + 10))
+            screen.blit(header_surface, header_rect)
+            wrapped_lines = textwrap.wrap(message, width=int(self.width / 10))
+            y_offset = 50
+            for line in wrapped_lines:
+                text_surface = self.font.render(line, True, color)
+                text_rect = text_surface.get_rect(center=(self.x + self.width // 2, self.y + y_offset))
+                screen.blit(text_surface, text_rect)
+                y_offset += self.font.get_height() + 5
 
     def next_message(self):
         if self.index < len(self.messages) - 1:

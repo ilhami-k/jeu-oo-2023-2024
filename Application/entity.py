@@ -147,13 +147,14 @@ class Golem(Enemy):
             self.attack_cooldown = GOLEM_ATTACK_COOLDOWN / 2
 
 class Npc(Entity):
-    def __init__(self, x, y, dialogue):
+    def __init__(self, x, y):
         super().__init__(x, y, "Application/images/NPC.png", 'npc', NPC_SPEED, NPC_HEALTH, NPC_ATTACK_COOLDOWN)
         self.interaction_range = 50
         self.dialogue_box = None
-        self.dialogue = dialogue
+        
 
-    def interact(self, player):
+    def interact(self, player,dialogue):
+        self.dialogue = dialogue
         if self.in_interaction_range(player):
             self.dialogue_box = Npc_Dialogues(self.dialogue, 22, 700, 150, 50, HEIGHT - 250, (255, 255, 128, 128), (0, 0, 0))
             return True
@@ -164,6 +165,7 @@ class Npc(Entity):
         return distance <= self.interaction_range
 
     def draw_dialogue_box(self, screen):
+    
         if self.dialogue_box:
             self.dialogue_box.draw(screen)
 
@@ -174,6 +176,7 @@ class Npc(Entity):
         if self.dialogue_box:
             if not self.dialogue_box.next_message():
                 self.close_dialogue_box()
+
                 print("Dialogue closed")
                 return False
         return True
