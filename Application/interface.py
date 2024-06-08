@@ -75,6 +75,38 @@ class DialogueBox:
                 current_line = word
         lines.append(current_line)
         return lines
+class Npc_Dialogues:
+    def __init__(self, messages, font_size, width, height, x, y, bg_color, text_color):
+        self.font = pygame.font.Font(None, font_size)
+        self.messages = messages
+        self.width = width
+        self.height = height
+        self.x = x
+        self.y = y
+        self.bg_color = bg_color
+        self.text_color = text_color
+        self.index = 0
+
+    def draw(self, screen):
+        pygame.draw.rect(screen, self.bg_color, (self.x, self.y, self.width, self.height))
+        if self.index < len(self.messages):
+            speaker, message = self.messages[self.index]
+            color = self.text_color if speaker == 'npc' else (0, 255, 0)
+            speaker_text = "NPC: " if speaker == 'npc' else "Player: "
+            text_surface = self.font.render(speaker_text + message, True, color)
+            screen.blit(text_surface, (self.x + 10, self.y + 10))
+
+    def next_message(self):
+        if self.index < len(self.messages) - 1:
+            self.index += 1
+            print(f"Advancing to message index: {self.index}")
+            return True
+        print("No more messages to advance to")
+        return False
+
+    def reset(self):
+        self.index = 0
+
 class Interface:
     def __init__(self,player,prologue_on,new_game):
         pygame.init()
@@ -140,7 +172,7 @@ class Interface:
             
             
             self.screen.fill((0,0,0))
-            prologue_box = DialogueBox("Il était une fois, dans un monde lointain, un jeune aventurier qui partit à la recherche de trésors cachés. Il se nommait Arthur et était connu pour sa bravoure et sa témérité. Un jour, alors qu'il explorait une grotte mystérieuse, il découvrit une carte ancienne indiquant l'emplacement d'un trésor légendaire. Arthur décida de partir à la recherche de ce trésor, mais il ne savait pas encore qu'il allait devoir affronter de nombreux dangers et énigmes pour parvenir à ses fins.", 22, 700, 150, 50, HEIGHT - 250, (255, 255, 128,128), (0, 0, 0))
+            prologue_box = DialogueBox("Dans un monde semblable au nôtre, la petite ville de Greenfield vivait paisiblement, entourée de forêts et de collines. Les habitants menaient une vie simple et tranquille, jusqu'au jour où des monstres apparurent soudainement. Sortis de nulle part, ces créatures terrifiantes commencèrent à envahir les rues, semant la panique et la destruction.Les autorités, dépassées, ne pouvaient contenir le chaos. Au cœur de cette invasion se trouvait un mystérieux golem, source de tous les maux. Votre mission est claire : réunir les forces nécessaires, affronter les monstres, et détruire le golem pour restaurer la paix à Greenfield.", 24, 700, 300, 50, HEIGHT - 350, (255, 255, 128,128), (0, 0, 0))
             prologue_box.draw(self.screen)
             #  def __init__(self, text, font_size=24, width=600, height=200, x=100, y=100, bg_color=(255, 255, 255), text_color=(0, 0, 0)):
             press_enter_box = DialogueBox("Appuyez sur Entrée pour continuer...", 22, 300, 50, WIDTH/2 - 150, HEIGHT - 50, (255, 255, 255), (0, 0, 0))

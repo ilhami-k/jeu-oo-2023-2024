@@ -102,3 +102,13 @@ HEART_COLOR = (255,0,0)
 PELUCHE_INFO = "objet mystique"
 PELUCHE_SCALE = 4
 PELUCHE_COLOR = (128, 64, 32)
+
+#================================
+# Dialogues NPC-Joueur:
+NPC_DIALOGUE_BASIC = [
+    ('npc', "Hello, adventurer!"),
+    ('player', "Hello! What do you need?"),
+    ('npc', "I have some quests for you."),
+    ('player', "What kind of quests?"),
+    ('npc', "Choose wisely!")
+]

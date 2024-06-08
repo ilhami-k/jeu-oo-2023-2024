@@ -63,6 +63,7 @@ class Game:
         self.show_inventory = True
         self.interface = Interface(self.player,self.prologue_on,self.new_game)
         self.npc = None
+        self.in_dialogue = False
 
         #initialise l'affichage des quetes sur fermé
         self.show_quests = False
@@ -124,7 +125,7 @@ class Game:
                 self.all_enemies.append(Golem(obj.x, obj.y))
                 self.group.add(self.all_enemies)
             if obj.type == 'spawn_npc':
-                self.npc = Npc(obj.x, obj.y)
+                self.npc = Npc(obj.x, obj.y,NPC_DIALOGUE_BASIC)
                 self.group.add(self.npc)
             # Si l'objet est un item
             if obj.type == "item":
@@ -282,29 +283,35 @@ class Game:
                 self.player.shoot(mouse_x, mouse_y, self.all_bullets)
                 self.player.attack_cooldown = ATTACK_COOLDOWN
         # Gestion de l'affichage de l'inventaire avec une seule touche
-        if pressed[pygame.K_i]:
-           self.show_inventory = not self.show_inventory
-        
-        if pressed[pygame.K_o]:
-            self.inventory.use_item(appel, self.player)
-        
-        if pressed[pygame.K_p]:
-            self.inventory.use_item(military, self.player)
- 
-        # Gestion de l'affichage des quetes avec une seule touche
-        if pressed[pygame.K_t]:
-            self.show_quests = not self.show_quests
-        # Gestion de la prise d'objet
-        if pressed[pygame.K_e]:
-            self.take_item()
-            
-        # Gestion de l'interaction avec les NPC
-        if pressed[pygame.K_f] and self.npc and self.npc.in_interaction_range(self.player):
-            self.npc.interact(self.player,"Salut toi!")
-        if pressed[pygame.K_RETURN] and self.npc and self.npc.dialogue_box and self.npc.in_interaction_range:
-            self.npc.close_dialogue_box()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+            if event.type == pygame.KEYDOWN:
+                
+                if event.key == pygame.K_i:
+                        self.show_inventory = not self.show_inventory
 
-            self.npc_interaction_screen()
+                if event.key == pygame.K_o:
+                        self.inventory.use_item(appel, self.player)
+
+                if event.key == pygame.K_p:
+                        self.inventory.use_item(military, self.player)
+
+                if event.key == pygame.K_t:
+                        self.show_quests = not self.show_quests
+
+                if event.key == pygame.K_e:
+                        self.take_item()
+
+                if event.key == pygame.K_f and self.npc and self.npc.in_interaction_range(self.player):
+                    if not self.in_dialogue:
+                        self.in_dialogue = self.npc.interact(self.player)
+                
+                if event.key == pygame.K_RETURN:
+                    if self.in_dialogue:
+                        if not self.npc.advance_dialogue():
+                            self.in_dialogue = False
+
     def draw_inventory(self):
         if self.show_inventory:
             self.inventory.show_inventory(self.screen, self.font, 800)
@@ -526,6 +533,7 @@ class Game:
             mouse_pos = pygame.mouse.get_pos()
             mouse_pressed = pygame.mouse.get_pressed()
             if quest_1.is_pressed(mouse_pos, mouse_pressed):
+                self.npc.interact("")
                 self.QuestManager.addQuest(self.secondary_quest1)
                 self.quest1active = True
                 return
