@@ -19,28 +19,23 @@ from inventory import *
 
 #Mission principale affichée apres introduction
 class Quest:
-    def __init__(self,name,description,goal,reward,manager,inventory,current = 0):
+    def __init__(self,name,description,goal,manager,current = 0):
         self.name = name
         self.description = description
         self.goal = goal
-        self.reward = reward
+        self.reward_given = False
         self.manager = manager
-        self.inventory = inventory
         self.current = current
         self.completed = False
 
     def updateProgress(self):
         if not self.completed: #Si objectif pas complété
             self.current += 1
-            self.checkCompletion(self.inventory)
+            self.checkCompletion()
         
-    def checkCompletion(self,inventory):
+    def checkCompletion(self):
           if self.current >= self.goal: #and not self.completed
                 self.completed = True #Objectif complété
-                inventory.show_inventorytest()
-                print(self.reward.nom)
-                inventory.add_item(self.reward) #Ajoute la récompense à l'inventaire
-                inventory.show_inventorytest()
                 self.manager.deleteQuest(self)  # Supprime la quête du gestionnaire
                 self.current = 0
 

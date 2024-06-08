@@ -49,14 +49,13 @@ class Game:
 
         self.QuestManager = QuestManager()
          #premiere quete
-        self.main_quest = Quest("Quête principale", "Vaincre le boss", 1,uzi,self.QuestManager,self.inventory)
+        self.main_quest = Quest("Quête principale", "Vaincre le boss", 1,self.QuestManager)
 
         # deuxieme quete
-        self.secondary_quest1 = Quest("Quête secondaire", "Tuer 10 ennemis", 10,tooth,self.QuestManager,self.inventory)
+        self.secondary_quest1 = Quest("Quête secondaire", "Tuer 10 ennemis", 10,self.QuestManager)
         #troisieme quete
-        self.secondary_quest2 = Quest("Quête secondaire", "Obtenir 5 dents et 5 coeurs", 5,bazooka,self.QuestManager,self.inventory)
-        #quatrieme quete
-        self.secondary_quest3 = Quest("Quête secondaire", "Récuperer un item caché", 1,peluche, self.QuestManager,self.inventory)
+        self.secondary_quest2 = Quest("Quête secondaire", "Obtenir 5 dents et 5 coeurs", 5,self.QuestManager)
+        self.secondary_quest3 = Quest("Quête secondaire", "Récuperer un item caché", 1, self.QuestManager)
 
         # Ajoute les quêtes dans le gestionnaire de quetes
         self.QuestManager.addQuest(self.main_quest)
@@ -70,6 +69,19 @@ class Game:
         self.save_load = SaveSystem('.json','Application/save_data/')
         self.quest_background = pygame.image.load("Application/images/quest_background.png")
 
+    def give_reward_quests(self):
+        if self.main_quest.completed and not self.main_quest.reward_given:
+            self.inventory.add_item(appel)
+            self.main_quest.reward_given = True
+        if self.secondary_quest1.completed and not self.secondary_quest1.reward_given:
+            self.inventory.add_item(appel)
+            self.secondary_quest1.reward_given = True
+        if self.secondary_quest2.completed and not self.secondary_quest2.reward_given:
+            self.inventory.add_item(appel)
+            self.secondary_quest2.reward_given = True
+        if self.secondary_quest3.completed and not self.secondary_quest3.reward_given:
+            self.inventory.add_item(appel)
+            self.secondary_quest3.reward_given = True
 
     def switch_map(self, map_name, spawn_name = None):
         self.all_enemies = []  # Réinitialiser la liste des ennemis
@@ -182,9 +194,6 @@ class Game:
             if type(enemy) == Golem:
                 enemy.rage()
 
-        self.secondary_quest1.checkCompletion(self.inventory) 
-        self.secondary_quest2.checkCompletion(self.inventory)
-        self.main_quest.checkCompletion(self.inventory)  
         # Vérification des transitions entre les cartes
         if self.map == 'map1.tmx':
             if self.player.rect.colliderect(self.enter_other_map1_rect):
@@ -365,6 +374,8 @@ class Game:
 
             #affichage des quetes (t)
             self.draw_quests()
+            #donne les récompenses quand les quetes sont complétées
+            self.give_reward_quests()
 
             #affichage de la dialogue box
             self.draw_dialogue_box()
