@@ -13,6 +13,7 @@ class Bullet(pygame.sprite.Sprite):
         self.image = pygame.Surface((BULLET_SCALE, BULLET_SCALE))
         self.image.fill((255, 255, 255))  # Couleur de la balle (blanc)
         self.rect = self.image.get_rect(center=self.position)  # Créer un rect à partir de l'image
+        self.bullet_types = []
 
     def update(self):
         self.position[0] += math.cos(self.angle) * self.speed
@@ -24,6 +25,10 @@ class Bullet(pygame.sprite.Sprite):
         distance = math.sqrt((self.x - x) ** 2 + (self.y - y) ** 2)
         return distance < 10
     
+    def get_bullet_index(self, index):
+        if 0 <= index < len(self.bullet_types):
+            return self.bullet_types[index]
+    
     
 class SuperBullet(Bullet):
     def __init__(self, x, y, angle):
@@ -33,6 +38,16 @@ class SuperBullet(Bullet):
         self.damage = SUPER_BULLET_DAMAGE
         self.image = pygame.Surface((SUPER_BULLET_SCALE, SUPER_BULLET_SCALE))
         self.image.fill(SUPER_BULLET_COLOR)  # Couleur de la balle (rouge)
+        self.rect = self.image.get_rect(center=self.position)
+
+class SniperBullet(Bullet):
+    def __init__(self, x, y, angle):
+        super().__init__(x, y, angle)
+        self.speed = SNIPER_BULLET_SPEED
+        self.lifetime = SNIPER_BULLET_LIFETIME
+        self.damage = SNIPER_BULLET_DAMAGE
+        self.image = pygame.Surface((SNIPER_BULLET_SCALE, SNIPER_BULLET_SCALE))
+        self.image.fill(SNIPER_BULLET_COLOR)  # Couleur de la balle (rouge)
         self.rect = self.image.get_rect(center=self.position)
     
 class BossBullet(Bullet):

@@ -30,20 +30,15 @@ class Inventory:
                 print(f"j'ai cliqué sur {item.nom}")
                 self.use_item(item, self.player)
                 self.remove_item(item)
-                break
-    
+                break    
    
     
     def use_item(self, item, player):        
         if isinstance(item, Healer):
             item.healing(player)
-            
         elif isinstance(item, Booster):
             item.boost(player)
-
-
-              
-
+            
     def show_inventory(self, screen, font, WIDTH):
         self.item_rects.clear()
         small_font = pygame.font.Font(None, 20)  # Définit une police plus petite pour les items de l'inventaire

@@ -27,7 +27,7 @@ class Game:
 
         self.frame_count = 0
 
-        self.bullet_types = [Bullet, SuperBullet]
+        
 
         # Initialisation de la liste des items
         self.list_items_on_map = [apple, military, police, peluche]
@@ -36,7 +36,9 @@ class Game:
 
         self.item_rects = []
 
-        self.current_bullet = Bullet
+        self.bullet_types = [Bullet, SuperBullet]
+
+       
 
         # Appel de la méthode switch_map pour charger la première carte
         self.switch_map("map1.tmx", "spawn_player")
@@ -319,7 +321,8 @@ class Game:
                     self.player.bullet_type = Bullet 
                 if  event.key == pygame.K_2:
                     self.player.bullet_type = SuperBullet
-        
+                if event.key == pygame.K_3: 
+                    self.player.bullet_type = SniperBullet    
 
                 if event.key == pygame.K_o:
                         self.inventory.use_item(apple, self.player)
@@ -342,7 +345,7 @@ class Game:
                         if not self.npc.advance_dialogue():
                             self.in_dialogue = False
                             self.npc_interaction_screen()
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 3:
                     self.inventory.handle_click(mouse_pos=pygame.mouse.get_pos())
                        
