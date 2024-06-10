@@ -61,8 +61,11 @@ class Game:
         # deuxieme quete
         self.secondary_quest1 = Quest("Quête secondaire_1", "Tuer 10 ennemis", 10,self.questmanager)
         #troisieme quete
-        self.secondary_quest2 = Quest("Quête secondaire_2", "Obtenir 5 dents et 5 coeurs", 5,self.questmanager)
-        self.secondary_quest3 = Quest("Quête secondaire_3", "Récuperer un item caché", 1, self.questmanager)
+        self.secondary_quest2 = Quest("Quête secondaire_2", "Obtenir 5 dents", 5,self.questmanager)
+        #quatrieme quete
+        self.secondary_quest3 = Quest("Quete secondaire_3","Obtenir 5 coeurs",5,self.questmanager)
+        #cinquieme quete
+        self.secondary_quest4 = Quest("Quête secondaire_4", "Récuperer un item caché", 1, self.questmanager)
 
         # Ajoute les quêtes dans le gestionnaire de quetes
         self.questmanager.add_quest(self.main_quest)
@@ -83,15 +86,22 @@ class Game:
         if self.main_quest.completed and not self.main_quest.reward_given:
             self.inventory.add_item(apple)
             self.main_quest.reward_given = True
+
         if self.secondary_quest1.completed and not self.secondary_quest1.reward_given:
             self.inventory.add_item(apple)
             self.secondary_quest1.reward_given = True
+
         if self.secondary_quest2.completed and not self.secondary_quest2.reward_given:
             self.inventory.add_item(apple)
             self.secondary_quest2.reward_given = True
+
         if self.secondary_quest3.completed and not self.secondary_quest3.reward_given:
             self.inventory.add_item(apple)
             self.secondary_quest3.reward_given = True
+
+        if self.secondary_quest4.completed and not self.secondary_quest4.reward_given:
+            self.inventory.add_item(apple)
+            self.secondary_quest4.reward_given = True
 
     def switch_map(self, map_name, spawn_name = None):
         self.all_enemies = []  # Réinitialiser la liste des ennemis
@@ -266,6 +276,10 @@ class Game:
                 # Effectuer l'action de ramassage de l'objet
                 self.inventory.add_item(item)
                 if item == peluche:
+                    self.secondary_quest4.updateProgress()
+                elif item == tooth:
+                    self.secondary_quest2.updateProgress()
+                elif item == heart:
                     self.secondary_quest3.updateProgress()
                 # Supprimer l'item de la liste des items sur la carte pour ne pas qu'il réapparaisse
                 self.list_items_on_map.remove(item)
@@ -413,6 +427,10 @@ class Game:
                     self.secondary_quest3 = Quest(quest_name, quest_description, quest_goal, self.questmanager, quest_current)
                     self.secondary_quest3.completed = quest_completed
                     self.questmanager.add_quest(self.secondary_quest3)
+                elif quest_name == "Quête secondaire_4":
+                    self.secondary_quest4 = Quest(quest_name, quest_description, quest_goal, self.questmanager, quest_current)
+                    self.secondary_quest4.completed = quest_completed
+                    self.questmanager.add_quest(self.secondary_quest4)
             
 
     def run(self):
@@ -600,8 +618,9 @@ class Game:
         title = self.font.render("Voici quelques quêtes pour toi.", True, 'White')
         title_rect = title.get_rect(center=(WIDTH/2, HEIGHT/6))
         quest_1 = Button(WIDTH/2 - 200, HEIGHT/2 - 150, 300, 50, (0, 0, 0,128), (255, 255, 128,64), "Tuer 10 ennemis!", 24)
-        quest_2 = Button(WIDTH/2 - 200, HEIGHT/2 - 50, 300, 50, (0, 0, 0,128), (255, 255, 128,64), "Trouver des materiaux", 24)
-        quest_3 = Button(WIDTH/2 - 200, HEIGHT/2 + 50, 300, 50, (0,0,0,128), (255, 255, 128,64), "Item caché", 24)
+        quest_2 = Button(WIDTH/2 - 200, HEIGHT/2 - 50, 300, 50, (0, 0, 0,128), (255, 255, 128,64), "Trouver 5 dents", 24)
+        quest_3 = Button(WIDTH/2 - 200, HEIGHT/2 + 50, 300, 50, (0,0,0,128), (255, 255, 128,64), "Trouver 5 coeurs", 24)
+        quest_4 = Button(WIDTH/2 - 200, HEIGHT/2 + 50, 300, 50, (0,0,0,128), (255, 255, 128,64), "Trouver 5 dents", 24)
         exit_button = Button(WIDTH/2 - 200, HEIGHT/2 + 150, 300, 50, (0,0,0,128), (255, 255, 128,64), "continuer l'aventure", 24)
         while self.npc_interaction:
             for event in pygame.event.get():
@@ -628,6 +647,13 @@ class Game:
                 self.in_dialogue = True
                 self.questmanager.add_quest(self.secondary_quest3)
                 return
+            
+            if quest_4.is_pressed(mouse_pos, mouse_pressed):
+                self.npc.interact(self.player,NPC_DIALOGUE_HIDDEN_OBJECT)
+                self.in_dialogue = True
+                self.questmanager.add_quest(self.secondary_quest3)
+                return
+            
             if exit_button.is_pressed(mouse_pos, mouse_pressed):
                 return
             
