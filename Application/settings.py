@@ -110,47 +110,47 @@ PELUCHE_COLOR = (128, 64, 32)
 #================================
 # Dialogues NPC-Joueur:
 NPC_DIALOGUE_BASIC = [
-    ('npc', "Hello, adventurer!"),
-    ('player', "Hello! What do you need?"),
-    ('npc', "I have some quests for you."),
-    ('player', "What kind of quests?"),
-    ('npc', "Choose wisely!")
+    ('Brançois Furniaux', "Salut, tu dois être Billy"),
+    ('Billy', "Oui c'est bien moi."),
+    ('Brançois Furniaux', "J'ai quelques quêtes pour toi"),
+    ('Billy', "Quelle genre de quêtes?"),
+    ('Brançois Furniaux', "Les voici!")
 ]
 
 NPC_DIALOGUE_10_MONSTER_QUEST = [
-    ('npc', "Oh, enfin quelqu'un de courageux ! Écoute, j'ai vraiment besoin de ton aide. Ces monstres... ils sont partout. Nos défenses sont en ruines, et les habitants sont terrifiés."),
-    ('player', "Je suis ici pour aider. Que veux-tu que je fasse ?"),
-    ('npc', "Pour commencer, nous devons réduire leur nombre. Si tu pouvais tuer dix de ces créatures, cela nous donnerait un peu de répit et de temps pour renforcer nos défenses."),
-    ('player', "Dix monstres, c'est noté. Où les trouver ?"),
-    ('npc', "Ils rôdent principalement autour des anciennes fermes à l'est de la ville et près de la forêt de Blackwood. Fais attention, ils sont dangereux. Veux-tu accepter?"),
-    ('player', "Je m'en occupe. Je reviendrai une fois le travail terminé."),
-    ('npc', "Merci, vraiment. Que la chance soit de ton côté. Reviens sain et sauf.")
+    ('Brançois Furniaux', "Oh, enfin quelqu'un de courageux ! Écoute, j'ai vraiment besoin de ton aide. Ces monstres... ils sont partout. Nos défenses sont en ruines, et les habitants sont terrifiés."),
+    ('Billy', "Je suis ici pour aider. Que veux-tu que je fasse ?"),
+    ('Brançois Furniaux', "Pour commencer, nous devons réduire leur nombre. Si tu pouvais tuer dix de ces créatures, cela nous donnerait un peu de répit et de temps pour renforcer nos défenses."),
+    ('Billy', "Dix monstres, c'est noté. Où les trouver ?"),
+    ('Brançois Furniaux', "Ils rôdent principalement autour des anciennes fermes à l'est de la ville et près de la forêt de Blackwood. Fais attention, ils sont dangereux. Veux-tu accepter?"),
+    ('Billy', "Je m'en occupe. Je reviendrai une fois le travail terminé."),
+    ('Brançois Furniaux', "Merci, vraiment. Que la chance soit de ton côté. Reviens sain et sauf.")
 ]
 
 NPC_DIALOGUE_HEART_MISSION= [
-('npc', "Salut, aventurier!"),
-('player', "Bonjour! Comment puis-je vous aider?"),
-('npc', "J'ai une quête pour toi."),
-('player', "Quel genre de quête?"),
-('npc', "Écoute bien."),
-('npc', "Ta mission est de collecter 5 dents et 5 cœurs de monstres."),
-('player', "D'accord, mais où puis-je trouver ces dents et ces cœurs?"),
-('npc', "Les dents des monstres peuvent être récupérées dans les bois à l'ouest de la ville, où les créatures rôdent."),
-('npc', "Quant aux cœurs, ils sont souvent trouvés dans les grottes au nord, où les monstres les plus redoutables se cachent."),
-('player', "Compris, je vais m'en occuper."),
-('npc', "Fais attention, les monstres peuvent être dangereux. Bonne chance, aventurier.")
+('Brançois Furniaux', "Salut, aventurier!"),
+('Billy', "Bonjour! Comment puis-je vous aider?"),
+('Brançois Furniaux', "J'ai une quête pour toi."),
+('Billy', "Quel genre de quête?"),
+('Brançois Furniaux', "Écoute bien."),
+('Brançois Furniaux', "Ta mission est de collecter 5 dents et 5 cœurs de monstres."),
+('Billy', "D'accord, mais où puis-je trouver ces dents et ces cœurs?"),
+('Brançois Furniaux', "Les dents des monstres peuvent être récupérées dans les bois à l'ouest de la ville, où les créatures rôdent."),
+('Brançois Furniaux', "Quant aux cœurs, ils sont souvent trouvés dans les grottes au nord, où les monstres les plus redoutables se cachent."),
+('Billy', "Compris, je vais m'en occuper."),
+('Brançois Furniaux', "Fais attention, les monstres peuvent être dangereux. Bonne chance, aventurier.")
 ]
 NPC_DIALOGUE_HIDDEN_OBJECT = [
-('npc', "Salut, aventurier!"),
-('player', "Bonjour! Que puis-je faire pour vous?"),
-('npc', "J'ai une autre quête pour toi."),
-('player', "Je suis prêt à aider. De quoi s'agit-il?"),
-('npc', "Écoute attentivement."),
-('npc', "Il y a un objet précieux caché quelque part dans la ville."),
-('npc', "Ta mission est de le trouver."),
-('player', "Un objet caché? Pouvez-vous me donner plus de détails?"),
-('npc', "Malheureusement, je ne sais pas exactement où il se trouve."),
-('npc', "Cependant, des rumeurs disent qu'il est caché dans une vieille maison abandonnée près de la rivière."),
-('player', "Je vais aller jeter un coup d'œil. Merci pour l'information."),
-('npc', "Bon courage, aventurier. Que la chance soit avec toi.")
+('Brançois Furniaux', "Salut, aventurier!"),
+('Billy', "Bonjour! Que puis-je faire pour vous?"),
+('Brançois Furniaux', "J'ai une autre quête pour toi."),
+('Billy', "Je suis prêt à aider. De quoi s'agit-il?"),
+('Brançois Furniaux', "Écoute attentivement."),
+('Brançois Furniaux', "Il y a un objet précieux caché quelque part dans la ville."),
+('Brançois Furniaux', "Ta mission est de le trouver."),
+('Billy', "Un objet caché? Pouvez-vous me donner plus de détails?"),
+('Brançois Furniaux', "Malheureusement, je ne sais pas exactement où il se trouve."),
+('Brançois Furniaux', "Cependant, des rumeurs disent qu'il est caché dans une vieille maison abandonnée près de la rivière."),
+('Billy', "Je vais aller jeter un coup d'œil. Merci pour l'information."),
+('Brançois Furniaux', "Bon courage, aventurier. Que la chance soit avec toi.")
 ]
