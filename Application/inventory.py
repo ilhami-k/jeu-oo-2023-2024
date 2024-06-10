@@ -7,15 +7,13 @@ class Inventory:
     def __init__(self):
         self.items = []  # Initialise une liste vide pour stocker les items de l'inventaire
         self.item_rects = []
+
+        self.player = Player(0,0)
         #Test pour voir si les objets sont bien ajoutés à l'inventaire
         self.items.append(apple)
         self.items.append(military)
         self.items.append(apple)
         self.items.append(military)
-
-    def show_inventorytest(self):
-        for i in self.items:
-            print(i)
 
     def add_item(self, item):
         self.items.append(item)  # Ajoute un item à l'inventaire
@@ -25,27 +23,9 @@ class Inventory:
             self.items.remove(item)  # Retire l'item de l'inventaire s'il est présent
         else:
             print(f"{item} n'est pas dans l'inventaire.")  # Message si l'item n'est pas trouvé
-    
-   
-    
-    def use_item(self, item, player):
-        for i, item in enumerate(self.items):
-                if isinstance(item, Healer):
-                    item.healing(player)
-                elif isinstance(item, Booster):
-                    item.protect(player)
-                del self.items[i]
-                return
-    
-        
-                    
-
-    def is_equip(self, item):
-        if isinstance(item, Weapon):
-            return
-        
 
 
+              
 
     def show_inventory(self, screen, font, WIDTH):
         self.item_rects.clear()
@@ -81,6 +61,23 @@ class Inventory:
                 y_offset += inflated_rect.height + 10
         
         screen.blit(inventory_surface, (WIDTH - 310, 80)) 
+
+    def handle_click(self, mouse_pos):
+        for rect, item in self.item_rects:
+            if rect.collidepoint(mouse_pos):
+                print(f"j'ai cliqué sur {item.nom}")
+                self.use_item(item, self.player)
+                self.remove_item(item)
+                break
+    
+   
+    
+    def use_item(self, item, player):        
+        if isinstance(item, Healer):
+            item.healing(player)
+            
+        elif isinstance(item, Booster):
+            item.boost(player)
     
     def save_inventory(self):
         return [item.serialize() for item in self.items]
@@ -91,9 +88,7 @@ class Inventory:
             item_type = item_data.pop('type')
             if item_type == 'Healer':
                 item = Healer.deserialize(item_data)
-            elif item_type == 'Power':
-                item = Weapon.deserialize(item_data)
-            elif item_type == 'Armor':
+            elif item_type == 'Booster':
                 item = Booster.deserialize(item_data)
             self.items.append(item)
 

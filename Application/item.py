@@ -53,7 +53,7 @@ class Booster(Item):
         super().__init__(0, 0, nom, info, scale, color)  # Note: Position temporaire (0, 0)
         self.shield = shield
 
-    def protect(self, player):
+    def boost(self, player):
         if isinstance(player, Player):
             player.max_health += self.shield
             player.health += self.shield

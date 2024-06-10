@@ -332,6 +332,10 @@ class Game:
                         if not self.npc.advance_dialogue():
                             self.in_dialogue = False
                             self.npc_interaction_screen()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 3:
+                    self.inventory.handle_click(mouse_pos=pygame.mouse.get_pos())
+                       
 
     def draw_inventory(self):
         if self.show_inventory:
