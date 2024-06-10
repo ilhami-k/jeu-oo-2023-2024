@@ -93,7 +93,7 @@ class Npc_Dialogues:
         if self.index < len(self.messages):
             speaker, message = self.messages[self.index]
             color = self.text_color if speaker == 'npc' else (0, 0, 0)
-            speaker_text = "NPC" if speaker == 'npc' else "Player"
+            speaker_text = "Brançois Furniaux" if speaker == 'Brançois Furniaux' else "Billy"
             header_surface = self.font.render(speaker_text, True, (0, 0, 0))
             header_rect = header_surface.get_rect(center=(self.x + self.width // 2, self.y + 10))
             screen.blit(header_surface, header_rect)
@@ -129,7 +129,7 @@ class Interface:
         self.epilogue_on = False
         self.save_load = SaveSystem('.json','Application/save_data/')
         self.player = player
-
+        self.end_background = pygame.image.load("Application/images/background.png")
         self.prologue_on = prologue_on
         self.new_game = new_game
     def menu_screen(self):
@@ -187,4 +187,28 @@ class Interface:
             press_enter_box = DialogueBox("Appuyez sur Entrée pour continuer...", 22, 300, 50, WIDTH/2 - 150, HEIGHT - 50, (255, 255, 255), (0, 0, 0))
             press_enter_box.draw(self.screen)
             pygame.display.update()
-        
+    def ending_screen (self):
+        self.ending = True
+        title = self.font.render("Vous avez terminé le jeu", True, 'White')
+        title_rect = title.get_rect(center=(WIDTH/2, HEIGHT/4))
+        exit_button = Button(WIDTH/2 - 100, HEIGHT/2 - 100 , 200, 50, (255, 255, 255), (0, 0, 0), "Exit", 36)
+        while self.ending:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.ending = False
+                    self.running = False
+                    return self.running
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+            if exit_button.is_pressed(mouse_pos, mouse_pressed):
+                self.ending = False
+                self.running = False
+                return self.running
+            
+            stretched_image = pygame.transform.scale(self.intro_background,(800,1000))
+            self.screen.blit(stretched_image, (0, 0))
+            self.screen.blit(title, title_rect)
+            self.screen.blit(exit_button.image, exit_button.rect)
+            prologue_box = DialogueBox("Alors que le golem s'effondre dans un fracas assourdissant, un silence envahit Greenfield. Les monstres disparaissent et les habitants émergent de leurs refuges, incrédules mais soulagés. Les nuages sombres se dissipent, révélant un ciel clair.Le héros, fatigué mais victorieux, se tient au centre de la place, entouré de visages reconnaissants. Les applaudissements éclatent, remplissant l'air d'une joie nouvelle. La paix est enfin restaurée à Greenfield, grâce à son courage.", 24, 700, 300, 50, HEIGHT - 350, (255, 255, 128,128), (255, 255, 255))
+            prologue_box.draw(self.screen)   
+            pygame.display.update()

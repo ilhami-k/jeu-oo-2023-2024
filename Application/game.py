@@ -178,6 +178,8 @@ class Game:
                         if type(enemy) == Golem: # Si le type(class) de enemy est Golem, ..
                             self.golem_killed = True  # Le Golem a été tué
                             self.main_quest.updateProgress()
+                            self.interface.ending_screen()
+                            self.running = self.interface.ending_screen() #pour pouvoir quitter le jeu
 
                         self.all_enemies.remove(enemy) # Supprimer l'ennemi du groupe (rect)
                         self.drop_item(enemy) # Laisser tomber un objet
@@ -626,4 +628,3 @@ class Game:
             self.screen.blit(exit_button.image,exit_button.rect)
             
             pygame.display.update()
-        
