@@ -23,6 +23,23 @@ class Inventory:
             self.items.remove(item)  # Retire l'item de l'inventaire s'il est présent
         else:
             print(f"{item} n'est pas dans l'inventaire.")  # Message si l'item n'est pas trouvé
+    
+    def handle_click(self, mouse_pos):
+        for rect, item in self.item_rects:
+            if rect.collidepoint(mouse_pos):
+                print(f"j'ai cliqué sur {item.nom}")
+                self.use_item(item, self.player)
+                self.remove_item(item)
+                break
+    
+   
+    
+    def use_item(self, item, player):        
+        if isinstance(item, Healer):
+            item.healing(player)
+            
+        elif isinstance(item, Booster):
+            item.boost(player)
 
 
               
@@ -62,22 +79,7 @@ class Inventory:
         
         screen.blit(inventory_surface, (WIDTH - 310, 80)) 
 
-    def handle_click(self, mouse_pos):
-        for rect, item in self.item_rects:
-            if rect.collidepoint(mouse_pos):
-                print(f"j'ai cliqué sur {item.nom}")
-                self.use_item(item, self.player)
-                self.remove_item(item)
-                break
-    
-   
-    
-    def use_item(self, item, player):        
-        if isinstance(item, Healer):
-            item.healing(player)
-            
-        elif isinstance(item, Booster):
-            item.boost(player)
+
     
     def save_inventory(self):
         return [item.serialize() for item in self.items]

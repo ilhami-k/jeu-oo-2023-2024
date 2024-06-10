@@ -9,6 +9,7 @@ from inventory import *
 from item import *
 from save_system import SaveSystem
 from quest import *
+from bullet import *
 
 
 class Game:
@@ -26,12 +27,16 @@ class Game:
 
         self.frame_count = 0
 
+        self.bullet_types = [Bullet, SuperBullet]
+
         # Initialisation de la liste des items
         self.list_items_on_map = [apple, military, police, peluche]
 
         self.list_items_on_monster = [tooth]
 
         self.item_rects = []
+
+        self.current_bullet = Bullet
 
         # Appel de la méthode switch_map pour charger la première carte
         self.switch_map("map1.tmx", "spawn_player")
@@ -310,6 +315,11 @@ class Game:
                     self.menu_screen()
                 if event.key == pygame.K_i:
                         self.show_inventory = not self.show_inventory
+                if  event.key == pygame.K_1:
+                    self.player.bullet_type = Bullet 
+                if  event.key == pygame.K_2:
+                    self.player.bullet_type = SuperBullet
+        
 
                 if event.key == pygame.K_o:
                         self.inventory.use_item(apple, self.player)

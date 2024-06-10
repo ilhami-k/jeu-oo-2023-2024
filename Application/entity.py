@@ -52,21 +52,19 @@ class Player(Entity):
     def __init__(self, x, y):
         super().__init__(x, y, "Application/images/Player.png", 'Player', PLAYER_SPEED, PLAYER_HEALTH, ATTACK_COOLDOWN, PLAYER_SHOOT_DAMAGE)
         self.max_health = PLAYER_MAX_HEALTH
+        self.bullet_type = Bullet
+        
 
     def shoot(self, target_x, target_y, bullet_group):
         angle = math.atan2(target_y - self.position[1], target_x - self.position[0])
         center_x = self.position[0] + self.rect.width / 2
         center_y = self.position[1] + self.rect.height / 2
-        bullet_group.add(Bullet(center_x, center_y, angle))
+        bullet_group.add(self.bullet_type(center_x, center_y, angle))
 
     def cooldown_tick(self):
         if self.attack_cooldown > 0:
             self.attack_cooldown -= 1
   
-    def healing(self):
-        self.health += APPLE_HEAL
-        if self.health > self.max_health:
-            self.health = self.max_health
     
     #gestion de l'apparence de la barre de vie du joueur 
     def update_healthbar (self, screen):

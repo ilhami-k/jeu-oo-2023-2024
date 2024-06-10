@@ -17,12 +17,23 @@ class Bullet(pygame.sprite.Sprite):
     def update(self):
         self.position[0] += math.cos(self.angle) * self.speed
         self.position[1] += math.sin(self.angle) * self.speed
-        self.rect.center = self.position  # Mettre à jour la position du rect
+        self.rect.center = self.position  
 
     #  Ajouter une méthode pour vérifier les collisions avec monstres ou autres (A TERMINER)
     def check_collision(self, x, y):
         distance = math.sqrt((self.x - x) ** 2 + (self.y - y) ** 2)
         return distance < 10
+    
+    
+class SuperBullet(Bullet):
+    def __init__(self, x, y, angle):
+        super().__init__(x, y, angle)
+        self.speed = SUPER_BULLET_SPEED
+        self.lifetime = SUPER_BULLET_LIFETIME
+        self.damage = SUPER_BULLET_DAMAGE
+        self.image = pygame.Surface((SUPER_BULLET_SCALE, SUPER_BULLET_SCALE))
+        self.image.fill(SUPER_BULLET_COLOR)  # Couleur de la balle (rouge)
+        self.rect = self.image.get_rect(center=self.position)
     
 class BossBullet(Bullet):
     def __init__(self, x, y, angle):

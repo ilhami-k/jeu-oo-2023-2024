@@ -12,6 +12,7 @@ class Item(pygame.sprite.Sprite):
         self.image = pygame.Surface((scale, scale))
         self.image.fill(color)
         self.rect = self.image.get_rect(topleft=self.position)
+        self.player = Player(0,0)
 
     def serialize(self):
         color = self.image.get_at((0, 0))
@@ -43,8 +44,10 @@ class Healer(Item):
         color = pygame.Color(*data['color'])
         return Healer(data['nom'], data['info'], data['scale'], color, data['heal'])
     def healing(self, player):
-        if isinstance(player, Player):           
+        if isinstance(player, Player): 
+            print (f"vie actuelle: {player.health}")          
             player.health = min (player.health + self.heal, player.max_health) 
+            print (f"vie apres heal: {player.health/ player.max_health}")
 
 
 class Booster(Item):
