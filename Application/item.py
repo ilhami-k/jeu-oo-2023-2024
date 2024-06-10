@@ -47,31 +47,7 @@ class Healer(Item):
             player.health = min (player.health + self.heal, player.max_health) 
 
 
-class Weapon(Item):
-    """Reprend les améliorations qui auront pour effet 
-    de changer la qualité de la balle tirée (vitesse, dégâts, taille)"""
-    def __init__(self, nom, info, scale, color, bullet_speed, bullet_damage, bullet_scale):
-        super().__init__(0, 0, nom, info, scale, color)  # Note: Position temporaire (0, 0)
-        self.bullet_speed = bullet_speed
-        self.bullet_damage = bullet_damage
-        self.bullet_scale = bullet_scale
-        
-
-    def serialize(self):
-        data = super().serialize()
-        data.update({
-            'type': 'Weapon',
-            'bullet_speed': self.bullet_speed,
-            'bullet_damage': self.bullet_damage,
-            'bullet_scale': self.bullet_scale
-        })
-        return data
-
-
-    def deserialize(data):
-        color = pygame.Color(*data['color'])
-        return Weapon(data['nom'], data['info'], data['scale'], color, data['bullet_speed'], data['bullet_damage'], data['bullet_scale'])
-class Armor(Item):
+class Booster(Item):
     """Reprend les armures qui augmentent la barre de vie principale"""
     def __init__(self, nom, info, scale, color, shield):
         super().__init__(0, 0, nom, info, scale, color)  # Note: Position temporaire (0, 0)
@@ -85,20 +61,17 @@ class Armor(Item):
     def serialize(self):
         data = super().serialize()
         data.update({
-            'type':'Armor',
+            'type':'Booster',
             'shield':self.shield
         })
         return data
     def deserialize(data):
-        return Armor(data['nom'], data['info'], data['scale'], data['color'], data['shield'])
+        return Booster(data['nom'], data['info'], data['scale'], data['color'], data['shield'])
 
 apple = Healer('pomme', APPLE_INFO, APPLE_SCALE, APPLE_COLOR, APPLE_HEAL)
 berry = Healer("baie", BERRY_INFO, BERRY_SCALE, BERRY_COLOR, BERRY_HEAL)
-military = Armor("militaire", MILITARY_INFO, MILITARY_SCALE, MILITARY_COLOR, MILITARY_SHIELD)
-police = Armor("police", POLICE_INFO, POLICE_SCALE, POLICE_COLOR, POLICE_SHIELD)
-uzi = Weapon("uzi", UZI_INFO, UZI_SCALE, UZI_COLOR, UZI_SPEED, UZI_DAMAGE, UZI_SCALE)
-bazooka = Weapon("bazooka", BAZOOKA_INFO, BAZOOKA_SCALE, BAZOOKA_COLOR, BAZOOKA_SPEED, BAZOOKA_DAMAGE, BAZOOKA_SCALE)
-pistol = Weapon("pistol", PISTOL_INFO, PISTOL_SCALE, PISTOL_COLOR, PISTOL_SPEED, PISTOL_DAMAGE, PISTOL_SCALE)
+military = Booster("militaire", MILITARY_INFO, MILITARY_SCALE, MILITARY_COLOR, MILITARY_SHIELD)
+police = Booster("police", POLICE_INFO, POLICE_SCALE, POLICE_COLOR, POLICE_SHIELD)
 tooth = Item( 0, 0, "dent", TOOTH_INFO, TOOTH_SCALE, TOOTH_COLOR)
 heart = Item(0, 0, "coeur", HEART_INFO, HEART_SCALE, HEART_COLOR)
 peluche = Item(0, 0, "peluche", PELUCHE_INFO, PELUCHE_SCALE, PELUCHE_COLOR)

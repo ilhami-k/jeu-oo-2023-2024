@@ -32,7 +32,7 @@ class Inventory:
         for i, item in enumerate(self.items):
                 if isinstance(item, Healer):
                     item.healing(player)
-                elif isinstance(item, Armor):
+                elif isinstance(item, Booster):
                     item.protect(player)
                 del self.items[i]
                 return
@@ -63,26 +63,24 @@ class Inventory:
         
         screen.blit(title, title_rect)
 
-        # Affiche chaque item dans l'inventaire
         for item in self.items:
             # Divise le texte de l'item en plusieurs lignes si nécessaire pour s'adapter à la largeur de 35 caractères
             item_text_lines = textwrap.wrap(f"{item.nom}: {item.info}", width=35)
+
             for line in item_text_lines:
-                item_text = small_font.render(line, True, (255,255,255))  # Rend chaque ligne de texte en blanc
+                item_text = small_font.render(line, True, (255, 255, 255))
                 text_rect = item_text.get_rect(topleft=(20, y_offset))
                 inflated_rect = text_rect.inflate(10,10)
 
-                pygame.draw.rect(inventory_surface, (255, 255, 255), inflated_rect, 2)
-                inventory_surface.blit(item_text, (inflated_rect.x + 5, inflated_rect.y + 5))
+                item_surface = pygame.Surface((inflated_rect.width, inflated_rect.height))
+                item_surface.fill((0,0,0))
+                pygame.draw.rect(item_surface, (255,255,255), item_surface.get_rect(), 2)
+                item_surface.blit(item_text, (5,5))
+                inventory_surface.blit(item_surface, (10, y_offset))
+                self.item_rects.append((pygame.Rect((WIDTH - 310 + 20, 10 + y_offset), item_surface.get_size()), item))
                 y_offset += inflated_rect.height + 10
-
-                self.item_rects.append((inflated_rect, item))
-
-                
-
-            
-        # Affiche la surface de l'inventaire sur l'écran principal
-        screen.blit(inventory_surface, (WIDTH - 310, 80))  # Positionne l'inventaire dans le coin supérieur droit
+        
+        screen.blit(inventory_surface, (WIDTH - 310, 80)) 
     
     def save_inventory(self):
         return [item.serialize() for item in self.items]
@@ -96,6 +94,6 @@ class Inventory:
             elif item_type == 'Power':
                 item = Weapon.deserialize(item_data)
             elif item_type == 'Armor':
-                item = Armor.deserialize(item_data)
+                item = Booster.deserialize(item_data)
             self.items.append(item)
 

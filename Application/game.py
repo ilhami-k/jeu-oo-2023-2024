@@ -27,7 +27,7 @@ class Game:
         self.frame_count = 0
 
         # Initialisation de la liste des items
-        self.list_items_on_map = [apple, military, police, uzi, bazooka, pistol, peluche]
+        self.list_items_on_map = [apple, military, police, peluche]
 
         self.list_items_on_monster = [tooth]
 

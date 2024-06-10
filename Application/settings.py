@@ -52,6 +52,13 @@ BULLET_LIFETIME = 200 # Durée de vie d'une balle
 BULLET_SCALE = 8
 BULLET_DAMAGE = 3
 
+# Super bullet settings
+SUPER_BULLET_SPEED = 4
+SUPER_BULLET_LIFETIME = 200
+SUPER_BULLET_DAMAGE = 5
+SUPER_BULLET_COLOR = (0,0)
+
+
 # Appel setting
 APPLE_INFO = 'le fruit préferé de Newton' 
 APPLE_SCALE = 4
@@ -63,27 +70,6 @@ BERRY_INFO = "souvent récolté près des arbustes"
 BERRY_SCALE = 1
 BERRY_COLOR = (255,0,1)
 BERRY_HEAL = 1
-
-# Uzi settings
-UZI_INFO = "rapide, mais peu puissant"
-UZI_SPEED = 3
-UZI_DAMAGE = 1
-UZI_SCALE = 9
-UZI_COLOR = (95,56,75)
-
-# Bazooka settings
-BAZOOKA_INFO = "puissant mais lent"
-BAZOOKA_SPEED = 1
-BAZOOKA_DAMAGE = 5
-BAZOOKA_SCALE = 5
-BAZOOKA_COLOR = (5,5,5)
-
-# Pistol settings
-PISTOL_INFO = "arme équilibré"
-PISTOL_SPEED = 2
-PISTOL_DAMAGE = 2
-PISTOL_SCALE = 5
-PISTOL_COLOR = (18,18,8)
 
 # Military settings
 MILITARY_INFO = "armure porté par l'armée americaine"
