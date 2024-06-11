@@ -20,9 +20,7 @@ class Inventory:
 
     def remove_item(self, item):
         if item in self.items:
-            self.items.remove(item)  # Retire l'item de l'inventaire s'il est présent
-        else:
-            print(f"{item} n'est pas dans l'inventaire.")  # Message si l'item n'est pas trouvé
+            self.items.remove(item)
     
     def handle_click(self, mouse_pos):
         for rect, item in self.item_rects:

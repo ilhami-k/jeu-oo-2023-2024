@@ -91,19 +91,19 @@ class Game:
             self.main_quest.reward_given = True
 
         if self.secondary_quest1.completed and not self.secondary_quest1.reward_given:
-            self.inventory.add_item(apple)
+            self.player.add_bullet(SuperBullet)
             self.secondary_quest1.reward_given = True
 
         if self.secondary_quest2.completed and not self.secondary_quest2.reward_given:
-            self.inventory.add_item(apple)
+            self.inventory.add_item(SniperBullet)
             self.secondary_quest2.reward_given = True
 
         if self.secondary_quest3.completed and not self.secondary_quest3.reward_given:
-            self.inventory.add_item(apple)
+            self.inventory.add_item(military)
             self.secondary_quest3.reward_given = True
 
         if self.secondary_quest4.completed and not self.secondary_quest4.reward_given:
-            self.inventory.add_item(apple)
+            self.inventory.add_item(police)
             self.secondary_quest4.reward_given = True
 
     def switch_map(self, map_name, spawn_name = None):
@@ -312,6 +312,7 @@ class Game:
             pygame.K_2: 1,
             pygame.K_3: 2,
             pygame.K_4: 3
+            
         }
 
         # Gestion du mouvement du joueur
@@ -344,7 +345,6 @@ class Game:
                 if event.key in key_to_bullet_index:
                     self.player.select_bullet_type(key_to_bullet_index[event.key])
            
-
                 if event.key == pygame.K_o:
                         self.inventory.use_item(apple, self.player)
 

@@ -53,7 +53,7 @@ class Player(Entity):
         super().__init__(x, y, "Application/images/Player.png", 'Player', PLAYER_SPEED, PLAYER_HEALTH, ATTACK_COOLDOWN, PLAYER_SHOOT_DAMAGE)
         self.max_health = PLAYER_MAX_HEALTH
         self.selected_bullet_type_index = 0
-        self.bullet_types = [BasicBullet, SniperBullet, SuperBullet]
+        self.bullet_types = [BasicBullet]
 
     def add_bullet(self, bullet):
         self.bullet_types.append(bullet)
@@ -67,7 +67,7 @@ class Player(Entity):
         angle = math.atan2(target_y - self.position[1], target_x - self.position[0])
         center_x = self.position[0] + self.rect.width / 2
         center_y = self.position[1] + self.rect.height / 2
-        bullet_type= self.bullet_types[self.selected_bullet_type_index]
+        bullet_type = self.bullet_types[self.selected_bullet_type_index]
         bullet_group.add(bullet_type(center_x, center_y, angle))
 
     def cooldown_tick(self):
