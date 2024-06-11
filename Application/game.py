@@ -27,7 +27,7 @@ class Game:
 
         self.frame_count = 0
 
-        self.bullet_types = [Bullet, SuperBullet]
+        
 
         # Initialisation de la liste des items
         self.list_items_on_map = [apple, military, police, peluche]
@@ -36,7 +36,7 @@ class Game:
 
         self.item_rects = []
 
-        self.current_bullet = Bullet
+              
 
         # Appel de la méthode switch_map pour charger la première carte
         self.switch_map("map1.tmx", "spawn_player")
@@ -53,6 +53,7 @@ class Game:
 
         #création de l'inventaire 
         self.inventory = Inventory()
+        
 
         self.questmanager = QuestManager()
          #premiere quete
@@ -306,6 +307,12 @@ class Game:
     def handle_input(self): 
         pressed = pygame.key.get_pressed() # Gestion des entrées du joueur (mouvement et tir) 
         mouse_pressed = pygame.mouse.get_pressed() # Gestion du tir du joueur (avec le bouton gauche de la souris)
+        key_to_bullet_index = {
+            pygame.K_1: 0,
+            pygame.K_2: 1,
+            pygame.K_3: 2,
+            pygame.K_4: 3
+        }
 
         # Gestion du mouvement du joueur
         if pressed[pygame.K_z]:
@@ -333,11 +340,10 @@ class Game:
                     self.menu_screen()
                 if event.key == pygame.K_i:
                         self.show_inventory = not self.show_inventory
-                if  event.key == pygame.K_1:
-                    self.player.bullet_type = Bullet 
-                if  event.key == pygame.K_2:
-                    self.player.bullet_type = SuperBullet
-        
+
+                if event.key in key_to_bullet_index:
+                    self.player.select_bullet_type(key_to_bullet_index[event.key])
+           
 
                 if event.key == pygame.K_o:
                         self.inventory.use_item(apple, self.player)

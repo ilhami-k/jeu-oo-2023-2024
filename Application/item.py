@@ -34,6 +34,7 @@ class Healer(Item):
     def __init__(self, nom, info, scale, color, heal):
         super().__init__(0, 0, nom, info, scale, color)  # Note: Position temporaire (0, 0)
         self.heal = heal
+
     def serialize(self):
         data = super().serialize()
         data.update({'type':'Healer', 'heal': self.heal})
@@ -43,11 +44,12 @@ class Healer(Item):
     def deserialize(data):
         color = pygame.Color(*data['color'])
         return Healer(data['nom'], data['info'], data['scale'], color, data['heal'])
+    
     def healing(self, player):
         if isinstance(player, Player): 
             print (f"vie actuelle: {player.health}")          
             player.health = min (player.health + self.heal, player.max_health) 
-            print (f"vie apres heal: {player.health/ player.max_health}")
+            print (f"vie apres heal: {player.health}/{player.max_health}")
 
 
 class Booster(Item):
