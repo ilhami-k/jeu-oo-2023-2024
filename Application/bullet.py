@@ -32,6 +32,7 @@ class BasicBullet(Bullet):
     def __init__(self, x, y, angle):
         super().__init__(x, y, angle, BULLET_SPEED, BULLET_LIFETIME, BULLET_DAMAGE, BULLET_RADIUS, BULLET_COLOR)    
     
+    
 class SuperBullet(Bullet):
     def __init__(self, x, y, angle):
         super().__init__(x, y, angle, SUPER_BULLET_SPEED, SUPER_BULLET_LIFETIME, SUPER_BULLET_DAMAGE, SUPER_BULLET_RADIUS, SUPER_BULLET_COLOR)
@@ -43,3 +44,4 @@ class SniperBullet(Bullet):
 class BossBullet(Bullet):
     def __init__(self, x, y, angle):
         super().__init__(x, y, angle, GOLEM_SHOOT_SPEED, GOLEM_SHOOT_LIFETIME, GOLEM_SHOOT_DAMAGE, GOLEM_SHOOT_RADIUS, GOLEM_SHOOT_COLOR)
+
