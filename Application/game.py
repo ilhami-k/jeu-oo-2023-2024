@@ -59,13 +59,13 @@ class Game:
         self.main_quest = Quest("Quête principale", "Vaincre le boss", 1,self.questmanager)
 
         # deuxieme quete
-        self.secondary_quest1 = Quest("Quête secondaire_1", "Tuer 10 ennemis", 10,self.questmanager)
+        self.secondary_quest1 = Quest("Quête secondaire", "Tuer 10 ennemis", 10,self.questmanager)
         #troisieme quete
-        self.secondary_quest2 = Quest("Quête secondaire_2", "Obtenir 5 dents", 5,self.questmanager)
+        self.secondary_quest2 = Quest("Quête secondaire", "Obtenir 5 dents", 5,self.questmanager)
         #quatrieme quete
-        self.secondary_quest3 = Quest("Quete secondaire_3","Obtenir 5 coeurs",5,self.questmanager)
+        self.secondary_quest3 = Quest("Quete secondaire ","Obtenir 5 coeurs",5,self.questmanager)
         #cinquieme quete
-        self.secondary_quest4 = Quest("Quête secondaire_4", "Récuperer un item caché", 1, self.questmanager)
+        self.secondary_quest4 = Quest("Quête secondaire ", "Récuperer un item caché", 1, self.questmanager)
 
         # Ajoute les quêtes dans le gestionnaire de quetes
         self.questmanager.add_quest(self.main_quest)
@@ -80,6 +80,7 @@ class Game:
         self.save_load = SaveSystem('.json','Application/save_data/')
         self.quest_background = pygame.image.load("Application/images/quest_background.png")
         self.quest_1_dialogue = DialogueBox(NPC_DIALOGUE_10_MONSTER_QUEST, 22, 700, 150, 50, HEIGHT - 250, (255, 255, 128, 128), (0, 0, 0))
+        self.mission_dialogue = False
 
 
     def give_reward_quests(self):
@@ -356,8 +357,12 @@ class Game:
                 if event.key == pygame.K_RETURN:
                     if self.in_dialogue:
                         if not self.npc.advance_dialogue():
-                            self.in_dialogue = False
-                            self.npc_interaction_screen()
+                            if self.mission_dialogue:
+                                self.in_dialogue = False
+                            else:
+                                self.in_dialogue = False
+                                self.npc_interaction_screen()
+                        
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 3:
                     self.inventory.handle_click(mouse_pos=pygame.mouse.get_pos())
@@ -635,24 +640,28 @@ class Game:
                 self.npc_interaction = False
                 self.npc.interact(self.player,NPC_DIALOGUE_10_MONSTER_QUEST)
                 self.in_dialogue = True
+                self.mission_dialogue = True
                 self.questmanager.add_quest(self.secondary_quest1)
                 self.quest1active = True
             
             if quest_2.is_pressed(mouse_pos, mouse_pressed):
                 self.npc.interact(self.player,NPC_DIALOGUE_HEART_MISSION)
                 self.in_dialogue = True
+                self.mission_dialogue = True
                 self.questmanager.add_quest(self.secondary_quest2)
                 return
             
             if quest_3.is_pressed(mouse_pos, mouse_pressed):
                 self.npc.interact(self.player,NPC_DIALOGUE_HIDDEN_OBJECT)
                 self.in_dialogue = True
+                self.mission_dialogue = True
                 self.questmanager.add_quest(self.secondary_quest3)
                 return
             
             if quest_4.is_pressed(mouse_pos, mouse_pressed):
                 self.npc.interact(self.player,NPC_DIALOGUE_HIDDEN_OBJECT)
                 self.in_dialogue = True
+                self.mission_dialogue = True
                 self.questmanager.add_quest(self.secondary_quest3)
                 return
             
