@@ -130,16 +130,15 @@ NPC_DIALOGUE_10_MONSTER_QUEST = [
     ('Brançois Furniaux', "Merci, vraiment. Que la chance soit de ton côté. Reviens sain et sauf.")
 ]
 
-NPC_DIALOGUE_HEART_MISSION= [
+NPC_DIALOGUE_HEART_MISSION = [
 ('Brançois Furniaux', "Salut, aventurier!"),
 ('Billy', "Bonjour! Comment puis-je vous aider?"),
 ('Brançois Furniaux', "J'ai une quête pour toi."),
 ('Billy', "Quel genre de quête?"),
 ('Brançois Furniaux', "Écoute bien."),
-('Brançois Furniaux', "Ta mission est de collecter 5 dents et 5 cœurs de monstres."),
-('Billy', "D'accord, mais où puis-je trouver ces dents et ces cœurs?"),
-('Brançois Furniaux', "Les dents des monstres peuvent être récupérées dans les bois à l'ouest de la ville, où les créatures rôdent."),
-('Brançois Furniaux', "Quant aux cœurs, ils sont souvent trouvés dans les grottes au nord, où les monstres les plus redoutables se cachent."),
+('Brançois Furniaux', "Ta mission est de collecter 5 cœurs de monstres."),
+('Billy', "D'accord, mais où puis-je trouver ces cœurs?"),
+('Brançois Furniaux', "Les cœurs sont souvent trouvés dans les grottes au nord, où les monstres les plus redoutables se cachent."),
 ('Billy', "Compris, je vais m'en occuper."),
 ('Brançois Furniaux', "Fais attention, les monstres peuvent être dangereux. Bonne chance, aventurier.")
 ]
@@ -156,4 +155,20 @@ NPC_DIALOGUE_HIDDEN_OBJECT = [
 ('Brançois Furniaux', "Cependant, des rumeurs disent qu'il est caché dans une vieille maison abandonnée près de la rivière."),
 ('Billy', "Je vais aller jeter un coup d'œil. Merci pour l'information."),
 ('Brançois Furniaux', "Bon courage, aventurier. Que la chance soit avec toi.")
+]
+NPC_DIALOGUE_NOT_FIRST = [
+    ('Brançois Furniaux', "Salut, Billy! Tu es de retour?"),
+    ('Billy', "Bonjour! Je suis bien de retour hahah!")
+]
+NPC_DIALOGUE_TOOTH_MISSION = [
+('Brançois Furniaux', "Salut, aventurier!"),
+('Billy', "Bonjour! Comment puis-je vous aider?"),
+('Brançois Furniaux', "J'ai une quête pour toi."),
+('Billy', "Quel genre de quête?"),
+('Brançois Furniaux', "Écoute bien."),
+('Brançois Furniaux', "Ta mission est de collecter 5 dents de monstres."),
+('Billy', "D'accord, mais où puis-je trouver ces dents?"),
+('Brançois Furniaux', "Les dents des monstres peuvent être récupérées dans les bois à l'ouest de la ville, où les créatures rôdent."),
+('Billy', "Compris, je vais m'en occuper."),
+('Brançois Furniaux', "Fais attention, les monstres peuvent être dangereux. Bonne chance, aventurier.")
 ]
