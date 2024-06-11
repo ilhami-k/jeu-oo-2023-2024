@@ -13,8 +13,7 @@ class Bullet(pygame.sprite.Sprite):
         self.image = pygame.Surface((scale, scale))
         self.image.fill(color)  
         self.rect = self.image.get_rect(center=self.position)
-
-
+        
     def update(self):
         self.position[0] += math.cos(self.angle) * self.speed
         self.position[1] += math.sin(self.angle) * self.speed
@@ -24,10 +23,7 @@ class Bullet(pygame.sprite.Sprite):
     def check_collision(self, x, y):
         distance = math.sqrt((self.x - x) ** 2 + (self.y - y) ** 2)
         return distance < 10
-    
-    def get_bullet_index(self, index):
-        if 0 <= index < len(self.bullet_types):
-            return self.bullet_types[index]
+  
     
 class BasicBullet(Bullet):
     def __init__(self, x, y, angle):
