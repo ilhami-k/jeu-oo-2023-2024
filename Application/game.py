@@ -334,7 +334,7 @@ class Game:
                 if event.key == pygame.K_i:
                         self.show_inventory = not self.show_inventory
                 if  event.key == pygame.K_1:
-                    self.player.bullet_type = Bullet 
+                    self.player.bullet_type = BasicBullet 
                 if  event.key == pygame.K_2:
                     self.player.bullet_type = SuperBullet
                 if event.key == pygame.K_3: 

@@ -52,7 +52,7 @@ class Player(Entity):
     def __init__(self, x, y):
         super().__init__(x, y, "Application/images/Player.png", 'Player', PLAYER_SPEED, PLAYER_HEALTH, ATTACK_COOLDOWN, PLAYER_SHOOT_DAMAGE)
         self.max_health = PLAYER_MAX_HEALTH
-        self.bullet_type = Bullet
+        self.bullet_type = BasicBullet
         
 
     def shoot(self, target_x, target_y, bullet_group):

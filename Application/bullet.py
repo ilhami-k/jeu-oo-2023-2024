@@ -3,17 +3,17 @@ import math
 from settings import *
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, x, y, angle):  # Modifier la signature de la méthode __init__
+    def __init__(self, x, y, angle, speed, lifetime, damage, scale, color):
         super().__init__()
-        self.position = [x, y]  # Convertir en liste
+        self.position = [x, y]  # Convertir la position en liste
         self.angle = angle
-        self.speed = BULLET_SPEED
-        self.lifetime = BULLET_LIFETIME
-        self.damage = BULLET_DAMAGE
-        self.image = pygame.Surface((BULLET_SCALE, BULLET_SCALE))
-        self.image.fill((255, 255, 255))  # Couleur de la balle (blanc)
-        self.rect = self.image.get_rect(center=self.position)  # Créer un rect à partir de l'image
-        self.bullet_types = []
+        self.speed = speed
+        self.lifetime = lifetime
+        self.damage = damage
+        self.image = pygame.Surface((scale, scale))
+        self.image.fill(color)  
+        self.rect = self.image.get_rect(center=self.position)
+
 
     def update(self):
         self.position[0] += math.cos(self.angle) * self.speed
@@ -29,32 +29,18 @@ class Bullet(pygame.sprite.Sprite):
         if 0 <= index < len(self.bullet_types):
             return self.bullet_types[index]
     
+class BasicBullet(Bullet):
+    def __init__(self, x, y, angle):
+        super().__init__(x, y, angle, BULLET_SPEED, BULLET_LIFETIME, BULLET_DAMAGE, BULLET_SCALE, BULLET_COLOR)    
     
 class SuperBullet(Bullet):
     def __init__(self, x, y, angle):
-        super().__init__(x, y, angle)
-        self.speed = SUPER_BULLET_SPEED
-        self.lifetime = SUPER_BULLET_LIFETIME
-        self.damage = SUPER_BULLET_DAMAGE
-        self.image = pygame.Surface((SUPER_BULLET_SCALE, SUPER_BULLET_SCALE))
-        self.image.fill(SUPER_BULLET_COLOR)  # Couleur de la balle (rouge)
-        self.rect = self.image.get_rect(center=self.position)
+        super().__init__(x, y, angle, SUPER_BULLET_SPEED, SUPER_BULLET_LIFETIME, SUPER_BULLET_DAMAGE, SUPER_BULLET_SCALE, SUPER_BULLET_COLOR)
 
 class SniperBullet(Bullet):
     def __init__(self, x, y, angle):
-        super().__init__(x, y, angle)
-        self.speed = SNIPER_BULLET_SPEED
-        self.lifetime = SNIPER_BULLET_LIFETIME
-        self.damage = SNIPER_BULLET_DAMAGE
-        self.image = pygame.Surface((SNIPER_BULLET_SCALE, SNIPER_BULLET_SCALE))
-        self.image.fill(SNIPER_BULLET_COLOR)  # Couleur de la balle (rouge)
-        self.rect = self.image.get_rect(center=self.position)
-    
+        super().__init__(x, y, angle, SNIPER_BULLET_SPEED, SNIPER_BULLET_LIFETIME, SNIPER_BULLET_DAMAGE, SNIPER_BULLET_SCALE, SNIPER_BULLET_COLOR)
+
 class BossBullet(Bullet):
     def __init__(self, x, y, angle):
-        super().__init__(x, y, angle)
-        self.speed = GOLEM_SHOOT_SPEED
-        self.lifetime = GOLEM_SHOOT_LIFETIME
-        self.damage = GOLEM_SHOOT_DAMAGE
-        self.image.fill((100, 100, 100))  # Couleur de la balle (rouge)
-        self.rect = self.image.get_rect(center=self.position)
+        super().__init__(x, y, angle, GOLEM_SHOOT_SPEED, GOLEM_SHOOT_LIFETIME, GOLEM_SHOOT_DAMAGE, GOLEM_SHOOT_SCALE, GOLEM_SHOOT_COLOR)
