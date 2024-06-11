@@ -81,6 +81,7 @@ class Game:
         self.quest_background = pygame.image.load("Application/images/quest_background.png")
         self.quest_1_dialogue = DialogueBox(NPC_DIALOGUE_10_MONSTER_QUEST, 22, 700, 150, 50, HEIGHT - 250, (255, 255, 128, 128), (0, 0, 0))
         self.mission_dialogue = False
+        self.first_interaction = True
 
 
     def give_reward_quests(self):
@@ -352,13 +353,18 @@ class Game:
 
                 if event.key == pygame.K_f and self.npc and self.npc.in_interaction_range(self.player):
                     if not self.in_dialogue:
-                        self.in_dialogue = self.npc.interact(self.player,NPC_DIALOGUE_BASIC)
+                        if self.first_interaction:
+                            self.in_dialogue = self.npc.interact(self.player,NPC_DIALOGUE_BASIC)
+                            self.first_interaction = False
+                        else:
+                            self.in_dialogue = self.npc.interact(self.player,NPC_DIALOGUE_NOT_FIRST)
                 
                 if event.key == pygame.K_RETURN:
                     if self.in_dialogue:
                         if not self.npc.advance_dialogue():
                             if self.mission_dialogue:
                                 self.in_dialogue = False
+                                self.mission_dialogue = False
                             else:
                                 self.in_dialogue = False
                                 self.npc_interaction_screen()
@@ -627,8 +633,8 @@ class Game:
         quest_1 = Button(WIDTH/2 - 200, HEIGHT/2 - 150, 300, 50, (0, 0, 0,128), (255, 255, 128,64), "Tuer 10 ennemis!", 24)
         quest_2 = Button(WIDTH/2 - 200, HEIGHT/2 - 50, 300, 50, (0, 0, 0,128), (255, 255, 128,64), "Trouver 5 dents", 24)
         quest_3 = Button(WIDTH/2 - 200, HEIGHT/2 + 50, 300, 50, (0,0,0,128), (255, 255, 128,64), "Trouver 5 coeurs", 24)
-        quest_4 = Button(WIDTH/2 - 200, HEIGHT/2 + 50, 300, 50, (0,0,0,128), (255, 255, 128,64), "Trouver 5 dents", 24)
-        exit_button = Button(WIDTH/2 - 200, HEIGHT/2 + 150, 300, 50, (0,0,0,128), (255, 255, 128,64), "continuer l'aventure", 24)
+        quest_4 = Button(WIDTH/2 - 200, HEIGHT/2 + 150, 300, 50, (0,0,0,128), (255, 255, 128,64), "Trouver l'objet caché", 24)
+        exit_button = Button(WIDTH/2 - 200, HEIGHT/2 + 250, 300, 50, (0,0,0,128), (255, 255, 128,64), "continuer l'aventure", 24)
         while self.npc_interaction:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -645,14 +651,14 @@ class Game:
                 self.quest1active = True
             
             if quest_2.is_pressed(mouse_pos, mouse_pressed):
-                self.npc.interact(self.player,NPC_DIALOGUE_HEART_MISSION)
+                self.npc.interact(self.player,NPC_DIALOGUE_TOOTH_MISSION)
                 self.in_dialogue = True
                 self.mission_dialogue = True
                 self.questmanager.add_quest(self.secondary_quest2)
                 return
             
             if quest_3.is_pressed(mouse_pos, mouse_pressed):
-                self.npc.interact(self.player,NPC_DIALOGUE_HIDDEN_OBJECT)
+                self.npc.interact(self.player,NPC_DIALOGUE_HEART_MISSION)
                 self.in_dialogue = True
                 self.mission_dialogue = True
                 self.questmanager.add_quest(self.secondary_quest3)
@@ -662,7 +668,7 @@ class Game:
                 self.npc.interact(self.player,NPC_DIALOGUE_HIDDEN_OBJECT)
                 self.in_dialogue = True
                 self.mission_dialogue = True
-                self.questmanager.add_quest(self.secondary_quest3)
+                self.questmanager.add_quest(self.secondary_quest4)
                 return
             
             if exit_button.is_pressed(mouse_pos, mouse_pressed):
@@ -674,6 +680,7 @@ class Game:
             self.screen.blit(quest_1.image, quest_1.rect)
             self.screen.blit(quest_2.image,quest_2.rect)
             self.screen.blit(quest_3.image, quest_3.rect)
+            self.screen.blit(quest_4.image,quest_4.rect)
             self.screen.blit(exit_button.image,exit_button.rect)
             
             pygame.display.update()
