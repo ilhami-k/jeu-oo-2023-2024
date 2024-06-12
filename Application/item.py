@@ -57,11 +57,13 @@ class Booster(Item):
     def __init__(self, nom, info, scale, color, shield):
         super().__init__(0, 0, nom, info, scale, color)  # Note: Position temporaire (0, 0)
         self.shield = shield
+        
 
     def boost(self, player):
         if isinstance(player, Player):
             player.max_health += self.shield
             player.health += self.shield
+            print(f"vie totale augmenté{self.player.max_health}")
 
     def serialize(self):
         data = super().serialize()
@@ -73,7 +75,7 @@ class Booster(Item):
     def deserialize(data):
         return Booster(data['nom'], data['info'], data['scale'], data['color'], data['shield'])
 
-apple = Healer('pomme', APPLE_INFO, APPLE_SCALE, APPLE_COLOR, APPLE_HEAL)
+apple = Healer("pomme", APPLE_INFO, APPLE_SCALE, APPLE_COLOR, APPLE_HEAL)
 berry = Healer("baie", BERRY_INFO, BERRY_SCALE, BERRY_COLOR, BERRY_HEAL)
 military = Booster("militaire", MILITARY_INFO, MILITARY_SCALE, MILITARY_COLOR, MILITARY_SHIELD)
 police = Booster("police", POLICE_INFO, POLICE_SCALE, POLICE_COLOR, POLICE_SHIELD)

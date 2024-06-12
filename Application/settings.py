@@ -48,11 +48,11 @@ NPC_HEALTH = 10
 NPC_ATTACK_COOLDOWN = 25
 
 # basic bullet settings
-BULLET_SPEED = 0.5
-ATTACK_COOLDOWN = 10 # Temps entre chaque tir 
-BULLET_LIFETIME = 200 # Durée de vie d'une balle
+BULLET_SPEED = 1
+ATTACK_COOLDOWN = 10 
+BULLET_LIFETIME = 200 
+BULLET_DAMAGE = 1
 BULLET_RADIUS = 5
-BULLET_DAMAGE = 3
 BULLET_COLOR = (255,255,255)
 
 # Super bullet settings

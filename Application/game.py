@@ -27,36 +27,26 @@ class Game:
 
         self.frame_count = 0
 
-        
-
         # Initialisation de la liste des items
         self.list_items_on_map = [apple, military, police, peluche]
 
         self.list_items_on_monster = [tooth]
 
         self.item_rects = []
-
-              
-
         # Appel de la méthode switch_map pour charger la première carte
         self.switch_map("map1.tmx", "spawn_player")
 
         self.boss_bullets = pygame.sprite.Group() # Groupe pour les balles tirées par le joueur
         self.all_bullets = pygame.sprite.Group() # Groupe pour les balles tirées par les ennemis
 
-        #Font pour le texte: 
+         
         self.font = pygame.font.Font('freesansbold.ttf', 36)
         self.intro_background = pygame.image.load("Application/images/background.png")
         self.running = True # Variable GLOBALE pour contrôler l'exécution du jeu
         self.new_game = False #Variable globale pour savoir si c'est un nouveau jeu 
         self.prologue_on = False
-
-        #création de l'inventaire 
         self.inventory = Inventory()
-        
-
         self.questmanager = QuestManager()
-         #premiere quete
         self.main_quest = Quest("Quête principale", "Vaincre le boss", 1,self.questmanager)
 
         # deuxieme quete
@@ -72,6 +62,7 @@ class Game:
         self.questmanager.add_quest(self.main_quest)
         
         self.show_inventory = True
+        self.show_bullets = False
         self.interface = Interface(self.player,self.prologue_on,self.new_game)
         self.npc = None
         self.in_dialogue = False
@@ -341,6 +332,10 @@ class Game:
                     self.menu_screen()
                 if event.key == pygame.K_i:
                         self.show_inventory = not self.show_inventory
+                if event.key == pygame.K_b:
+                        self.show_bullets = not self.show_bullets
+                            
+                            
 
                 if event.key in key_to_bullet_index:
                     self.player.select_bullet_type(key_to_bullet_index[event.key])
@@ -378,6 +373,7 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 3:
                     self.inventory.handle_click(mouse_pos=pygame.mouse.get_pos())
+                    
                        
 
     def draw_inventory(self):
@@ -387,10 +383,15 @@ class Game:
     def draw_quests(self):
         if self.show_quests:
             self.questmanager.show_quests(self.screen, self.font, WIDTH)
+
+    def draw_bullets(self):
+        if self.show_bullets:
+            self.player.show_bullets(self.screen, self.font, WIDTH)
+            
     def load_quests(self, quest_data):
         for quest_info in quest_data:
             quest_name = quest_info['name']
-            # Check if the quest is already present in the quest manager
+            
             if not self.questmanager.has_quest(quest_name):
                 quest = Quest(quest_info['name'], quest_info['description'], quest_info['goal'], self.questmanager, quest_info['current'])
                 quest.completed = quest_info['completed']
@@ -468,11 +469,7 @@ class Game:
             
             # Réduction du délai de tir du joueur
             self.player.cooldown_tick()
-            
-            # Mise à jour des sprites et de la carte
-            
-            
-            # Affichage des sprites et de la carte
+
             self.group.draw(self.screen)
 
             # Affichage des balles tirées par le joueur
@@ -490,28 +487,22 @@ class Game:
             self.player.update_healthbar(self.screen)
             if self.player.health <= 0:
                 self.death_screen()
-                
-                        
-            #affichage de l'inventaire (i)
+           
             self.draw_inventory()
-
-            #affichage des quetes (t)
+           
             self.draw_quests()
-            #donne les récompenses quand les quetes sont complétées
+
+            self.draw_bullets()
+            
             self.give_reward_quests()
-            #affichage de la dialogue box
+            
             self.draw_dialogue_box()
 
-            
-            # Gestion des événements du jeu
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.menu_screen() 
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 3:
-                        pass
-  
+             
                 if event.type == pygame.QUIT:
                     self.running = False
                 
@@ -521,7 +512,6 @@ class Game:
         
         # Fermeture de la fenêtre pygame
         pygame.quit()
-
 
     def intro_screen(self):
             intro = True
@@ -567,7 +557,6 @@ class Game:
             continue_button = Button(WIDTH/2 - 100, HEIGHT/2 - 150, 200, 50, (255, 255, 255), (0, 0, 0), "Continue", 36)
             save_game = Button(WIDTH/2 - 100, HEIGHT/2 -50 , 200, 50, (255, 255, 255), (0, 0, 0), "Save game", 36)
             exit_button = Button(WIDTH/2 - 100, HEIGHT/2 + 50, 200, 50, (255, 255, 255), (0, 0, 0), "Exit", 36)
-            
 
             while menu:
                 for event in pygame.event.get():

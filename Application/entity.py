@@ -43,7 +43,7 @@ class Entity(pygame.sprite.Sprite):
     def take_damage(self, damage):
         self.health -= damage
         if self.health <= 0:
-            self.kill()  # Supprimer la spirte de l'ennemi du groupe
+            self.kill()  
 
     def update(self, player):
         self.rect.topleft = self.position
@@ -73,22 +73,31 @@ class Player(Entity):
     def cooldown_tick(self):
         if self.attack_cooldown > 0:
             self.attack_cooldown -= 1
-  
     
-    #gestion de l'apparence de la barre de vie du joueur 
-    def update_healthbar (self, screen):
-        #couleur de la barre de vie 
-        bar_color = (85,209,70)
-        #couleur de fond de barre
-        bar_fond_color = (255,95,65)
-        #position de la barre 
-        bar_position = [15, 15, self.health, 10]
-        #position de l'arriere plan de la barre 
-        bar_fond_position = [15, 15, self.max_health, 10]
+    def show_bullets(self, screen, font, WIDTH):
+        small_font = pygame.font.Font(None, 18)  
 
-        #affichage de l'arriere plan
+        
+        Bullet_surface = pygame.Surface((200, 150), pygame.SRCALPHA)
+        Bullet_surface.fill((50, 50, 50, 0)) 
+        y_offset = 1  
+
+        for index, bullet in enumerate (self.bullet_types):
+            
+            bullet_text_lines = textwrap.wrap(f"Appuyez sur {index + 1} pour équiper {bullet.__name__}", width=30)
+            for line in bullet_text_lines:
+                bullet_text = small_font.render(line, True, (0, 0, 0))  
+                Bullet_surface.blit(bullet_text, (20, y_offset)) 
+                y_offset += 20 
+
+        screen.blit(Bullet_surface, (550, 550))
+    def update_healthbar (self, screen):
+         
+        bar_color = (85,209,70)
+        bar_fond_color = (255,95,65)
+        bar_position = [15, 15, self.health, 10]
+        bar_fond_position = [15, 15, self.max_health, 10]
         pygame.draw.rect(screen, bar_fond_color, bar_fond_position)
-        #afficher la barre de vie 
         pygame.draw.rect(screen, bar_color, bar_position)
     
 class Enemy(Entity):
