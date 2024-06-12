@@ -86,7 +86,7 @@ class Game:
             self.secondary_quest1.reward_given = True
 
         if self.secondary_quest2.completed and not self.secondary_quest2.reward_given:
-            self.inventory.add_item(SniperBullet)
+            self.player.add_bullet(SniperBullet)
             self.secondary_quest2.reward_given = True
 
         if self.secondary_quest3.completed and not self.secondary_quest3.reward_given:
