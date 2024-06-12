@@ -10,9 +10,12 @@ class Inventory:
 
         self.player = Player(0,0)
         #Test pour voir si les objets sont bien ajoutés à l'inventaire
+        
+        self.items.append(police)
         self.items.append(apple)
-        self.items.append(military)
-        self.items.append(apple)
+        
+        self.items.append(berry)
+        self.items.append(berry)
         self.items.append(military)
 
     def add_item(self, item):
@@ -28,17 +31,21 @@ class Inventory:
                 print(f"j'ai cliqué sur {item.nom}")
                 self.use_item(item, self.player)
                 self.remove_item(item)
-                break    
+                
+                    
    
-    
-    def use_item(self, item, player):        
-        if isinstance(item, Healer):
+    def use_item(self, item, player):
+        if isinstance(item, Healer) and item.nom in ["Pomme", "Baie"]:
             item.healing(player)
-        elif isinstance(item, Booster):
+        elif isinstance(item, Booster) and item.nom in ["Police", "Militaire"]:
             item.boost(player)
+   
+          
+
+                
             
     def show_inventory(self, screen, font, WIDTH):
-        self.item_rects.clear()
+        #self.item_rects.clear()
         small_font = pygame.font.Font(None, 20)  # Définit une police plus petite pour les items de l'inventaire
         
         # Crée une surface pour l'inventaire
@@ -55,7 +62,7 @@ class Inventory:
 
         for item in self.items:
             # Divise le texte de l'item en plusieurs lignes si nécessaire pour s'adapter à la largeur de 35 caractères
-            item_text_lines = textwrap.wrap(f"{item.nom}: {item.info}", width=35)
+            item_text_lines = textwrap.wrap(f"{item.nom}", width=35)
 
             for line in item_text_lines:
                 item_text = small_font.render(line, True, (255, 255, 255))
@@ -67,7 +74,7 @@ class Inventory:
                 pygame.draw.rect(item_surface, (255,255,255), item_surface.get_rect(), 2)
                 item_surface.blit(item_text, (5,5))
                 inventory_surface.blit(item_surface, (10, y_offset))
-                self.item_rects.append((pygame.Rect((WIDTH - 310 + 20, 10 + y_offset), item_surface.get_size()), item))
+                self.item_rects.append((pygame.Rect((WIDTH - 310 + 10, 80 + y_offset), item_surface.get_size()), item))
                 y_offset += inflated_rect.height + 10
         
         screen.blit(inventory_surface, (WIDTH - 310, 80)) 
