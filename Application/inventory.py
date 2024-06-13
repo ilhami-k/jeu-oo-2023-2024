@@ -14,9 +14,7 @@ class Inventory:
         self.items.append(police)
         self.items.append(apple)
         
-        self.items.append(berry)
-        self.items.append(berry)
-        self.items.append(military)
+
 
     def add_item(self, item):
         self.items.append(item)  # Ajoute un item à l'inventaire
@@ -41,44 +39,58 @@ class Inventory:
             item.boost(player)
    
           
-
-                
-            
     def show_inventory(self, screen, font, WIDTH):
-        #self.item_rects.clear()
-        small_font = pygame.font.Font(None, 20)  # Définit une police plus petite pour les items de l'inventaire
+        small_font = pygame.font.Font(None, 24) 
         
-        # Crée une surface pour l'inventaire
+        
         inventory_surface = pygame.Surface((300, 400), pygame.SRCALPHA)
-        inventory_surface.fill((50, 50, 50, 128))  # Remplit la surface avec une couleur de fond semi-transparente
-        y_offset = 20
+        inventory_surface.fill((50, 50, 50, 128)) 
         
-
-        #affichage du titre 
-        title = font.render("Inventaire", True, (255, 255, 255))  # Blanc
-        title_rect = title.get_rect(topleft=(550,20))
         
+        title = font.render("Inventaire", True, (255, 255, 255))  
+        title_rect = title.get_rect(topleft=(550, 20))
         screen.blit(title, title_rect)
+        
+       
+        if not self.items:
+            empty_text = small_font.render("Inventaire vide ", True, (255, 255, 255))
+            inventory_surface.blit(empty_text, (10, 10))
+            screen.blit(inventory_surface, (WIDTH - 310, 80))
+            return
 
-        for item in self.items:
-            # Divise le texte de l'item en plusieurs lignes si nécessaire pour s'adapter à la largeur de 35 caractères
-            item_text_lines = textwrap.wrap(f"{item.nom}", width=35)
+        
+        rows = 8
+        cols = (len(self.items) + rows - 1) // rows  
+        cell_width = 300 // cols  
+        cell_height = 400 // rows  
 
+        self.item_rects.clear()  # Clear the item rectangles list before drawing new ones
+
+        for i, item in enumerate(self.items):
+            row = i % rows
+            col = i // rows
+            
+            
+            item_text_lines = textwrap.wrap(f"{item.nom}", width=20)
+
+            y_offset = row * cell_height + 10  
+            x_offset = col * cell_width + 10  
+            
             for line in item_text_lines:
                 item_text = small_font.render(line, True, (255, 255, 255))
-                text_rect = item_text.get_rect(topleft=(20, y_offset))
-                inflated_rect = text_rect.inflate(10,10)
+                text_rect = item_text.get_rect(topleft=(x_offset + 5, y_offset))
 
-                item_surface = pygame.Surface((inflated_rect.width, inflated_rect.height))
-                item_surface.fill((0,0,0))
-                pygame.draw.rect(item_surface, (255,255,255), item_surface.get_rect(), 2)
-                item_surface.blit(item_text, (5,5))
-                inventory_surface.blit(item_surface, (10, y_offset))
-                self.item_rects.append((pygame.Rect((WIDTH - 310 + 10, 80 + y_offset), item_surface.get_size()), item))
-                y_offset += inflated_rect.height + 10
+                inventory_surface.blit(item_text, text_rect)
+                y_offset += text_rect.height + 5  
+
+            
+            row_rect = pygame.Rect(x_offset, row * cell_height, 300, cell_height)
+            pygame.draw.rect(inventory_surface, (255, 255, 255), row_rect, 2)
+            self.item_rects.append((row_rect.move(WIDTH - 310, 80), item))
         
-        screen.blit(inventory_surface, (WIDTH - 310, 80)) 
-
+        screen.blit(inventory_surface, (WIDTH - 310, 80))
+            
+    
 
     
     def save_inventory(self):

@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from entity import *
+from entity import Player
 
 
 class Item(pygame.sprite.Sprite):
@@ -29,6 +29,8 @@ class Item(pygame.sprite.Sprite):
     def deserialize(data):
         color = pygame.Color(*data['color'])
         return Item(data['x'], data['y'], data['nom'], data['info'], data['scale'], color)
+    
+   
     
 class Healer(Item):
     def __init__(self, nom, info, scale, color, heal):
@@ -74,6 +76,7 @@ class Booster(Item):
         return data
     def deserialize(data):
         return Booster(data['nom'], data['info'], data['scale'], data['color'], data['shield'])
+    
 
 apple = Healer("pomme", APPLE_INFO, APPLE_SCALE, APPLE_COLOR, APPLE_HEAL)
 berry = Healer("baie", BERRY_INFO, BERRY_SCALE, BERRY_COLOR, BERRY_HEAL)
