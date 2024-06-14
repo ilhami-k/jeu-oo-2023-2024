@@ -49,9 +49,14 @@ class Healer(Item):
     
     def healing(self, player):
         if isinstance(player, Player): 
+            print("appel de healing")
             print (f"vie actuelle: {player.health}")          
             player.health = min (player.health + self.heal, player.max_health) 
             print (f"vie apres heal: {player.health}/{player.max_health}")
+        
+
+    
+      
 
 
 class Booster(Item):
@@ -63,6 +68,7 @@ class Booster(Item):
 
     def boost(self, player):
         if isinstance(player, Player):
+            print("appel de boost")
             player.max_health += self.shield
             player.health += self.shield
             print(f"vie totale augmenté{self.player.max_health}")

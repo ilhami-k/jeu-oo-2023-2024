@@ -13,6 +13,15 @@ class Inventory:
         
         self.items.append(police)
         self.items.append(apple)
+        self.items.append(police)
+        self.items.append(apple)
+        self.items.append(apple)
+        self.items.append(berry)
+        self.items.append(military)
+        self.items.append(berry)
+        self.items.append(military)
+        self.items.append(berry)
+        self.items.append(military)
         
 
 
@@ -27,16 +36,16 @@ class Inventory:
         for rect, item in self.item_rects:
             if rect.collidepoint(mouse_pos):
                 print(f"j'ai cliqué sur {item.nom}")
-                self.use_item(item, self.player)
-                self.remove_item(item)
+                return item
+        return None
                 
-                    
-   
+
     def use_item(self, item, player):
-        if isinstance(item, Healer) and item.nom in ["Pomme", "Baie"]:
+        if isinstance(item, Healer) :
             item.healing(player)
-        elif isinstance(item, Booster) and item.nom in ["Police", "Militaire"]:
+        elif isinstance(item, Booster):
             item.boost(player)
+        
    
           
     def show_inventory(self, screen, font, WIDTH):

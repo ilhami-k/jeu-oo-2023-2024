@@ -20,6 +20,7 @@ class Game:
 
         # Création du joueur et ajout au groupe de calques
         self.player = Player(0,0)
+        self.healer = Healer("Potion de soin", "Restaure 50 points de vie", 50, (0, 255, 0, 255), 50)
 
         self.quest1active = False #Pour le compteur de monstres tues
 
@@ -328,10 +329,14 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-
+          
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 3:
-                    self.inventory.handle_click(mouse_pos=pygame.mouse.get_pos())
+                    item = self.inventory.handle_click(mouse_pos=pygame.mouse.get_pos())
+                    if item:
+                        self.inventory.use_item(item, self.player)
+                        self.inventory.remove_item(item)
+                    
                  
 
             if event.type == pygame.KEYDOWN:
