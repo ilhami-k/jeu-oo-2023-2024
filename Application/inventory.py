@@ -13,13 +13,6 @@ class Inventory:
         
         self.items.append(police)
         self.items.append(apple)
-        self.items.append(police)
-        self.items.append(apple)
-        self.items.append(apple)
-        self.items.append(berry)
-        self.items.append(military)
-        self.items.append(berry)
-        self.items.append(military)
         self.items.append(berry)
         self.items.append(military)
         
@@ -33,11 +26,15 @@ class Inventory:
             self.items.remove(item)
     
     def handle_click(self, mouse_pos):
+        if not self.items:
+            print("inventaire vide")
+            return None
         for rect, item in self.item_rects:
             if rect.collidepoint(mouse_pos):
                 print(f"j'ai cliqué sur {item.nom}")
                 return item
         return None
+            
                 
 
     def use_item(self, item, player):
