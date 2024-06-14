@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from entity import *
+from entity import Player
 
 
 class Item(pygame.sprite.Sprite):
@@ -30,6 +30,8 @@ class Item(pygame.sprite.Sprite):
         color = pygame.Color(*data['color'])
         return Item(data['x'], data['y'], data['nom'], data['info'], data['scale'], color)
     
+   
+    
 class Healer(Item):
     def __init__(self, nom, info, scale, color, heal):
         super().__init__(0, 0, nom, info, scale, color)  # Note: Position temporaire (0, 0)
@@ -47,9 +49,14 @@ class Healer(Item):
     
     def healing(self, player):
         if isinstance(player, Player): 
+            print("appel de healing")
             print (f"vie actuelle: {player.health}")          
             player.health = min (player.health + self.heal, player.max_health) 
             print (f"vie apres heal: {player.health}/{player.max_health}")
+        
+
+    
+      
 
 
 class Booster(Item):
@@ -61,6 +68,7 @@ class Booster(Item):
 
     def boost(self, player):
         if isinstance(player, Player):
+            print("appel de boost")
             player.max_health += self.shield
             player.health += self.shield
             print(f"vie totale augmenté{self.player.max_health}")
@@ -74,6 +82,7 @@ class Booster(Item):
         return data
     def deserialize(data):
         return Booster(data['nom'], data['info'], data['scale'], data['color'], data['shield'])
+    
 
 apple = Healer("pomme", APPLE_INFO, APPLE_SCALE, APPLE_COLOR, APPLE_HEAL)
 berry = Healer("baie", BERRY_INFO, BERRY_SCALE, BERRY_COLOR, BERRY_HEAL)
