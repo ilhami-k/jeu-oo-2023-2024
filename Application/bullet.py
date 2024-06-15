@@ -1,8 +1,6 @@
 import pygame
 import math
-import textwrap
 from settings import *
-
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, angle, speed, lifetime, damage, radius, color):
@@ -17,8 +15,7 @@ class Bullet(pygame.sprite.Sprite):
         self.image = pygame.Surface((radius*2, radius*2), pygame.SRCALPHA)
         pygame.draw.circle(self.image, color, (radius, radius), radius)
         self.rect = self.image.get_rect(center=self.position)
-
-        
+  
     def update(self):
         self.position[0] += math.cos(self.angle) * self.speed
         self.position[1] += math.sin(self.angle) * self.speed
@@ -28,9 +25,6 @@ class Bullet(pygame.sprite.Sprite):
     def check_collision(self, x, y):
         distance = math.sqrt((self.x - x) ** 2 + (self.y - y) ** 2)
         return distance < 10
-    
-
-  
     
 class BasicBullet(Bullet):
     def __init__(self, x, y, angle):

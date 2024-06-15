@@ -303,11 +303,9 @@ class Game:
             pygame.K_1: 0,
             pygame.K_2: 1,
             pygame.K_3: 2,
-            pygame.K_4: 3
-            
+            pygame.K_4: 3        
         }
         
-
         # Gestion du mouvement du joueur
         if pressed[pygame.K_z]:
             self.player.move(0, -PLAYER_SPEED)
@@ -318,7 +316,6 @@ class Game:
         if pressed[pygame.K_d]:
             self.player.move(PLAYER_SPEED, 0)
         
-
         # Gestion du tir du joueur
         mouse_x, mouse_y = pygame.mouse.get_pos()
         if mouse_pressed[0]:  # Si le bouton gauche de la souris est enfoncé
@@ -337,41 +334,30 @@ class Game:
                         self.inventory.use_item(item, self.player)
                         self.inventory.remove_item(item)
                     
-                 
-
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.menu_screen()
                 if event.key == pygame.K_i:
                         self.show_inventory = not self.show_inventory
                 if event.key == pygame.K_b:
-                        self.show_bullets = not self.show_bullets
-                            
-                            
-
+                        self.show_bullets = not self.show_bullets                           
                 if event.key in key_to_bullet_index:
-                    self.player.select_bullet_type(key_to_bullet_index[event.key])
-           
+                    self.player.select_bullet_type(key_to_bullet_index[event.key])          
                 if event.key == pygame.K_o:
                         self.inventory.use_item(apple, self.player)
-
                 if event.key == pygame.K_p:
                         self.inventory.use_item(military, self.player)
-
                 if event.key == pygame.K_t:
                         self.show_quests = not self.show_quests
-
                 if event.key == pygame.K_e:
                         self.take_item()
-
                 if event.key == pygame.K_f and self.npc and self.npc.in_interaction_range(self.player):
                     if not self.in_dialogue:
                         if self.first_interaction:
                             self.in_dialogue = self.npc.interact(self.player,NPC_DIALOGUE_BASIC)
                             self.first_interaction = False
                         else:
-                            self.in_dialogue = self.npc.interact(self.player,NPC_DIALOGUE_NOT_FIRST)
-                
+                            self.in_dialogue = self.npc.interact(self.player,NPC_DIALOGUE_NOT_FIRST)              
                 if event.key == pygame.K_RETURN:
                     if self.in_dialogue:
                         if not self.npc.advance_dialogue():
@@ -383,9 +369,6 @@ class Game:
                                 self.npc_interaction_screen()
         pygame.event.clear()
           
-                    
-                       
-
     def draw_inventory(self):
         if self.show_inventory:
             self.inventory.show_inventory(self.screen, self.font, 800)
@@ -406,7 +389,6 @@ class Game:
                 quest = Quest(quest_info['name'], quest_info['description'], quest_info['goal'], self.questmanager, quest_info['current'])
                 quest.completed = quest_info['completed']
                 self.questmanager.add_quest(quest)
-
 
     def save_game_state(self):
         active_quests = []
@@ -462,7 +444,6 @@ class Game:
                     self.secondary_quest4.completed = quest_completed
                     self.questmanager.add_quest(self.secondary_quest4)
             
-
     def run(self):
         clock = pygame.time.Clock()
         # Affichage de l'écran d'introduction
@@ -488,10 +469,10 @@ class Game:
             # Centrage de la caméra sur le joueur
             self.group.center(self.player.rect.center)
 
-            # Affichage des rectangles de collision des sprites
-            pygame.draw.rect(self.screen, (255, 0, 0), self.player.rect, 2)
-            for enemy in self.all_enemies:
-                pygame.draw.rect(self.screen, (0, 255, 0), enemy.rect, 2)
+            # # Affichage des rectangles de collision des sprites
+            # pygame.draw.rect(self.screen, (255, 0, 0), self.player.rect, 2)
+            # for enemy in self.all_enemies:
+            #     pygame.draw.rect(self.screen, (0, 255, 0), enemy.rect, 2)
             
             #affichage de la barre de vie
             self.player.update_healthbar(self.screen)
@@ -543,12 +524,13 @@ class Game:
                 if continue_button.is_pressed(mouse_pos, mouse_pressed):
                     intro = False
                     self.load_game_state()
+                    
                 if play_button.is_pressed(mouse_pos, mouse_pressed):
                     intro = False
                     self.new_game = True
                     self.prologue_on = True
                     return self.new_game, self.prologue_on
-
+                
                 if exit_button.is_pressed(mouse_pos, mouse_pressed):
                     intro = False
                     self.running = False
@@ -561,6 +543,7 @@ class Game:
                 self.screen.blit(exit_button.image, exit_button.rect)
                 
                 pygame.display.update() 
+
     def menu_screen(self):
             menu = True
             title = self.font.render("Menu", True, 'Black')
@@ -594,6 +577,7 @@ class Game:
                 self.screen.blit(exit_button.image, exit_button.rect)
                 
                 pygame.display.update()
+
     def death_screen(self):
         self.death = True
         title = self.font.render("You died", True, 'Black')
@@ -623,6 +607,7 @@ class Game:
             self.screen.blit(exit_button.image, exit_button.rect)
             
             pygame.display.update()
+
     def reset_game_state(self):
         self.player = Player(0,0)
         self.inventory = Inventory()
@@ -648,6 +633,7 @@ class Game:
                     self.running = False
             mouse_pos = pygame.mouse.get_pos()
             mouse_pressed = pygame.mouse.get_pressed()
+
             if quest_1.is_pressed(mouse_pos, mouse_pressed):
                 self.npc_interaction = False
                 self.npc.interact(self.player,NPC_DIALOGUE_10_MONSTER_QUEST)
