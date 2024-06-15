@@ -47,6 +47,8 @@ Pour éviter les conflits de dépendances entre différents projets Python, il e
       .\env\Scripts\activate
       ```
     - Sous macOS et Linux :
+      ```sh
+      source env/bin/activate
       ```
 
 ### 2. Installation des Dépendances
