@@ -13,6 +13,96 @@ from bullet import *
 
 
 class Game:
+    """
+Classe Game pour gérer le jeu avec pygame.
+
+Cette classe initialise la fenêtre de jeu, le joueur, les quêtes, les objets et les ennemis. Elle permet le chargement
+de différentes cartes, la gestion des collisions, des balles, des quêtes, et des transitions entre les cartes.
+Elle implémente également la mécanique de récompense pour les quêtes accomplies et le largage d'objets par les ennemis
+après leur défaite.
+
+Attributs:
+- screen: Surface pygame pour afficher le jeu.
+- player: Instance du joueur contrôlable par l'utilisateur.
+- healer: Instance d'un objet de soin.
+- quest1active: Indicateur pour le compteur de monstres tués.
+- golem_killed: Booléen indiquant si le Golem a été vaincu.
+- frame_count: Compteur de frames pour le Golem.
+- list_items_on_map: Liste des objets présents sur la carte.
+- list_items_on_monster: Liste des objets lâchés par les ennemis.
+- item_rects: Liste des rectangles de collision des objets.
+- font: Police de caractères pour l'affichage.
+- intro_background: Image de fond pour l'écran d'introduction.
+- running: Variable pour contrôler l'exécution du jeu.
+- new_game: Indicateur pour savoir si c'est une nouvelle partie.
+- prologue_on: Indicateur pour le prologue du jeu.
+- inventory: Instance de l'inventaire du joueur.
+- questmanager: Gestionnaire des quêtes du jeu.
+- main_quest: Quête principale du jeu.
+- secondary_quest1-4: Quêtes secondaires du jeu.
+- show_inventory: Indicateur pour afficher l'inventaire.
+- show_bullets: Indicateur pour afficher les balles.
+- interface: Interface utilisateur pour le jeu.
+- npc: Instance d'un personnage non-joueur.
+- in_dialogue: Indicateur pour le dialogue avec un NPC.
+- show_quests: Indicateur pour afficher les quêtes.
+- save_load: Système de sauvegarde et chargement du jeu.
+- quest_background: Image de fond pour l'affichage des quêtes.
+- quest_1_dialogue: Boîte de dialogue pour la quête 1.
+- mission_dialogue: Indicateur pour le dialogue de mission.
+- first_interaction: Indicateur pour la première interaction.
+
+Méthodes:
+- give_reward_quests: Donne les récompenses pour les quêtes complétées.
+- switch_map: Charge et affiche une nouvelle carte du jeu.
+- update: Met à jour les éléments du jeu comme les collisions, les projectiles et les transitions entre les cartes.
+- drop_item: Gère le largage d'objets par les ennemis après leur défaite.
+-take_item(self):
+    Vérifie la collision du joueur avec des objets sur la carte et les ramasse.
+
+-draw_dialogue_box(self):
+    Dessine la boîte de dialogue du NPC sur l'écran si une interaction est en cours.
+
+-handle_input(self):
+    Gère les entrées du joueur telles que le mouvement, le tir, l'affichage de l'inventaire, etc.
+
+-draw_inventory(self):
+    Dessine l'inventaire du joueur à l'écran s'il est activé.
+
+-draw_quests(self):
+    Dessine les quêtes actives du joueur à l'écran s'il est activé.
+
+-draw_bullets(self):
+    Dessine les balles tirées par le joueur à l'écran s'il est activé.
+
+-load_quests(self, quest_data):
+    Charge les quêtes à partir des données fournies dans une liste de dictionnaires.
+
+-save_game_state(self):
+    Sauvegarde l'état actuel du jeu, y compris la carte, la position du joueur, l'inventaire et les quêtes.
+
+-load_game_state(self):
+    Charge l'état précédemment sauvegardé du jeu, y compris la carte, la position du joueur, l'inventaire et les quêtes.
+
+-run(self):
+    Boucle principale du jeu qui gère les mises à jour, les entrées et les affichages jusqu'à la fermeture du jeu.
+
+-intro_screen(self):
+    Affiche l'écran d'introduction du jeu avec des options pour continuer, démarrer un nouveau jeu ou quitter.
+
+-menu_screen(self):
+    Affiche l'écran de menu du jeu avec des options pour continuer, sauvegarder ou quitter.
+
+-death_screen(self):
+    Affiche l'écran de fin de jeu en cas de défaite du joueur, avec des options pour revenir au menu principal ou quitter.
+
+-reset_game_state(self):
+    Réinitialise l'état du jeu aux valeurs par défaut, y compris le joueur, l'inventaire et la carte.
+
+-npc_interaction_screen(self):
+    Affiche l'écran d'interaction avec le NPC, permettant au joueur de choisir une quête ou de continuer l'aventure.
+
+"""
     def __init__(self):
         # Initialisation de la fenêtre de jeu
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT),pygame.SRCALPHA)

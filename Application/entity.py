@@ -6,6 +6,28 @@ from game import *
 from interface import *
 
 class Entity(pygame.sprite.Sprite):
+    """
+    Classe de base représentant une entité dans le jeu.
+
+    Attributs:
+        position: Liste [x, y] représentant les coordonnées de l'entité sur l'écran.
+        old_position: Anciennes coordonnées de l'entité avant le dernier déplacement.
+        sprite_sheet: Surface contenant la feuille de sprites de l'entité.
+        image: Image actuellement affichée de l'entité.
+        rect: Rectangle de collision de l'entité pour la détection de collisions.
+        speed: Vitesse de déplacement de l'entité.
+        health: Points de vie actuels de l'entité.
+        attack_cooldown: Délai de recharge entre les attaques de l'entité.
+        damage: Dommages infligés par l'entité lors d'une attaque.
+
+    Méthodes:
+        get_image(x, y): Récupère une portion spécifique de l'image de l'entité.
+        save_location(): Sauvegarde la position actuelle de l'entité.
+        move_back(): Rétablit la position précédente de l'entité.
+        move(x, y): Déplace l'entité selon les coordonnées spécifiées.
+        take_damage(damage): Réduit les points de vie de l'entité en fonction des dégâts reçus.
+        update(player): Met à jour la position de l'entité et gère les actions en fonction du joueur.
+    """
     def __init__(self, x, y, image_path, name, speed, health, attack_cooldown=0, damage=0):
         super().__init__()
         self.name = name 
@@ -49,6 +71,35 @@ class Entity(pygame.sprite.Sprite):
         self.rect.topleft = self.position
 
 class Player(Entity):
+    """
+    Classe représentant le joueur dans le jeu.
+
+    Hérite de la classe Entity.
+
+    Attributs hérités de Entity :
+        - position: Liste [x, y] représentant les coordonnées du joueur sur l'écran.
+        - old_position: Anciennes coordonnées du joueur avant le dernier déplacement.
+        - sprite_sheet: Surface contenant la feuille de sprites du joueur.
+        - image: Image actuellement affichée du joueur.
+        - rect: Rectangle de collision du joueur pour la détection de collisions.
+        - speed: Vitesse de déplacement du joueur.
+        - health: Points de vie actuels du joueur.
+        - attack_cooldown: Délai de recharge entre les attaques du joueur.
+        - damage: Dommages infligés par le joueur lors d'une attaque.
+
+    Attributs propres :
+        - max_health: Points de vie maximum du joueur.
+        - selected_bullet_type_index: Index du type de projectile actuellement sélectionné.
+        - bullet_types: Liste des types de projectiles disponibles pour le joueur.
+
+    Méthodes :
+        - add_bullet(bullet): Ajoute un type de projectile à la liste des types disponibles.
+        - select_bullet_type(index): Sélectionne le type de projectile selon l'index fourni.
+        - shoot(target_x, target_y, bullet_group): Tire un projectile vers une cible donnée.
+        - cooldown_tick(): Diminue le délai de recharge entre les attaques.
+        - show_bullets(screen, font, WIDTH): Affiche les types de projectiles disponibles à l'écran.
+        - update_healthbar(screen): Met à jour la barre de vie du joueur à l'écran.
+    """
     def __init__(self, x, y):
         super().__init__(x, y, "Application/images/Player.png", 'Player', PLAYER_SPEED, PLAYER_HEALTH, ATTACK_COOLDOWN, PLAYER_SHOOT_DAMAGE)
         self.max_health = PLAYER_MAX_HEALTH
@@ -98,6 +149,28 @@ class Player(Entity):
         pygame.draw.rect(screen, bar_color, bar_position)
     
 class Enemy(Entity):
+    """
+    Classe représentant un ennemi dans le jeu.
+
+    Hérite de la classe Entity.
+
+    Attributs hérités de Entity :
+        - position: Liste [x, y] représentant les coordonnées de l'ennemi sur l'écran.
+        - old_position: Anciennes coordonnées de l'ennemi avant le dernier déplacement.
+        - sprite_sheet: Surface contenant la feuille de sprites de l'ennemi.
+        - image: Image actuellement affichée de l'ennemi.
+        - rect: Rectangle de collision de l'ennemi pour la détection de collisions.
+        - speed: Vitesse de déplacement de l'ennemi.
+        - health: Points de vie actuels de l'ennemi.
+        - attack_cooldown: Délai de recharge entre les attaques de l'ennemi.
+        - damage: Dommages infligés par l'ennemi lors d'une attaque.
+
+    Méthodes :
+        - update(player): Met à jour la position de l'ennemi en se dirigeant vers le joueur.
+        - attack(player, damage): Attaque le joueur si le délai de recharge est écoulé.
+
+    Remarque : Les méthodes spécifiques à chaque type d'ennemi (comme `rage` pour le Golem ou `shoot_all_directions` pour le Golem) sont définies dans leurs sous-classes respectives.
+    """
     def update(self, player):
         # Calculer la direction vers le joueur
         direction_x = player.position[0] - self.position[0]
@@ -142,6 +215,22 @@ class Nohead(Enemy):
         self.initial_attack_cooldown = NOHEAD_ATTACK_COOLDOWN
 
 class Golem(Enemy):
+    """
+    Classe représentant un Golem dans le jeu.
+
+    Hérite de la classe Enemy.
+
+    Attributs propres :
+        - initial_attack_cooldown: Délai initial de recharge entre les attaques du Golem.
+        - rage_sprite_sheet: Feuille de sprite utilisée lorsque le Golem est en rage.
+        - is_raging: Indique si le Golem est en état de rage.
+
+    Méthodes :
+        - __init__(self, x, y): Initialise un Golem avec des attributs spécifiques.
+        - get_image(self, x, y, sprite_sheet=None): Récupère l'image du Golem en fonction des coordonnées et de la feuille de sprite.
+        - rage(self): Active l'état de rage du Golem s'il est en dessous de la moitié de ses points de vie.
+        - shoot_all_directions(self, bullet_group): Fait tirer le Golem dans toutes les directions en ajoutant des projectiles au groupe de projectiles.
+    """
     def __init__(self, x, y):
         super().__init__(x, y, "Application/images/Golem.png", 'Golem', GOLEM_SPEED, GOLEM_HEALTH, GOLEM_ATTACK_COOLDOWN, GOLEM_DAMAGE)
         self.initial_attack_cooldown = GOLEM_ATTACK_COOLDOWN
@@ -174,6 +263,33 @@ class Golem(Enemy):
             bullet_group.add(BossBullet(boss_center_x, boss_center_y, rad_angle))
 
 class Npc(Entity):
+    """
+    Classe représentant un personnage non-joueur (NPC) dans le jeu.
+
+    Hérite de la classe Entity.
+
+    Attributs hérités de Entity :
+        - position: Liste [x, y] représentant les coordonnées du NPC sur l'écran.
+        - old_position: Anciennes coordonnées du NPC avant le dernier déplacement.
+        - sprite_sheet: Surface contenant la feuille de sprites du NPC.
+        - image: Image actuellement affichée du NPC.
+        - rect: Rectangle de collision du NPC pour la détection de collisions.
+        - speed: Vitesse de déplacement du NPC.
+        - health: Points de vie actuels du NPC.
+        - attack_cooldown: Délai de recharge entre les attaques du NPC.
+        - damage: Dommages infligés par le NPC lors d'une attaque.
+
+    Attributs propres :
+        - interaction_range: Distance maximale à laquelle le joueur peut interagir avec le NPC.
+        - dialogue_box: Boîte de dialogue utilisée pour interagir avec le NPC.
+
+    Méthodes :
+        - interact(player, dialogue): Initie une interaction avec le joueur en affichant une boîte de dialogue.
+        - in_interaction_range(player): Vérifie si le joueur est à portée d'interaction avec le NPC.
+        - draw_dialogue_box(screen): Affiche la boîte de dialogue du NPC à l'écran.
+        - close_dialogue_box(): Ferme la boîte de dialogue du NPC.
+        - advance_dialogue(): Avance à la prochaine étape du dialogue avec le NPC.
+    """
     def __init__(self, x, y):
         super().__init__(x, y, "Application/images/NPC.png", 'npc', NPC_SPEED, NPC_HEALTH, NPC_ATTACK_COOLDOWN)
         self.interaction_range = 50
