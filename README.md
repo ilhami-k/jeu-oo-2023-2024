@@ -16,6 +16,8 @@ Bienvenue dans notre projet de jeu ! Ce guide vous expliquera comment configurer
 ### Assurez-vous d'avoir les éléments suivants installés sur votre machine :
 - [Python 3.x](https://www.python.org/downloads/)
 
+## Si vous lancez le jeu à partir d'un ZIP, veuillez le deziper et suivre le readme. 
+## !!LANCEZ LE JEU A PARTIR DU TERMINAL ET PAS DANS VISUAL STUDIO CODE!! 
 ## Configuration de l'environnement de développement
 
 ### 1. Créer un Environnement Virtuel
@@ -45,8 +47,6 @@ Pour éviter les conflits de dépendances entre différents projets Python, il e
       .\env\Scripts\activate
       ```
     - Sous macOS et Linux :
-      ```sh
-      source env/bin/activate
       ```
 
 ### 2. Installation des Dépendances
