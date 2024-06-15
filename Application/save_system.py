@@ -8,11 +8,13 @@ class SaveSystem:
         self.save_folder = save_folder
     
     def save_data(self, data, name):
+        """sauvegarde en ouvrant le fichier sous forme write et mets les informations dans le fichier."""
         data_file_path = self.save_folder + name + self.file_extension
         with open(data_file_path, "w") as data_file:
             json.dump(data, data_file)
     
     def load_data(self, name):
+        """ouvre le fichier sous forme de read et les envoie."""
         data_file_path = self.save_folder + name + self.file_extension
         print("Loading data from:", data_file_path)
         try:
@@ -25,6 +27,7 @@ class SaveSystem:
             self.save_data(default_data, name)
             return default_data
     def delete_data(self, name):
+        """methode pour supprimer la sauvegarde en cas de mort"""
         data_file_path = self.save_folder + name + self.file_extension
         if os.path.exists(data_file_path):
             os.remove(data_file_path)
