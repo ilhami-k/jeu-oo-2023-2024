@@ -26,7 +26,7 @@ Pour éviter les conflits de dépendances entre différents projets Python, il e
 
 2. **Accédez au répertoire de votre projet :**
     ```sh
-    cd /chemin/vers/votre/projet
+    cd /chemin/vers/le/projet
     ```
 
 3. **Créez un environnement virtuel :**
@@ -62,6 +62,10 @@ Une fois l'environnement virtuel activé, vous devez installer les dépendances 
 
 Après avoir installé les dépendances, vous pouvez lancer le jeu à l'aide du fichier `main.py`.
 
+1. **Allez sur le dossier `Application`**
+  ```sh
+  cd Application
+  ```
 1. **Exécutez le fichier `main.py` :**
     ```sh
     python main.py
