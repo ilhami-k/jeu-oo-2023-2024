@@ -58,7 +58,6 @@ class Player(Entity):
     def add_bullet(self, bullet):
         self.bullet_types.append(bullet)
     
-
     def select_bullet_type(self, index):
         if 0 <= index < len(self.bullet_types):
             self.selected_bullet_type_index = index
@@ -75,9 +74,7 @@ class Player(Entity):
             self.attack_cooldown -= 1
     
     def show_bullets(self, screen, font, WIDTH):
-        small_font = pygame.font.Font(None, 18)  
-
-        
+        small_font = pygame.font.Font(None, 18)   
         Bullet_surface = pygame.Surface((200, 150), pygame.SRCALPHA)
         Bullet_surface.fill((50, 50, 50, 0)) 
         y_offset = 1  
@@ -91,8 +88,8 @@ class Player(Entity):
                 y_offset += 20 
 
         screen.blit(Bullet_surface, (550, 550))
-    def update_healthbar (self, screen):
-         
+
+    def update_healthbar (self, screen):   
         bar_color = (85,209,70)
         bar_fond_color = (255,95,65)
         bar_position = [15, 15, self.health, 10]
@@ -113,10 +110,6 @@ class Enemy(Entity):
 
         # Déplacer l'ennemi dans la direction du joueur
         self.move(direction_x * self.speed, direction_y * self.speed)
-
-        # Vérifier les collisions avec le joueur
-        # if self.rect.colliderect(player.rect):
-        #     self.attack(player, self.damage)
 
         # Gérer le temps entre les attaques
         if self.attack_cooldown > 0:
