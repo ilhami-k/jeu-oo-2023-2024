@@ -12,7 +12,7 @@ Bienvenue dans notre projet de jeu ! Ce guide vous expliquera comment configurer
 - bouton "enter" pour passer les dialogues
 - clic "gauche" pour tirer et intéragir avec quêtes
 - clic "droit" pour intéragir avec l'inventaire
-Assurez-vous d'avoir les éléments suivants installés sur votre machine :
+### Assurez-vous d'avoir les éléments suivants installés sur votre machine :
 - [Python 3.x](https://www.python.org/downloads/)
 
 ## Configuration de l'environnement de développement
