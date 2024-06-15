@@ -66,7 +66,7 @@ Après avoir installé les dépendances, vous pouvez lancer le jeu à l'aide du 
   ```sh
   cd Application
   ```
-1. **Exécutez le fichier `main.py` :**
+2. **Exécutez le fichier `main.py` :**
     ```sh
     python main.py
     ```
