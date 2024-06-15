@@ -154,23 +154,31 @@ class Golem(Enemy):
         self.initial_attack_cooldown = GOLEM_ATTACK_COOLDOWN
         self.image = self.get_image(0, 0)
         self.image.set_colorkey((0, 0, 0))
+        self.rage_sprite_sheet = pygame.image.load("Application/images/GolemRage.png").convert_alpha()  # Charger la feuille de sprite de rage
+        self.is_raging = False
 
-    def get_image(self, x, y):
-        image = pygame.Surface((67, 69))
-        image.blit(self.sprite_sheet, (0, 0), (x, y, 67, 69))
+    def get_image(self, x, y, sprite_sheet=None):
+        if sprite_sheet is None:
+            sprite_sheet = self.sprite_sheet
+        image = pygame.Surface((67, 69), pygame.SRCALPHA)
+        image.blit(sprite_sheet, (0, 0), (x, y, 67, 69))
         return image
-    
+
     def rage(self):
-        if self.health <= GOLEM_HEALTH / 2:
+        if self.health <= GOLEM_HEALTH / 2 and not self.is_raging:
             self.speed = GOLEM_SPEED * 2
             self.damage = GOLEM_DAMAGE * 4
+            self.image = self.get_image(0, 0, self.rage_sprite_sheet)
+            self.image.set_colorkey((0, 0, 0))
+            self.rect = self.image.get_rect(topleft=self.rect.topleft)  # Ajuster le rectangle de collision
+            self.is_raging = True  # Éviter de changer l'image plusieurs fois
 
     def shoot_all_directions(self, bullet_group):
         for angle in range(0, 360, 45):  # Tirer dans 8 directions (0, 45, 90, ..., 315 degrés)
             rad_angle = math.radians(angle)
             boss_center_x = self.position[0] + self.rect.width / 2
             boss_center_y = self.position[1] + self.rect.height / 2
-            bullet_group.add(BossBullet(boss_center_x,boss_center_y, rad_angle))
+            bullet_group.add(BossBullet(boss_center_x, boss_center_y, rad_angle))
 
 class Npc(Entity):
     def __init__(self, x, y):
