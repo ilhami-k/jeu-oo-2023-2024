@@ -11,3 +11,4 @@ player_position.json
 # Ignore the tempCodeRunnerFile.py
 tempCodeRunnerFile.py
 game_state.json
+env/

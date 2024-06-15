@@ -196,13 +196,13 @@ class Interface:
         self.clock = pygame.time.Clock()
         self.running = True
         self.font = pygame.font.Font(None, 36)
-        self.intro_background = pygame.image.load("Application/images/background.png")
+        self.intro_background = pygame.image.load("../Application/images/background.png")
         self.new_game = new_game
         self.prologue_on = prologue_on
         self.epilogue_on = False
-        self.save_load = SaveSystem('.json', 'Application/save_data/')
+        self.save_load = SaveSystem('.json', '../Application/save_data/')
         self.player = player
-        self.end_background = pygame.image.load("Application/images/background.png")
+        self.end_background = pygame.image.load("../Application/images/background.png")
 
     def prologue(self):
         """
