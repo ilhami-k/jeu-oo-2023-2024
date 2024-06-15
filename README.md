@@ -60,15 +60,15 @@ Une fois l'environnement virtuel activé, vous devez installer les dépendances 
 
 ## Lancement du Jeu
 
-Après avoir installé les dépendances, vous pouvez lancer le jeu à l'aide du fichier `main.py`.
+Après avoir installé les dépendances, vous pouvez aller sur le dossier Application lancer le jeu à l'aide du fichier `main.py`.
 
 1. **Allez sur le dossier `Application`**
   ```sh
   cd Application
   ```
 2. **Exécutez le fichier `main.py` :**
-    ```sh
-    python main.py
-    ```
+  ```sh
+  python main.py
+  ```
 
 Votre jeu devrait maintenant se lancer et être prêt à jouer !
