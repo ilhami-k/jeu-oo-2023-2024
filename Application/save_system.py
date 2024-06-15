@@ -1,4 +1,5 @@
 import json
+import os
 from game import *
 
 class SaveSystem:
@@ -23,3 +24,10 @@ class SaveSystem:
             default_data = None
             self.save_data(default_data, name)
             return default_data
+    def delete_data(self, name):
+        data_file_path = self.save_folder + name + self.file_extension
+        if os.path.exists(data_file_path):
+            os.remove(data_file_path)
+            print(f"Save file {data_file_path} deleted successfully.")
+        else:
+            print(f"No save file found at {data_file_path}.")

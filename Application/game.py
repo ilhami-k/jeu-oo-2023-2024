@@ -497,6 +497,7 @@ class Game:
             self.player.update_healthbar(self.screen)
             if self.player.health <= 0:
                 self.death_screen()
+                self.save_load.delete_data('game_state')
            
             self.draw_inventory()
            
