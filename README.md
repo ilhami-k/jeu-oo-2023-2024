@@ -3,7 +3,15 @@
 Bienvenue dans notre projet de jeu ! Ce guide vous expliquera comment configurer votre environnement de développement, installer les dépendances nécessaires et lancer le jeu.
 
 ## Prérequis
-
+### Controles
+- Les mouvements sont gérés par les ZQSD directionnelles.
+- bouton "f" pour intéragir avec PNJ
+- bouton "e" pour ramasser des items
+- bouton "i" pour ouvrir l'inventaire
+- bouton "escape" pour ouvrir le menu pause
+- bouton "enter" pour passer les dialogues
+- clic "gauche" pour tirer et intéragir avec quêtes
+- clic "droit" pour intéragir avec l'inventaire
 Assurez-vous d'avoir les éléments suivants installés sur votre machine :
 - [Python 3.x](https://www.python.org/downloads/)
 
