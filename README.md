@@ -8,7 +8,7 @@ Bienvenue dans notre projet de jeu ! Ce guide vous expliquera comment configurer
 - bouton "f" pour intéragir avec PNJ
 - bouton "e" pour ramasser des items
 - bouton "i" pour ouvrir l'inventaire
--bouton "t" pour ouvrir les quêtes
+- bouton "t" pour ouvrir les quêtes
 - bouton "escape" pour ouvrir le menu pause
 - bouton "enter" pour passer les dialogues
 - clic "gauche" pour tirer et intéragir avec quêtes
