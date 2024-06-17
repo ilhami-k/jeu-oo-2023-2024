@@ -107,7 +107,6 @@ Méthodes:
         # Initialisation de la fenêtre de jeu
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT),pygame.SRCALPHA)
         pygame.display.set_caption(TITRE)  # Définir le titre de la fenêtre
-
         # Création du joueur et ajout au groupe de calques
         self.player = Player(0,0)
         self.healer = Healer("Potion de soin", "Restaure 50 points de vie", 50, (0, 255, 0, 255), 50)
@@ -132,7 +131,7 @@ Méthodes:
 
          
         self.font = pygame.font.Font('freesansbold.ttf', 36)
-        self.intro_background = pygame.image.load("../Application/images/background.png")
+        self.intro_background = pygame.image.load("Application/images/background.png")
         self.running = True # Variable GLOBALE pour contrôler l'exécution du jeu
         self.new_game = False #Variable globale pour savoir si c'est un nouveau jeu 
         self.prologue_on = False
@@ -160,13 +159,11 @@ Méthodes:
 
         #initialise l'affichage des quetes sur fermé
         self.show_quests = False
-        self.save_load = SaveSystem('.json','../Application/save_data/')
-        self.quest_background = pygame.image.load("../Application/images/quest_background.png")
+        self.save_load = SaveSystem('.json','Application/save_data/')
+        self.quest_background = pygame.image.load("Application/images/quest_background.png")
         self.quest_1_dialogue = DialogueBox(NPC_DIALOGUE_10_MONSTER_QUEST, 22, 700, 150, 50, HEIGHT - 250, (255, 255, 128, 128), (0, 0, 0))
         self.mission_dialogue = False
         self.first_interaction = True
-
-
     def give_reward_quests(self):
         if self.main_quest.completed and not self.main_quest.reward_given:
             self.inventory.add_item(apple)
@@ -188,11 +185,10 @@ Méthodes:
             self.inventory.add_item(police)
             self.secondary_quest4.reward_given = True
 
-    def switch_map(self, map_name, spawn_name = None):
+    def switch_map(self, map_name, spawn_name ):
         self.all_enemies = []  # Réinitialiser la liste des ennemis
-
         # Chargement des données de la carte à partir d'un fichier TMX
-        tmx_data = pytmx.util_pygame.load_pygame(f"../Application/{map_name}")
+        tmx_data = pytmx.util_pygame.load_pygame(f"Application/{map_name}")
         map_data = pyscroll.data.TiledMapData(tmx_data)
         self.map = map_name
         # Création d'un rendu de carte avec mise en mémoire tampon pour des performances optimales
@@ -267,7 +263,6 @@ Méthodes:
         #     for collision_rect in self.collision:
         #         if enemy.rect.colliderect(collision_rect):
         #             enemy.move_back()
-
         # Vérification des collisions entre les balles et l'ennemi
         for bullet in self.all_bullets:
             for enemy in self.all_enemies:
@@ -447,7 +442,7 @@ Méthodes:
                             self.in_dialogue = self.npc.interact(self.player,NPC_DIALOGUE_BASIC)
                             self.first_interaction = False
                         else:
-                            self.in_dialogue = self.npc.interact(self.player,NPC_DIALOGUE_NOT_FIRST)              
+                            self.in_dialogue = self.npc.interact(self.player,NPC_DIALOGUE_NOT_FIRST)
                 if event.key == pygame.K_RETURN:
                     if self.in_dialogue:
                         if not self.npc.advance_dialogue():
@@ -470,16 +465,6 @@ Méthodes:
     def draw_bullets(self):
         if self.show_bullets:
             self.player.show_bullets(self.screen, self.font, WIDTH)
-            
-    def load_quests(self, quest_data):
-        for quest_info in quest_data:
-            quest_name = quest_info['name']
-            
-            if not self.questmanager.has_quest(quest_name):
-                quest = Quest(quest_info['name'], quest_info['description'], quest_info['goal'], self.questmanager, quest_info['current'])
-                quest.completed = quest_info['completed']
-                self.questmanager.add_quest(quest)
-
     def save_game_state(self):
         active_quests = []
         for quest in self.questmanager.quests:
