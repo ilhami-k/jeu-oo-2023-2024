@@ -185,7 +185,7 @@ Méthodes:
             self.inventory.add_item(police)
             self.secondary_quest4.reward_given = True
 
-    def switch_map(self, map_name, spawn_name ):
+    def switch_map(self, map_name, spawn_name = None ):
         self.all_enemies = []  # Réinitialiser la liste des ennemis
         # Chargement des données de la carte à partir d'un fichier TMX
         tmx_data = pytmx.util_pygame.load_pygame(f"Application/{map_name}")
