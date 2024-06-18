@@ -131,7 +131,7 @@ Méthodes:
 
          
         self.font = pygame.font.Font('freesansbold.ttf', 36)
-        self.intro_background = pygame.image.load("Application/images/background.png")
+        self.intro_background = pygame.image.load("../Application/images/background.png")
         self.running = True # Variable GLOBALE pour contrôler l'exécution du jeu
         self.new_game = False #Variable globale pour savoir si c'est un nouveau jeu 
         self.prologue_on = False
@@ -159,8 +159,8 @@ Méthodes:
 
         #initialise l'affichage des quetes sur fermé
         self.show_quests = False
-        self.save_load = SaveSystem('.json','Application/save_data/')
-        self.quest_background = pygame.image.load("Application/images/quest_background.png")
+        self.save_load = SaveSystem('.json','../Application/save_data/')
+        self.quest_background = pygame.image.load("../Application/images/quest_background.png")
         self.quest_1_dialogue = DialogueBox(NPC_DIALOGUE_10_MONSTER_QUEST, 22, 700, 150, 50, HEIGHT - 250, (255, 255, 128, 128), (0, 0, 0))
         self.mission_dialogue = False
         self.first_interaction = True
@@ -188,7 +188,7 @@ Méthodes:
     def switch_map(self, map_name, spawn_name = None ):
         self.all_enemies = []  # Réinitialiser la liste des ennemis
         # Chargement des données de la carte à partir d'un fichier TMX
-        tmx_data = pytmx.util_pygame.load_pygame(f"Application/{map_name}")
+        tmx_data = pytmx.util_pygame.load_pygame(f"../Application/{map_name}")
         map_data = pyscroll.data.TiledMapData(tmx_data)
         self.map = map_name
         # Création d'un rendu de carte avec mise en mémoire tampon pour des performances optimales
